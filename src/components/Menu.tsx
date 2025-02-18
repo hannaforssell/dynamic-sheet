@@ -45,7 +45,10 @@ export const HeaderMenu = (props: IHeaderMenuProps) => {
           qualityData: parsedData.qualityData,
           abilityData: parsedData.abilityData,
           classSkills: parsedData.classSkills,
+          itemData: parsedData.itemData,
+          tableData: parsedData.tableData
         });
+
       } catch (error) {
         console.error(error);
       }
@@ -67,7 +70,8 @@ export const HeaderMenu = (props: IHeaderMenuProps) => {
     <>
       <MenuButton onClick={() => setIsMenuOpen(!isMenuOpen)}>∷</MenuButton>
 
-      <MenuModal $toggle={isMenuOpen}>
+      {isMenuOpen && (
+        <MenuModal $toggle={isMenuOpen}>
         <label>
           Choose a file
           <input type="file" onChange={handleFileChange} />
@@ -93,6 +97,7 @@ export const HeaderMenu = (props: IHeaderMenuProps) => {
           Edit view
         </label>
       </MenuModal>
+      )}
     </>
   );
 };

@@ -1,30 +1,22 @@
-import { useState } from "react";
 import { AbilityData } from "../models/AbilityData";
 import { QualityData } from "../models/QualityData";
 import { Section } from "../styles/styled-components/Section";
 import { Ability } from "./Ability";
 import { Quality } from "./Quality";
-import { IFormData } from "../models/IFormData";
+import { Table } from "./Table";
 import { ISheetData } from "../models/ISheetData";
+import { TableData } from "../models/TableData";
 
 interface IPropertyGroupProps {
   group: string;
-  // abilityData: Map<string, AbilityData>;
-  // qualityData: Map<string, QualityData>;
   sheetData: ISheetData
   changeProperty: (property: AbilityData | QualityData) => void;
   calculate: () => void;
   editView: boolean;
   removeProperty: (property: AbilityData | QualityData) => void;
-  //addProperty: (group: string, formData: IFormData) => void;
 }
 
 export const PropertyGroup = (props: IPropertyGroupProps) => {
-  // const [formData, setFormData] = useState<IFormData>({
-  //   name: "",
-  //   propertyType: new AbilityData("", props.group, 0, ""),
-  // });
-
   const abilities: AbilityData[] = [];
   props.sheetData.abilityData.forEach((a) => {
     if (a.group === props.group) {
@@ -36,6 +28,13 @@ export const PropertyGroup = (props: IPropertyGroupProps) => {
   props.sheetData.qualityData.forEach((q) => {
     if (q.group === props.group) {
       qualities.push(q);
+    }
+  });
+
+  const tables: TableData[] = [];
+  props.sheetData.tableData.forEach((q) => {
+    if (q.group === props.group) {
+      tables.push(q);
     }
   });
 
@@ -88,67 +87,12 @@ export const PropertyGroup = (props: IPropertyGroupProps) => {
           )}
         </div>
       ))}
-      {/* {props.editView && (
-        <div style={{ width: "150px" }}>
-          <hr />
-          <label>
-            <input
-              type="text"
-              value={formData.name}
-              placeholder="Add new property..."
-              onChange={(e) =>
-                setFormData({
-                  name: e.target.value,
-                  propertyType: formData.propertyType,
-                })
-              }
-            />
-          </label>
-          <label>
-            <input
-              type="radio"
-              name={`propertyType${props.group}`}
-              onChange={() =>
-                setFormData({
-                  name: formData.name,
-                  propertyType: new AbilityData(
-                    formData.name,
-                    props.group,
-                    0,
-                    ""
-                  ),
-                })
-              }
-              checked
-            />{" "}
-            Ability
-          </label>
-          <label>
-            <input
-              type="radio"
-              name={`propertyType${props.group}`}
-              onChange={() =>
-                setFormData({
-                  name: formData.name,
-                  propertyType: new QualityData(formData.name, props.group, ""),
-                })
-              }
-            />{" "}
-            Quality
-          </label>
-          <button
-            onClick={() => {
-              props.addProperty(props.group, formData);
-              setFormData({
-                name: "",
-                propertyType: new AbilityData("", props.group, 0, ""),
-              });
-            }}
-          >
-            Add
-          </button>
-        </div>
-      )} */}
+      {tables.map((table) => (
+          <Table
+            headers={table.headers}
+            data={table.data}
+          />
+      ))}
     </Section>
   );
 };

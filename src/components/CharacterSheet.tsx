@@ -1,34 +1,33 @@
 import { useEffect, useState } from "react";
 import { AbilityData } from "../models/AbilityData";
 import { QualityData } from "../models/QualityData";
-import { PlayerInfo } from "./BasicInfo";
 import { ISheetData } from "../models/ISheetData";
 import { HeaderMenu } from "./Menu";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { PropertyGroup } from "./PropertyGroup";
-import { defaultSheet } from "../helpers/sheetHelper";
+import { defaultSheetPF } from "../helpers/sheetHelper";
 import { Wrapper } from "../styles/styled-components/Wrapper";
 import { Section } from "../styles/styled-components/Section";
 import { CalculatorService } from "../services/calculatorService";
 import { SearchResult } from "./SearchResult";
-import { Table } from "./Table";
 import { AddNew } from "./AddNew";
 import { PropertyType } from "../models/PropertyType";
 import { Item } from "./Item";
 import { ItemData } from "../models/ItemData";
 
 const propertyGroupsBasic = [
+  "Basic Info",
   "Ability Scores",
   "Health",
-  "Defence",
+  "Defense",
   "AC",
   "Saves",
-  "Offence",
+  "Offense",
 ];
 
 export const CharacterSheet = () => {
-  const [sheetData, setSheetData] = useState<ISheetData>(defaultSheet);
+  const [sheetData, setSheetData] = useState<ISheetData>(defaultSheetPF);
   const [search, setSearch] = useState<string>("");
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [editView, setEditView] = useState<boolean>(false);
@@ -38,28 +37,6 @@ export const CharacterSheet = () => {
   useEffect(() => {
     calculate();
   }, []);
-
-  // const changeQuality = (data: QualityData) => {
-  //   sheetData.qualityData.set(
-  //     data.name,
-  //     new QualityData(data.name, data.group, data.input)
-  //   );
-  //   setSheetData(sheetData);
-  // };
-
-  // const changeAbility = (data: AbilityData) => {
-  //   sheetData.abilityData.set(
-  //     data.name,
-  //     new AbilityData(
-  //       data.name,
-  //       data.group,
-  //       data.sum,
-  //       data.calculationData,
-  //       data.sortOrder
-  //     )
-  //   );
-  //   setSheetData(sheetData);
-  // };
 
   const changeProperty = (property: AbilityData | QualityData | ItemData) => {
     if (property instanceof AbilityData) {
@@ -133,6 +110,7 @@ export const CharacterSheet = () => {
     });
   };
 
+
   return (
     <>
       <HeaderMenu
@@ -181,10 +159,6 @@ export const CharacterSheet = () => {
         </TabList>
 
         <TabPanel>
-          {/* <PlayerInfo
-            sheetData={sheetData}
-            changeProperty={changeProperty}
-          /> */}
           <Wrapper>
             {propertyGroupsBasic.map((group) => (
               <PropertyGroup
@@ -198,14 +172,6 @@ export const CharacterSheet = () => {
                 //addProperty={addProperty}
               />
             ))}
-            <Table
-              headers={["Class", "Level", "Total level"]}
-              data={[
-                ["S-Class Wizard	// Incanter", "1 // 1", "1"],
-                ["S-Class Wizard	// Incanter", "2 // 2", "2"],
-                ["S-Class Wizard	// Incanter", "3 // 3", "3"],
-              ]}
-            ></Table>
           </Wrapper>
         </TabPanel>
         <TabPanel>
@@ -236,7 +202,7 @@ export const CharacterSheet = () => {
         </TabPanel>
         <TabPanel>
           <Wrapper>
-            {[...sheetData.itemData].map(([key, value]) => (
+            {sheetData.itemData && [...sheetData.itemData].map(([key, value]) => (
               <Item key={key} item={value} editView={editView} changeItem={changeProperty} />
             ))}
           </Wrapper>

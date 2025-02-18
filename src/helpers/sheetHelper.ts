@@ -2,16 +2,21 @@ import { AbilityData } from "../models/AbilityData";
 import { ISheetData } from "../models/ISheetData";
 import { ItemData } from "../models/ItemData";
 import { QualityData } from "../models/QualityData";
+import { TableData } from "../models/TableData";
 
-export const defaultSheet: ISheetData = {
+export const defaultSheetPF: ISheetData = {
   qualityData: new Map([
+    ["Name", new QualityData("Name", "Basic Info", "")],
     ["Player", new QualityData("Player", "Basic Info", "")],
+    ["Campaign", new QualityData("Campaign", "Basic Info", "")],
+    ["Race", new QualityData("Race", "Basic Info", "")],
+    ["Type", new QualityData("Type", "Basic Info", "")],
 
-    ["DR", new QualityData("DR", "Defence", "")],
-    ["Immune", new QualityData("Immune", "Defence", "")],
-    ["Resist", new QualityData("Resist", "Defence", "")],
-    ["Miss Chance", new QualityData("Miss Chance", "Defence", "")],
-    ["Senses", new QualityData("Senses", "Defence", "")],
+    ["DR", new QualityData("DR", "Defense", "")],
+    ["Immune", new QualityData("Immune", "Defense", "")],
+    ["Resist", new QualityData("Resist", "Defense", "")],
+    ["Miss Chance", new QualityData("Miss Chance", "Defense", "")],
+    ["Senses", new QualityData("Senses", "Defense", "")],
   ]),
   abilityData: new Map([
     ["Str", new AbilityData("Str", "Ability Scores", 0, "10[PB Base]", 1)],
@@ -31,15 +36,15 @@ export const defaultSheet: ISheetData = {
     ["Initiative", new AbilityData("Initiative", "AC", 0, "")],
     ["Speed (Land)", new AbilityData("Speed (Land)", "AC", 30, "30[Base]")],
 
-    ["Fortitude", new AbilityData("Fortitude", "Saves", 0, "")],
-    ["Reflex", new AbilityData("Reflex", "Saves", 0, "")],
-    ["Will", new AbilityData("Will", "Saves", 0, "")],
+    ["Fortitude", new AbilityData("Fortitude", "Saves", 0, "+0@Con")],
+    ["Reflex", new AbilityData("Reflex", "Saves", 0, "+0@Dex")],
+    ["Will", new AbilityData("Will", "Saves", 0, "+0@Wis")],
 
-    ["BaB", new AbilityData("BaB", "Offence", 0, "")],
-    ["Melee To Hit", new AbilityData("Melee To Hit", "Offence", 0, "")],
-    ["Ranged To Hit", new AbilityData("Ranged To Hit", "Offence", 0, "")],
-    ["CMB", new AbilityData("CMB", "Offence", 0, "")],
-    ["CMD", new AbilityData("CMD", "Offence", 0, "")],
+    ["BaB", new AbilityData("BaB", "Offense", 0, "")],
+    ["Melee To Hit", new AbilityData("Melee To Hit", "Offense", 0, "")],
+    ["Ranged To Hit", new AbilityData("Ranged To Hit", "Offense", 0, "")],
+    ["CMB", new AbilityData("CMB", "Offense", 0, "")],
+    ["CMD", new AbilityData("CMD", "Offense", 0, "")],
 
     ["Acrobatics", new AbilityData("Acrobatics", "Skills", 0, "+0@Dex")],
     ["Appraise", new AbilityData("Appraise", "Skills", 0, "")],
@@ -110,4 +115,7 @@ export const defaultSheet: ISheetData = {
     ["Staff", new ItemData("Staff", new AbilityData("Staff", "Items", 10, "5+2"), "Bag", 5)],
     ["Shoes", new ItemData("Shoes", new AbilityData("Shoes", "Items", 0, ""), "Bag", 3, [{name: "Name", desc: "Desc"}])],
   ]),
+  tableData: new Map([
+    ["Levels", new TableData("Levels", "Basic Info", ["Class", "Level", "Total Level"], [["Wizard", "1", "1"], ["Wizard", "2", "2"], ["Wizard", "3", "3"]])]
+  ])
 };
