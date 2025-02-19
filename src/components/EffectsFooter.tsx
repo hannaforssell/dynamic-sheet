@@ -3,7 +3,7 @@ import { EffectType } from "../models/EffectType";
 import { Effect } from "../models/Effect";
 import { EffectBox } from "./EffectBox";
 
-const effectTypes = Object.keys(EffectType)
+const effectTypes = Object.values(EffectType)
 
 interface IEffectsFooterProps {
   effects: Effect[],
@@ -17,8 +17,11 @@ export const EffectsFooter = (props: IEffectsFooterProps) => {
         <TabList>
           {(effectTypes.map(t => <Tab>{t}</Tab>))}
         </TabList>
-        {(effectTypes.map(_ =>
+        {(effectTypes.map(type =>
           <TabPanel>
+            <ul key={type}>
+              {props.effects.filter(e => e.type == type).map(e => <li key={e.name}>{e.name}</li>)}
+            </ul>
             <EffectBox effect={props.effects[0]}/>
           </TabPanel>))}
       </Tabs>

@@ -36,12 +36,7 @@ export const Ability = (props: IAbilityProps) => {
       className="abilityWrapper"
     >
       <span>{props.abilityData.name}</span>
-      <input
-        value={props.abilityData.sum ?? "—"}
-        style={{ width: "50px" }}
-        onChange={() => {}}
-        readOnly
-      />
+      <span>{props.abilityData.sum ?? "—"}</span>
       {showModal ? (
         <input
           autoFocus

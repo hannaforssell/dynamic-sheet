@@ -15,6 +15,7 @@ const labelStyle: React.CSSProperties = {
 
 export const EffectBox = (props: IEffectProps) => {
   const [name, setName] = useState<string>(props.effect.name);
+  const [enabled, setEnabled] = useState<boolean>(props.effect.enabled);
   const [order, setOrder] = useState<number>(props.effect.order);
   const [type, setType] = useState<EffectType>(props.effect.type);
   const [exec, setExec] = useState<string>(props.effect.exec);
@@ -33,6 +34,16 @@ export const EffectBox = (props: IEffectProps) => {
     <label
       style={labelStyle}
     >
+      Enabled
+      <input
+        type="checkbox"
+        checked={enabled}
+        onChange={(e) => { props.effect.enabled = e.target.checked; setEnabled(e.target.checked) }}
+      />
+    </label>
+    <label
+      style={labelStyle}
+    >
       Order
       <input
         type="number"
@@ -43,7 +54,7 @@ export const EffectBox = (props: IEffectProps) => {
     <label
       style={labelStyle}
     >
-      Order
+      Type
       <input
         type="text"
         value={type}

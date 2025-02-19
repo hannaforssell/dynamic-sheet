@@ -16,6 +16,7 @@ import { PropertyType } from "../models/PropertyType";
 import { Item } from "./Item";
 import { ItemData } from "../models/ItemData";
 import { EffectsFooter } from "./EffectsFooter";
+import { EffectService } from "../services/effectService";
 
 const propertyGroupsBasic = [
   "Basic Info",
@@ -33,7 +34,9 @@ export const CharacterSheet = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [editView, setEditView] = useState<boolean>(false);
   const [isAddNewModalOpen, setIsAddNewModalOpen] = useState<boolean>(false);
+
   const calculatorService = new CalculatorService();
+  const effectService = new EffectService();
 
   useEffect(() => {
     calculate();
@@ -111,13 +114,20 @@ export const CharacterSheet = () => {
     });
   };
 
+  const applyEffects = () => {
+    const appliedSheetData = effectService.Apply(
+      sheetData
+    );
+    setSheetData(appliedSheetData);
+  };
+
 
   return (
     <>
       <HeaderMenu
         sheetData={sheetData}
         setSheetData={setSheetData}
-        calculate={calculate}
+        calculate={applyEffects}
         setEditView={() => setEditView(!editView)}
         openAddNewModal={() => setIsAddNewModalOpen(!isAddNewModalOpen)}
       />
