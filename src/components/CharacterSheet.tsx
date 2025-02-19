@@ -15,6 +15,7 @@ import { AddNew } from "./AddNew";
 import { PropertyType } from "../models/PropertyType";
 import { Item } from "./Item";
 import { ItemData } from "../models/ItemData";
+import { EffectsFooter } from "./EffectsFooter";
 
 const propertyGroupsBasic = [
   "Basic Info",
@@ -220,6 +221,7 @@ export const CharacterSheet = () => {
           </TabPanel>
         )}
       </Tabs>
+      <EffectsFooter effects={sheetData.effects}/>
     </>
   );
 };

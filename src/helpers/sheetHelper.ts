@@ -1,4 +1,6 @@
 import { AbilityData } from "../models/AbilityData";
+import { Effect } from "../models/Effect";
+import { EffectType } from "../models/EffectType";
 import { ISheetData } from "../models/ISheetData";
 import { ItemData } from "../models/ItemData";
 import { QualityData } from "../models/QualityData";
@@ -117,5 +119,6 @@ export const defaultSheetPF: ISheetData = {
   ]),
   tableData: new Map([
     ["Levels", new TableData("Levels", "Basic Info", ["Class", "Level", "Total Level"], [["Wizard", "1", "1"], ["Wizard", "2", "2"], ["Wizard", "3", "3"]])]
-  ])
+  ]),
+  effects: [new Effect("Elf", 1, EffectType.Spell, "alert('test')")]
 };

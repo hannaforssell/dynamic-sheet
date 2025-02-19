@@ -1,4 +1,5 @@
 import { AbilityData } from "./AbilityData";
+import { Effect } from "./Effect";
 import { ItemData } from "./ItemData";
 import { QualityData } from "./QualityData";
 import { TableData } from "./TableData";
@@ -9,4 +10,5 @@ export interface ISheetData {
     classSkills: Set<string>;
     itemData: Map<string, ItemData>;
     tableData: Map<string, TableData>;
+    effects: Effect[];
   }
