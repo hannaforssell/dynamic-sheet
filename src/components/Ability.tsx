@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AbilityData } from "../models/AbilityData";
+import { Tooltip } from 'react-tooltip'
 
 interface IAbilityProps {
   abilityData: AbilityData;
@@ -35,8 +36,9 @@ export const Ability = (props: IAbilityProps) => {
     <div
       className="abilityWrapper"
     >
+      <Tooltip id="my-tooltip"/>
       <span>{props.abilityData.name}</span>
-      <span>{props.abilityData.sum ?? "—"}</span>
+      <span data-tooltip-id="my-tooltip" data-tooltip-content={props.abilityData.calculationData.replaceAll(" ", "\n")}>{props.abilityData.sum ?? "—"}</span>
       {showModal ? (
         <input
           autoFocus

@@ -121,12 +121,12 @@ export const defaultSheetPF: ISheetData = {
     ["Levels", new TableData("Levels", "Basic Info", ["Class", "Level", "Total Level"], [["Wizard", "1", "1"], ["Wizard", "2", "2"], ["Wizard", "3", "3"]])]
   ]),
   effects: [
-    new Effect("Str roll", true, 1, EffectType.Base, "AddAbilityMod(cs, 'Str', 10)"),
-    new Effect("Dex roll", true, 1, EffectType.Base, "AddAbilityMod(cs, 'Dex', 10)"),
-    new Effect("Con roll", true, 1, EffectType.Base, "AddAbilityMod(cs, 'Con', 10)"),
-    new Effect("Int roll", true, 1, EffectType.Base, "AddAbilityMod(cs, 'Int', 10)"),
-    new Effect("Wis roll", true, 1, EffectType.Base, "AddAbilityMod(cs, 'Wis', 10)"),
-    new Effect("Cha roll", true, 1, EffectType.Base, "AddAbilityMod(cs, 'Cha', 10)"),
-    new Effect("Bless", true, 1, EffectType.Spell, "AddAbilityMod(cs, 'Str', +4); AddAbilityMod(cs, 'Dex', +4)"),
+    new Effect("Str roll", true, 1, EffectType.Base, "AddAbilityMod('Str', 10, 'Base')"),
+    new Effect("Dex roll", true, 1, EffectType.Base, "AddAbilityMod('Dex', 10, 'Base')"),
+    new Effect("Con roll", true, 1, EffectType.Base, "AddAbilityMod('Con', 10, 'Base')"),
+    new Effect("Int roll", true, 1, EffectType.Base, "AddAbilityMod('Int', 10, 'Base')"),
+    new Effect("Wis roll", true, 1, EffectType.Base, "AddAbilityMod('Wis', 10, 'Base')"),
+    new Effect("Cha roll", true, 1, EffectType.Base, "AddAbilityMod('Cha', 10, 'Base')"),
+    new Effect("Bless", true, 1, EffectType.Spell, "AddAbilityMod('Str', +4, 'Sacred'); AddAbilityMod(cs, 'Dex', +4, 'Sacred')"),
   ]
 };
