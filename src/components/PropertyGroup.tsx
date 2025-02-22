@@ -1,6 +1,5 @@
 import { AbilityData } from "../models/AbilityData";
 import { QualityData } from "../models/QualityData";
-import { Section } from "../styles/styled-components/Section";
 import { Ability } from "./Ability";
 import { Quality } from "./Quality";
 import { Table } from "./Table";
@@ -39,14 +38,14 @@ export const PropertyGroup = (props: IPropertyGroupProps) => {
   });
 
   return (
-    <Section>
+    <>
       <h2 style={{ margin: "0", paddingBottom: "10px" }}>{props.group}</h2>
       {abilities.sort((a, b) => a.sortOrder === b.sortOrder ? a.name.localeCompare(b.name) : a.sortOrder - b.sortOrder).map((ability) => (
         <div
           key={ability.name}
           style={{
-            display: "flex",
-            paddingRight: `${props.editView ? "0" : "16px"}`,
+            // display: "flex",
+            // paddingRight: `${props.editView ? "0" : "16px"}`,
           }}
         >
           <Ability
@@ -87,12 +86,13 @@ export const PropertyGroup = (props: IPropertyGroupProps) => {
           )}
         </div>
       ))}
-      {tables.map((table) => (
+      {tables.map((table, i) => (
           <Table
             headers={table.headers}
             data={table.data}
+            key={i}
           />
       ))}
-    </Section>
+    </>
   );
 };

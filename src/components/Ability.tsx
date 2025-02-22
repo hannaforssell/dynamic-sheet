@@ -1,12 +1,26 @@
 import { useEffect, useState } from "react";
 import { AbilityData } from "../models/AbilityData";
-import { Tooltip } from 'react-tooltip'
+import { Button, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
+import { styled } from '@mui/material/styles';
+import React from "react";
 
 interface IAbilityProps {
   abilityData: AbilityData;
   onChangeAbility: (data: AbilityData) => void;
   calculate: () => void;
 }
+
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}));
 
 export const Ability = (props: IAbilityProps) => {
   const [calcDataInput, setCalcDataInput] = useState<string>("");
@@ -16,8 +30,8 @@ export const Ability = (props: IAbilityProps) => {
     setCalcDataInput(props.abilityData.calculationData);
   }, [props.abilityData]);
 
-  const saveAbility = (e: any) => {    
-    const calcString = e.target.value;    
+  const saveAbility = (e: React.FocusEvent<HTMLInputElement>) => {
+    const calcString = e.target.value;
 
     const newDataInput = new AbilityData(
       props.abilityData.name,
@@ -26,19 +40,26 @@ export const Ability = (props: IAbilityProps) => {
       calcString,
       props.abilityData.sortOrder
     );
-    
+
     setCalcDataInput(calcString);
 
     props.onChangeAbility(newDataInput);
   };
 
   return (
-    <div
-      className="abilityWrapper"
-    >
-      <Tooltip id="my-tooltip"/>
-      <span>{props.abilityData.name}</span>
-      <span data-tooltip-id="my-tooltip" data-tooltip-content={props.abilityData.calculationData.replaceAll(" ", "\n")}>{props.abilityData.sum ?? "—"}</span>
+    <div className="abilityWrapper">
+      <span>{props.abilityData.name}: </span>
+      <HtmlTooltip
+        title={
+          <React.Fragment>
+            <Typography color="inherit">{props.abilityData.name}: {props.abilityData.sum}</Typography>
+            {props.abilityData.calculationData.split(/\s+(?![^[]*\])/).map((c, i) => <p key={i}>{c}</p>)}
+          </React.Fragment>
+        }
+      >
+        <Button>{props.abilityData.sum ?? "—"}</Button>
+      </HtmlTooltip>
+
       {showModal ? (
         <input
           autoFocus
@@ -57,8 +78,9 @@ export const Ability = (props: IAbilityProps) => {
           }}
         />
       ) : (
-        <button onClick={() => setShowModal(true)}>{">"}
-        </button>
+        // <button onClick={() => setShowModal(true)}>{">"}
+        // </button>
+        <></>
       )}
     </div>
   );

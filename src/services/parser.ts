@@ -17,7 +17,7 @@ export class Parser {
     this.tokenizer.NextToken();
     
     // For the moment, all we understand is add and subtract
-    var expr = this.ParseAddSubtract();
+    const expr = this.ParseAddSubtract();
 
     if (this.tokenizer.getCurrentToken() !== Token.EOF) {
       throw new Error("Unexpected characters at end of expression");
@@ -98,7 +98,12 @@ export class Parser {
         const rhs = this.ParseUnary();
 
         // Create unary node
-        return new NodeUnary(rhs, (a) => -a);
+        return new NodeUnary(rhs, (a) => {
+          if(a === null) {
+            return null;
+          }
+          return -a;
+        });
       }
 
       // No positive/negative operator so parse a leaf node

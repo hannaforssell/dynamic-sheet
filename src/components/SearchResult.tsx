@@ -20,11 +20,11 @@ export const SearchResult = (props: ISearchResultProps) => {
   const regexp = new RegExp(`(${props.search})`, "gi");
 
   const searchResultAbilities = [...props.sheetData.abilityData].filter(
-    ([_k, v]) => v.name.match(regexp) || v.calculationData.match(regexp)
+    ([_, v]) => v.name.match(regexp) || v.calculationData.match(regexp)
   );
 
   const searchResultQualities = [...props.sheetData.qualityData].filter(
-    ([_k, v]) => v.name.match(regexp) || v.input.match(regexp)
+    ([_, v]) => v.name.match(regexp) || v.input.match(regexp)
   );
 
   if (
@@ -36,7 +36,7 @@ export const SearchResult = (props: ISearchResultProps) => {
 
   const resultsToDisplay = new Map<string, (AbilityData | QualityData)[]>();
 
-  searchResultAbilities.forEach(([_k, v]) => {
+  searchResultAbilities.forEach(([_, v]) => {
     const displayList = resultsToDisplay.get(v.group) ?? [];
     displayList.push(v);
     resultsToDisplay.set(v.group, displayList);

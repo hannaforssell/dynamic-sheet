@@ -22,10 +22,10 @@ export const AddNew = (props: IAddNewProps) => {
   const [formData, setFormData] = useState<IFormData>(emptyForm);
 
   const groups = new Set<string>();
-  [...props.sheetData.abilityData.entries()].forEach(([_key, value]) =>
+  [...props.sheetData.abilityData.entries()].forEach(([_, value]) =>
     groups.add(value.group)
   );
-  [...props.sheetData.qualityData.entries()].forEach(([_key, value]) =>
+  [...props.sheetData.qualityData.entries()].forEach(([_, value]) =>
     groups.add(value.group)
   );
   const groupOptions: JSX.Element[] = [...groups].map((g) => (

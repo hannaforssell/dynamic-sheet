@@ -3,12 +3,8 @@ import { AbilityData } from "../models/AbilityData";
 import { QualityData } from "../models/QualityData";
 import { ISheetData } from "../models/ISheetData";
 import { HeaderMenu } from "./Menu";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
 import { PropertyGroup } from "./PropertyGroup";
 import { defaultSheetPF } from "../helpers/sheetHelper";
-import { Wrapper } from "../styles/styled-components/Wrapper";
-import { Section } from "../styles/styled-components/Section";
 import { CalculatorService } from "../services/calculatorService";
 import { SearchResult } from "./SearchResult";
 import { AddNew } from "./AddNew";
@@ -17,6 +13,8 @@ import { Item } from "./Item";
 import { ItemData } from "../models/ItemData";
 import { EffectsFooter } from "./EffectsFooter";
 import { EffectService } from "../services/effectService";
+import { TabContext, TabPanel } from "@mui/lab";
+import { Tab, Tabs } from "@mui/material";
 
 const propertyGroupsBasic = [
   "Basic Info",
@@ -39,8 +37,22 @@ export const CharacterSheet = () => {
   const effectService = new EffectService();
 
   useEffect(() => {
-    calculate();
+    applyEffects();
   }, []);
+
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setTabIndex(newValue);
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if(e.target.value == "") {
+      setSearch("");
+      setTabIndex(0);
+      return
+    }
+    setSearch(e.target.value);
+    setTabIndex(3);
+  };
 
   const changeProperty = (property: AbilityData | QualityData | ItemData) => {
     if (property instanceof AbilityData) {
@@ -104,21 +116,19 @@ export const CharacterSheet = () => {
     }
   };
 
-  const calculate = () => {
-    const calculatedAbilityData = calculatorService.Calculate(
-      sheetData.abilityData
-    );
-    setSheetData({
-      ...sheetData,
-      abilityData: calculatedAbilityData,
-    });
-  };
-
   const applyEffects = () => {
+    console.log("Applying effects.")
     const appliedSheetData = effectService.Apply(
       sheetData
     );
-    setSheetData(appliedSheetData);
+
+    const calculatedAbilityData = calculatorService.Calculate(
+      appliedSheetData.abilityData
+    );
+    setSheetData({
+      ...appliedSheetData,
+      abilityData: calculatedAbilityData,
+    });
   };
 
 
@@ -139,99 +149,82 @@ export const CharacterSheet = () => {
         setIsAddNewModalOpen={setIsAddNewModalOpen}
         addProperty={addProperty}
       />
-
-      <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
-        <TabList>
-          <Tab>Basics</Tab>
-          <Tab>Skills</Tab>
-          <Tab>Items</Tab>
+      <TabContext value={tabIndex}>
+        <Tabs value={tabIndex} onChange={handleTabChange}>
+          <Tab label={"Basic"} value={0} />
+          <Tab label={"Skills"} value={1} />
+          <Tab label={"Items"} value={2} />
           {search && (
-            <Tab
+           <Tab
+              label={`Search result: ${search}`}
+              value={3}
               autoFocus={false}
               onFocus={() => document.getElementById("searchBar")?.focus()}
-            >
-              Search result: {search}
-            </Tab>
+            />
           )}
-          <input
+        </Tabs>
+        <input
             id="searchBar"
             type="text"
             placeholder="Search..."
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setTabIndex(3);
-            }}
+            onChange={handleSearch}
             style={{
               position: "absolute",
               right: "100px",
               top: "15px",
             }}
           />
-        </TabList>
-
-        <TabPanel>
-          <Wrapper>
-            {propertyGroupsBasic.map((group) => (
-              <PropertyGroup
-                key={group}
-                group={group}
-                sheetData={sheetData}
-                changeProperty={changeProperty}
-                calculate={calculate}
-                editView={editView}
-                removeProperty={removeProperty}
-                //addProperty={addProperty}
-              />
-            ))}
-          </Wrapper>
-        </TabPanel>
-        <TabPanel>
-          <Wrapper>
+        <TabPanel value={0}>
+          {propertyGroupsBasic.map((group) => (
             <PropertyGroup
-              group="Skills"
+              key={group}
+              group={group}
               sheetData={sheetData}
               changeProperty={changeProperty}
-              calculate={calculate}
+              calculate={applyEffects}
               editView={editView}
               removeProperty={removeProperty}
-              //addProperty={addProperty}
             />
-
-            <Section>
-              <label
-                style={{
-                  textAlign: "left",
-                  display: "grid",
-                  gridTemplateColumns: "150px 180px",
-                }}
-              >
-                <span>Skillpoints spent</span>
-                <div>sum</div>
-              </label>
-            </Section>
-          </Wrapper>
+          ))}
         </TabPanel>
-        <TabPanel>
-          <Wrapper>
-            {sheetData.itemData && [...sheetData.itemData].map(([key, value]) => (
-              <Item key={key} item={value} editView={editView} changeItem={changeProperty} />
-            ))}
-          </Wrapper>
+        <TabPanel value={1}>
+          <PropertyGroup
+            group="Skills"
+            sheetData={sheetData}
+            changeProperty={changeProperty}
+            calculate={applyEffects}
+            editView={editView}
+            removeProperty={removeProperty}
+          />
+          <label
+            style={{
+              textAlign: "left",
+              display: "grid",
+              gridTemplateColumns: "150px 180px",
+            }}
+          >
+            <span>Skillpoints spent</span>
+            <div>sum</div>
+          </label>
+
+        </TabPanel>
+        <TabPanel value={2}>
+          {sheetData.itemData && [...sheetData.itemData].map(([key, value]) => (
+            <Item key={key} item={value} editView={editView} changeItem={changeProperty} />
+          ))}
         </TabPanel>
         {search && (
-          <TabPanel>
-            <Wrapper>
-              <SearchResult
-                search={search}
-                sheetData={sheetData}
-                changeProperty={changeProperty}
-                calculate={calculate}
-              />
-            </Wrapper>
+          <TabPanel value={3}>
+            <SearchResult
+              search={search}
+              sheetData={sheetData}
+              changeProperty={changeProperty}
+              calculate={applyEffects}
+            />
           </TabPanel>
         )}
-      </Tabs>
-      <EffectsFooter effects={sheetData.effects}/>
+      </TabContext>
+      <EffectsFooter effects={sheetData.effects} applyEffects={applyEffects} />
     </>
   );
 };

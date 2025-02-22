@@ -21,6 +21,20 @@ export function AddAbilityMod(attributeName: string, value: number, type: string
   attribute.calculationData += ` ${valueStr}${typeStr}`;
 }
 
+export function SETAbility(attributeName: string, value: number) {
+  if(!currSheet || !currEffect) {
+    console.log("Error adding ability mod.")
+    return;
+  }
+
+  const attribute = currSheet.abilityData.get(attributeName);
+  if(!attribute) {
+    return;
+  }
+
+  attribute.calculationData += ` SET${value}[${currEffect.name}]`;
+}
+
 export class EffectService {
   constructor() {}
 
@@ -29,7 +43,7 @@ export class EffectService {
   ) => {
     characterSheet.abilityData.forEach(a => a.calculationData = "");
 
-    var orderedEffects = characterSheet.effects
+    const orderedEffects = characterSheet.effects
       .filter(e => e.enabled)
       .sort((a, b) => a.order - b.order)
 

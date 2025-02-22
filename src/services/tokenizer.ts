@@ -5,7 +5,6 @@ export class Tokenizer {
   public currentChar: string = "";
   private currentToken: Token = Token.EOF;
   public num: number = 0;
-  private identifier: string = "";
 
   constructor(private input: string) {
     // this.NextChar();
@@ -88,7 +87,7 @@ export class Tokenizer {
       this.currentChar === "0" ||
       this.currentChar == ".") {
       // Capture digits/decimal point
-      var sb = "";
+      let sb = "";
       let haveDecimalPoint = false;
 
       while (

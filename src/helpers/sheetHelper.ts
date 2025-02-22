@@ -121,12 +121,17 @@ export const defaultSheetPF: ISheetData = {
     ["Levels", new TableData("Levels", "Basic Info", ["Class", "Level", "Total Level"], [["Wizard", "1", "1"], ["Wizard", "2", "2"], ["Wizard", "3", "3"]])]
   ]),
   effects: [
-    new Effect("Str roll", true, 1, EffectType.Base, "AddAbilityMod('Str', 10, 'Base')"),
-    new Effect("Dex roll", true, 1, EffectType.Base, "AddAbilityMod('Dex', 10, 'Base')"),
-    new Effect("Con roll", true, 1, EffectType.Base, "AddAbilityMod('Con', 10, 'Base')"),
-    new Effect("Int roll", true, 1, EffectType.Base, "AddAbilityMod('Int', 10, 'Base')"),
-    new Effect("Wis roll", true, 1, EffectType.Base, "AddAbilityMod('Wis', 10, 'Base')"),
-    new Effect("Cha roll", true, 1, EffectType.Base, "AddAbilityMod('Cha', 10, 'Base')"),
-    new Effect("Bless", true, 1, EffectType.Spell, "AddAbilityMod('Str', +4, 'Sacred'); AddAbilityMod(cs, 'Dex', +4, 'Sacred')"),
+    new Effect("Rolls", true, 1, EffectType.Base, "AddAbilityMod('Str', 10, 'Base');\nAddAbilityMod('Dex', 10, 'Base');\nAddAbilityMod('Con', 10, 'Base');\nAddAbilityMod('Int', 10, 'Base');\nAddAbilityMod('Wis', 10, 'Base');\nAddAbilityMod('Cha', 10, 'Base');"),
+    new Effect("Base", true, 1, EffectType.Base, "AddAbilityMod('AC', 10, 'Base');"),
+    // new Effect("Dex roll", true, 1, EffectType.Base, "AddAbilityMod('Dex', 10, 'Base')"),
+    // new Effect("Con roll", true, 1, EffectType.Base, "AddAbilityMod('Con', 10, 'Base')"),
+    // new Effect("Int roll", true, 1, EffectType.Base, "AddAbilityMod('Int', 10, 'Base')"),
+    // new Effect("Wis roll", true, 1, EffectType.Base, "AddAbilityMod('Wis', 10, 'Base')"),
+    // new Effect("Cha roll", true, 1, EffectType.Base, "AddAbilityMod('Cha', 10, 'Base')"),
+    // new Effect("Cha roll", true, 1, EffectType.Base, "AddAbilityMod('Cha', 10, 'Base')"),
+    // new Effect("Cha roll", true, 1, EffectType.Base, "AddAbilityMod('Cha', 10, 'Base')"),
+    new Effect("Bless", true, 1, EffectType.Spell, "AddAbilityMod('Str', +4, 'Sacred');\nAddAbilityMod('Dex', +4, 'Sacred');"),
+    new Effect("Super Bless", true, 1, EffectType.Spell, "AddAbilityMod('Str', +8, 'Sacred');\nAddAbilityMod('Dex', +8, 'Sacred');"),
+    new Effect("Ghost Syrup", true, 1, EffectType.Item, "SETAbility('Str', 0);"),
   ]
 };

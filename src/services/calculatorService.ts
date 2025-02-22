@@ -13,6 +13,7 @@ export class CalculatorService {
       sheetData,
       ([_, value]) => value
     );
+
     let nextBatch: AbilityData[] = [];
     const maxDepth = 100;
     let currentDepth = 0;
@@ -100,10 +101,6 @@ export class CalculatorService {
 
   private removeReferences = (calculatedData: string) => {
     return calculatedData.replaceAll(/(#|@)\w+/g, "");
-  };
-
-  private escapeRegExp = (stringToGoIntoTheRegex: string) => {
-    return stringToGoIntoTheRegex.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
   };
 
   private replaceReferences = (

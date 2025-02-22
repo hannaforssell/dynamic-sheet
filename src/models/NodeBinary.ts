@@ -10,11 +10,10 @@ export class NodeBinary extends Node {
 
   public override Eval = (): number | null => {
     // Evaluate both sides
-    var lhsVal = this.lhs.Eval();
-    var rhsVal = this.rhs.Eval();
+    const lhsVal = this.lhs.Eval();
+    const rhsVal = this.rhs.Eval();
 
     // Evaluate and return
-    var result = this.op(lhsVal, rhsVal);
-    return result;
+    return this.op(lhsVal, rhsVal);
   };
 }

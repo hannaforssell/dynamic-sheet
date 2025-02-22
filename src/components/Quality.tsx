@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { QualityData } from "../models/QualityData";
+import { TextField } from "@mui/material";
 
 interface IQualityProps {
   qualityData: QualityData;
@@ -27,14 +28,7 @@ export const Quality = (props: IQualityProps) => {
   };
 
   return (
-    <label
-      style={{
-        textAlign: "left",
-        display: "grid",
-        gridTemplateColumns: "150px 180px",
-      }}
-    >
-      {props.qualityData.name}
+    <>
       {props.multiLine ? (
         <textarea
           onChange={(e) => setInput(e.target.value)}
@@ -43,15 +37,17 @@ export const Quality = (props: IQualityProps) => {
           readOnly={props.readOnly}
         />
       ) : (
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onBlur={saveQuality}
-          readOnly={props.readOnly}
-          className="no-focus"
-        />
+        <TextField 
+          helperText={props.qualityData.name} 
+          variant="filled" 
+          value={input} 
+          onChange={(e) => setInput(e.target.value)} 
+          disabled={props.readOnly} 
+          onBlur={saveQuality} 
+          sx={{input: {color: "white", '&:Mui-TextField': {brandBorderColor: "white"}}}}
+          slotProps={{formHelperText: { sx: {color: "white"}}}}
+          />
       )}
-    </label>
+    </>
   );
 };

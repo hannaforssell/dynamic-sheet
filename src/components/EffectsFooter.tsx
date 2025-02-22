@@ -1,30 +1,47 @@
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { EffectType } from "../models/EffectType";
 import { Effect } from "../models/Effect";
-import { EffectBox } from "./EffectBox";
+import { Box, Tab, Tabs } from "@mui/material";
+import { useState } from "react";
+import { EffectList } from "./EffectList";
+import { TabContext, TabPanel } from "@mui/lab";
 
 const effectTypes = Object.values(EffectType)
 
 interface IEffectsFooterProps {
   effects: Effect[],
+  applyEffects(): void
 }
 
 export const EffectsFooter = (props: IEffectsFooterProps) => {
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setTabIndex(newValue);
+  };
 
   return (
-    <div style={{ position: "fixed", left: 0, bottom: 0, width: "100%", textAlign: "center" }}>
-      <Tabs>
-        <TabList>
-          {(effectTypes.map(t => <Tab>{t}</Tab>))}
-        </TabList>
-        {(effectTypes.map(type =>
-          <TabPanel>
-            <ul key={type}>
-              {props.effects.filter(e => e.type == type).map(e => <li key={e.name}>{e.name}</li>)}
-            </ul>
-            <EffectBox effect={props.effects[0]}/>
-          </TabPanel>))}
-      </Tabs>
-    </div>
+    <Box sx={{
+      position: "sticky",
+      left: 0,
+      bottom: 0,
+      width: "100%",
+      minHeight: "40vh",
+      maxHeight: "40vh",
+      backgroundColor: "darkgray",
+    }}>
+      <TabContext value={tabIndex}>
+        <Tabs value={tabIndex} onChange={handleTabChange}>
+          {(effectTypes.map((t, i) => <Tab key={i} label={t} value={i} />))}
+        </Tabs>
+        {(effectTypes.map((t, i) => <TabPanel key={i} value={i}>
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <EffectList 
+              effects={props.effects.filter(e => e.type == t)}
+              applyEffects={props.applyEffects}>
+            </EffectList>
+          </Box>
+        </TabPanel>))}
+      </TabContext>
+    </Box>
   );
 };
