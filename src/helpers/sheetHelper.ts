@@ -132,6 +132,6 @@ export const defaultSheetPF: ISheetData = {
     // new Effect("Cha roll", true, 1, EffectType.Base, "AddAbilityMod('Cha', 10, 'Base')"),
     new Effect("Bless", true, 1, EffectType.Spell, "AddAbilityMod('Str', +4, 'Sacred');\nAddAbilityMod('Dex', +4, 'Sacred');"),
     new Effect("Super Bless", true, 1, EffectType.Spell, "AddAbilityMod('Str', +8, 'Sacred');\nAddAbilityMod('Dex', +8, 'Sacred');"),
-    new Effect("Ghost Syrup", true, 1, EffectType.Item, "SETAbility('Str', 0);"),
+    //new Effect("Ghost Syrup", true, 1, EffectType.Item, "SETAbility('Str', 0);"),
   ]
 };

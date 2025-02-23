@@ -1,3 +1,4 @@
+import { AbilityDataMod } from "../models/AbilityDataMod";
 import { Effect } from "../models/Effect";
 import { ISheetData } from "../models/ISheetData";
 
@@ -15,10 +16,22 @@ export function AddAbilityMod(attributeName: string, value: number, type: string
     return;
   }
 
-  const valueStr = value > 0 ? `+${value}` : value;
-  const typeStr = type ? `[${type}, ${currEffect.name}]` : `[Untyped, ${currEffect.name}]`;
+  // const valueStr = value > 0 ? `+${value}` : value;
+  // const typeStr = type ? `[${type}, ${currEffect.name}]` : `[Untyped, ${currEffect.name}]`;
 
-  attribute.calculationData += ` ${valueStr}${typeStr}`;
+  // attribute.calculationData += ` ${valueStr}${typeStr}`;
+
+  var newMod = new AbilityDataMod(type ?? "Untyped", currEffect.name, "+", value);
+  if(newMod.operator == "+") {
+    attribute.abilityMods.forEach(m => {
+      if(m.type == newMod.type && m.operator == "+") {
+        let toDisable = (m.value ?? 0) > (newMod.value ?? 0) ? newMod : m;
+        toDisable.enabled = false;
+      }
+    });
+  }
+
+  attribute.abilityMods.push(new AbilityDataMod(type ?? "Untyped", currEffect.name, "+", value));
 }
 
 export function SETAbility(attributeName: string, value: number) {
@@ -41,7 +54,7 @@ export class EffectService {
   public Apply = (
     characterSheet: ISheetData
   ) => {
-    characterSheet.abilityData.forEach(a => a.calculationData = "");
+    characterSheet.abilityData.forEach(a => { a.calculationData = ""; a.abilityMods = [] });
 
     const orderedEffects = characterSheet.effects
       .filter(e => e.enabled)

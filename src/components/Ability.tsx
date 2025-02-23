@@ -53,7 +53,8 @@ export const Ability = (props: IAbilityProps) => {
         title={
           <React.Fragment>
             <Typography color="inherit">{props.abilityData.name}: {props.abilityData.sum}</Typography>
-            {props.abilityData.calculationData.split(/\s+(?![^[]*\])/).map((c, i) => <p key={i}>{c}</p>)}
+            {props.abilityData.abilityMods.map((m, i) => <p key={i} style={ m.enabled ? {} : { textDecoration: "line-through" } }>{m.toString()}</p>)}
+            {/* {props.abilityData.calculationData.split(/\s+(?![^[]*\])/).map((c, i) => <p key={i}>{c}</p>)} */}
           </React.Fragment>
         }
       >

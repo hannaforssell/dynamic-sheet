@@ -22,6 +22,7 @@ export class CalculatorService {
       currentBatch.map((abilityData) => {
         let newAbility: AbilityData;
         try {
+          
           let modifiedInput = abilityData.calculationData;
           const references = this.getReferences(modifiedInput);
 
@@ -46,13 +47,17 @@ export class CalculatorService {
               result = node.Eval();
             }
 
-            newAbility = new AbilityData(
-              abilityData.name,
-              abilityData.group,
-              result,
-              displayInput,
-              abilityData.sortOrder
-            );
+            // newAbility = new AbilityData(
+            //   abilityData.name,
+            //   abilityData.group,
+            //   result,
+            //   displayInput,
+            //   abilityData.sortOrder,
+            //   abilityData.abilityMods
+            // );
+
+            newAbility = {...abilityData, sum: result, calculationData: displayInput} 
+
             calculated.set(newAbility.name, newAbility);
           }
         } catch (error) {
