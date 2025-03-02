@@ -11,5 +11,6 @@ export interface ISheetData {
   itemData: Map<string, ItemData>;
   tableData: Map<string, TableData>;
   effects: Effect[];
+  imageLink: string;
 }
 

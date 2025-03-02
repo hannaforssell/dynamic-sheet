@@ -24,7 +24,7 @@ export const SearchResult = (props: ISearchResultProps) => {
   );
 
   const searchResultQualities = [...props.sheetData.qualityData].filter(
-    ([_, v]) => v.name.match(regexp) || v.input.match(regexp)
+    ([_, v]) => v.name.match(regexp) || v.originalText.match(regexp)
   );
 
   if (
@@ -52,14 +52,11 @@ export const SearchResult = (props: ISearchResultProps) => {
               <Ability
                 key={v.name}
                 abilityData={v}
-                onChangeAbility={props.changeProperty}
-                calculate={props.calculate}
               />
             ) : v instanceof AbilityData ? (
               <Quality
                 key={v.name}
                 qualityData={v}
-                onChangeQuality={props.changeProperty}
               />
             ) : (
               <>ERROR</>

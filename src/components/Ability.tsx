@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
 import { AbilityData } from "../models/AbilityData";
 import { Button, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import React from "react";
+import { defaultStyle } from "../helpers/stylingHelper";
 
 interface IAbilityProps {
   abilityData: AbilityData;
-  onChangeAbility: (data: AbilityData) => void;
-  calculate: () => void;
 }
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -23,66 +21,21 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 }));
 
 export const Ability = (props: IAbilityProps) => {
-  const [calcDataInput, setCalcDataInput] = useState<string>("");
-  const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    setCalcDataInput(props.abilityData.calculationData);
-  }, [props.abilityData]);
-
-  const saveAbility = (e: React.FocusEvent<HTMLInputElement>) => {
-    const calcString = e.target.value;
-
-    const newDataInput = new AbilityData(
-      props.abilityData.name,
-      props.abilityData.group,
-      props.abilityData.sum,
-      calcString,
-      props.abilityData.sortOrder
-    );
-
-    setCalcDataInput(calcString);
-
-    props.onChangeAbility(newDataInput);
-  };
+  const sumValue = props.abilityData.sum === null ? "—" : Math.floor(props.abilityData.sum);
 
   return (
-    <div className="abilityWrapper">
+    <>
       <span>{props.abilityData.name}: </span>
       <HtmlTooltip
         title={
           <React.Fragment>
-            <Typography color="inherit">{props.abilityData.name}: {props.abilityData.sum}</Typography>
-            {props.abilityData.abilityMods.map((m, i) => <p key={i} style={ m.enabled ? {} : { textDecoration: "line-through" } }>{m.toString()}</p>)}
-            {/* {props.abilityData.calculationData.split(/\s+(?![^[]*\])/).map((c, i) => <p key={i}>{c}</p>)} */}
+            <Typography color="inherit"> {props.abilityData.name}: {sumValue}</Typography>
+            {props.abilityData.abilityMods.map((m, i) => <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>{m.toString()}</p>)}
           </React.Fragment>
         }
       >
-        <Button>{props.abilityData.sum ?? "—"}</Button>
+        <Button sx={defaultStyle}>{sumValue}</Button>
       </HtmlTooltip>
-
-      {showModal ? (
-        <input
-          autoFocus
-          value={(calcDataInput)}
-          style={{
-            width: "500px",
-            position: "relative",
-            zIndex: "1",
-          }}
-          onChange={(e) => setCalcDataInput(e.target.value)}
-          onFocus={() => setShowModal(true)}
-          onBlur={(e) => {
-            saveAbility(e);
-            props.calculate();
-            setShowModal(false);
-          }}
-        />
-      ) : (
-        // <button onClick={() => setShowModal(true)}>{">"}
-        // </button>
-        <></>
-      )}
-    </div>
+    </>
   );
 };

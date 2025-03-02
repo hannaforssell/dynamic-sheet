@@ -1,11 +1,12 @@
 import { AbilityDataMod } from "../models/AbilityDataMod";
 import { Effect } from "../models/Effect";
 import { ISheetData } from "../models/ISheetData";
+import { QualityDataMod } from "../models/QualityDataMod";
 
 let currEffect: Effect | null = null;
 let currSheet: ISheetData | null = null;
 
-export function AddAbilityMod(attributeName: string, value: number, type: string) {
+export function AddAbilityMod(attributeName: string, value: string, type: string) {
   if(!currSheet || !currEffect) {
     console.log("Error adding ability mod.")
     return;
@@ -16,12 +17,18 @@ export function AddAbilityMod(attributeName: string, value: number, type: string
     return;
   }
 
-  // const valueStr = value > 0 ? `+${value}` : value;
-  // const typeStr = type ? `[${type}, ${currEffect.name}]` : `[Untyped, ${currEffect.name}]`;
+  let operator = null;
+  if(value.startsWith("-")) {
+    operator = "-";
+    value = value.substring(1);
+  } else if(value.startsWith("+")) {
+    operator = "+";
+    value = value.substring(1);
+  } else {
+    operator = "+";
+  }
 
-  // attribute.calculationData += ` ${valueStr}${typeStr}`;
-
-  var newMod = new AbilityDataMod(type ?? "Untyped", currEffect.name, "+", value);
+  var newMod = new AbilityDataMod(type ?? "Untyped", currEffect.name, operator, value);
   if(newMod.operator == "+") {
     attribute.abilityMods.forEach(m => {
       if(m.type == newMod.type && m.operator == "+") {
@@ -34,7 +41,7 @@ export function AddAbilityMod(attributeName: string, value: number, type: string
   attribute.abilityMods.push(new AbilityDataMod(type ?? "Untyped", currEffect.name, "+", value));
 }
 
-export function SETAbility(attributeName: string, value: number) {
+export function SetAbility(attributeName: string, value: string) {
   if(!currSheet || !currEffect) {
     console.log("Error adding ability mod.")
     return;
@@ -45,7 +52,25 @@ export function SETAbility(attributeName: string, value: number) {
     return;
   }
 
-  attribute.calculationData += ` SET${value}[${currEffect.name}]`;
+  attribute.abilityMods.forEach(m => m.enabled = false);
+
+  attribute.abilityMods.push(new AbilityDataMod("Untyped", currEffect.name, "SET", value));
+}
+
+export function SetQuality(qualityName: string, value: string) {
+  if(!currSheet || !currEffect) {
+    console.log("Error adding ability mod.")
+    return;
+  }
+
+  const quality = currSheet.qualityData.get(qualityName);
+  if(!quality) {
+    return;
+  }
+
+  quality.qualityMods.forEach(m => m.enabled = false);
+
+  quality.qualityMods.push(new QualityDataMod(currEffect.name, "SET", value));
 }
 
 export class EffectService {
@@ -55,6 +80,7 @@ export class EffectService {
     characterSheet: ISheetData
   ) => {
     characterSheet.abilityData.forEach(a => { a.calculationData = ""; a.abilityMods = [] });
+    characterSheet.qualityData.forEach(a => { a.calculatedText = ""; a.qualityMods = [] });
 
     const orderedEffects = characterSheet.effects
       .filter(e => e.enabled)
@@ -64,7 +90,12 @@ export class EffectService {
 
     orderedEffects.forEach(effect => {
       currEffect = effect;
-      eval(effect.exec)
+      try {
+        eval(effect.exec)
+      } catch(ex) {
+        console.error("Error evaluating: ", effect.name, effect.exec)
+        console.log(ex)
+      }
     });
     
     return characterSheet;

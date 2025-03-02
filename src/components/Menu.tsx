@@ -41,13 +41,7 @@ export const HeaderMenu = (props: IHeaderMenuProps) => {
         const data = await result.json();
         const parsedData = JSON.parse(data.files.file, reviver) as ISheetData;
 
-        props.setSheetData({
-          qualityData: parsedData.qualityData,
-          abilityData: parsedData.abilityData,
-          classSkills: parsedData.classSkills,
-          itemData: parsedData.itemData,
-          tableData: parsedData.tableData
-        });
+        props.setSheetData({...parsedData});
 
       } catch (error) {
         console.error(error);

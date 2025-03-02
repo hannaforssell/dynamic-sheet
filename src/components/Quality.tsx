@@ -1,53 +1,77 @@
-import { useEffect, useState } from "react";
 import { QualityData } from "../models/QualityData";
-import { TextField } from "@mui/material";
+import { styled, TextField, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
+import { useState } from "react";
+import { defaultStyle } from "../helpers/stylingHelper";
+import { QualityService } from "../services/qualityService";
 
 interface IQualityProps {
   qualityData: QualityData;
-  onChangeQuality: (data: QualityData) => void;
   multiLine?: boolean;
   readOnly?: boolean;
 }
 
+const qualityService = new QualityService();
+
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}));
+
+const localStyle = {
+  ...defaultStyle, 
+  width: 300, 
+  input: { color: "rgba(255, 255, 255, 0.87)", '&:Mui-TextField': { brandBorderColor: "rgba(255, 255, 255, 0.87)" } } 
+};
+
 export const Quality = (props: IQualityProps) => {
-  const [input, setInput] = useState<string>("");
+  const [displayText, setDisplayText] = useState(props.qualityData.calculatedText);
 
-  useEffect(() => {
-    setInput(props.qualityData.input);
-  }, [props.qualityData]);
+  const onFocus = () => {
+    setDisplayText(props.qualityData.originalText)
+  };
 
-  const saveQuality = (e: any) => {
-    const newInput = e.target.value;
-    const newQuality = new QualityData(
-      props.qualityData.name,
-      props.qualityData.group,
-      newInput
-    );
-    props.onChangeQuality(newQuality);
-    setInput(newInput);
+  const onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    props.qualityData.originalText = e.target.value;
+    qualityService.recalculate(props.qualityData);
+    setDisplayText(props.qualityData.calculatedText);
   };
 
   return (
-    <>
+    <HtmlTooltip
+      title={
+        <>
+          <Typography color="inherit"> {props.qualityData.name}</Typography>
+          {props.qualityData.originalText != "" ? <p style={props.qualityData.qualityMods.length == 0 ? {} : { textDecoration: "line-through" }}>{`${props.qualityData.originalText} [Default]`}</p> : <></>}
+          {props.qualityData.qualityMods.map((m, i) => <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>{`${m.value} [${m.source}]`}</p>)}
+        </>
+      }
+    >
       {props.multiLine ? (
         <textarea
-          onChange={(e) => setInput(e.target.value)}
-          onBlur={saveQuality}
-          value={input}
+          value={props.qualityData.calculatedText}
           readOnly={props.readOnly}
         />
       ) : (
-        <TextField 
-          helperText={props.qualityData.name} 
-          variant="filled" 
-          value={input} 
-          onChange={(e) => setInput(e.target.value)} 
-          disabled={props.readOnly} 
-          onBlur={saveQuality} 
-          sx={{input: {color: "white", '&:Mui-TextField': {brandBorderColor: "white"}}}}
-          slotProps={{formHelperText: { sx: {color: "white"}}}}
-          />
+        <TextField
+          contentEditable={false}
+          helperText={props.qualityData.name}
+          variant="filled"
+          value={displayText}
+          onChange={e => setDisplayText(e.target.value)}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          disabled={false}
+          sx={localStyle}
+          slotProps={{ formHelperText: { sx: defaultStyle } }}
+        />
       )}
-    </>
+    </HtmlTooltip>
   );
 };

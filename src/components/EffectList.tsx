@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Effect } from "../models/Effect";
 import { Box, Button, Checkbox, FormGroup, List, ListItemButton, ListItemText, MenuItem, TextField } from "@mui/material";
 import { EffectType } from "../models/EffectType";
+import { memCopy } from "../helpers/memCopy";
 
 const effectTypes = Object.values(EffectType)
 
@@ -29,11 +30,7 @@ export const EffectList = (props: IEffectListProps) => {
       return;
     }
 
-    originalEffect.name = activeEffect.name;
-    originalEffect.enabled = activeEffect.enabled;
-    originalEffect.exec = activeEffect.exec;
-    originalEffect.order = activeEffect.order;
-    originalEffect.type = activeEffect.type;
+    memCopy(originalEffect, activeEffect);
     
     props.applyEffects();
   };
@@ -41,6 +38,7 @@ export const EffectList = (props: IEffectListProps) => {
   return (
     <><Box sx={{ width: '100%', maxWidth: 360 }}>
       <List component="nav" aria-label="main mailbox folders" sx={{
+        minHeight: "30vh",
         maxHeight: "30vh",
         overflow: "auto"
       }}>

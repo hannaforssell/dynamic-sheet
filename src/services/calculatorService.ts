@@ -1,11 +1,12 @@
 import { AbilityData } from "../models/AbilityData";
 import { Parser } from "./parser";
 import { AbilityReference } from "../models/AbilityReference";
+import { AbilityDataMod } from "../models/AbilityDataMod";
 
 export class CalculatorService {
   constructor() {}
 
-  public Calculate = (
+  public calculate = (
     sheetData: Map<string, AbilityData>
   ): Map<string, AbilityData> => {
     const calculated: Map<string, AbilityData> = new Map();
@@ -22,8 +23,8 @@ export class CalculatorService {
       currentBatch.map((abilityData) => {
         let newAbility: AbilityData;
         try {
-          
-          let modifiedInput = abilityData.calculationData;
+          let modifiedInput = abilityData.abilityMods.reduce((acc, m) => m.enabled ? acc + m.toString() : acc, "");
+
           const references = this.getReferences(modifiedInput);
 
           if (references.some((r) => !calculated.has(r.refName))) {
@@ -31,6 +32,7 @@ export class CalculatorService {
           } else {
             modifiedInput = this.replaceReferences(
               modifiedInput,
+              abilityData.abilityMods,
               references,
               calculated
             );
@@ -110,6 +112,7 @@ export class CalculatorService {
 
   private replaceReferences = (
     calculatedData: string,
+    mods: AbilityDataMod[],
     references: AbilityReference[],
     calculated: Map<string, AbilityData>
   ) => {
@@ -119,7 +122,8 @@ export class CalculatorService {
         return;
       }
       const newValue =
-        referenceAbility.sum !== null ? referenceAbility.sum.toString() : "—";      
+        referenceAbility.sum !== null ? referenceAbility.sum.toString() : "—";
+
       calculatedData = calculatedData.replaceAll(
         new RegExp(`(\\d+)(?=\\#${ref.refName})`, "g"),
         newValue
@@ -128,6 +132,17 @@ export class CalculatorService {
         new RegExp(`(\\d+)(?=\\@${ref.refName})`, "g"),
         this.getAbilityMod(newValue)
       );
+
+      mods.forEach(m => {
+        m.value = m.value.replaceAll(
+          new RegExp(`(\\d+)(?=\\#${ref.refName})`, "g"),
+          newValue
+        );
+        m.value = m.value.replaceAll(
+          new RegExp(`(\\d+)(?=\\@${ref.refName})`, "g"),
+          this.getAbilityMod(newValue)
+        );
+      })
     });
     return calculatedData;
   };
@@ -148,3 +163,5 @@ export class CalculatorService {
     return input;
   };
 }
+
+

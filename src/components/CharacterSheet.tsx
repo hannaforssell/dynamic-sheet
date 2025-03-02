@@ -14,31 +14,54 @@ import { ItemData } from "../models/ItemData";
 import { EffectsFooter } from "./EffectsFooter";
 import { EffectService } from "../services/effectService";
 import { TabContext, TabPanel } from "@mui/lab";
-import { Tab, Tabs } from "@mui/material";
+import { Grid2, SxProps, Tab, Tabs, Theme } from "@mui/material";
+import { AbilityScores } from "./AbilityScores";
+import { TopInfo } from "./TopInfo";
+import { ExperienceInfo } from "./ExperienceInfo";
+import { QualityService } from "../services/qualityService";
+import { Portrait } from "./Portrait";
 
-const propertyGroupsBasic = [
-  "Basic Info",
-  "Ability Scores",
-  "Health",
-  "Defense",
-  "AC",
-  "Saves",
-  "Offense",
+const healthLayout: SxProps<Theme> = {
+  display: "flex",
+}
+
+
+const propertyGroups = [
+  // {name: "Basic Info", layout: basicInfoLayout},
+  // {name: "Ability Scores", layout: abilityScoresLayout},
+  {name: "Health", layout: healthLayout},
+  {name: "Defense", layout: {}},
+  {name: "AC", layout: {}},
+  {name: "Saves", layout: {}},
+  {name: "Offense", layout: {}},
 ];
 
+const calculatorService = new CalculatorService();
+const qualityService = new QualityService();
+const effectService = new EffectService();
+
+const applyEffects2 = (sheetData: ISheetData): ISheetData => {
+  console.log("Applying effects.")
+  const appliedSheetData = effectService.Apply(
+    sheetData
+  );
+
+  const calculatedAbilityData = calculatorService.calculate(appliedSheetData.abilityData);
+  const calculatedQualityData = qualityService.calculate(appliedSheetData.qualityData);
+
+  return {
+    ...appliedSheetData,
+    abilityData: calculatedAbilityData,
+    qualityData: calculatedQualityData
+  };
+}
+
 export const CharacterSheet = () => {
-  const [sheetData, setSheetData] = useState<ISheetData>(defaultSheetPF);
+  const [sheetData, setSheetData] = useState<ISheetData>(applyEffects2(defaultSheetPF));
   const [search, setSearch] = useState<string>("");
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [editView, setEditView] = useState<boolean>(false);
   const [isAddNewModalOpen, setIsAddNewModalOpen] = useState<boolean>(false);
-
-  const calculatorService = new CalculatorService();
-  const effectService = new EffectService();
-
-  useEffect(() => {
-    applyEffects();
-  }, []);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
@@ -69,7 +92,7 @@ export const CharacterSheet = () => {
     } else if (property instanceof QualityData) {
       sheetData.qualityData.set(
         property.name,
-        new QualityData(property.name, property.group, property.input)
+        new QualityData(property.name, property.group, property.originalText)
       );
     } else if (property instanceof ItemData) {
       sheetData.itemData.set(
@@ -117,21 +140,10 @@ export const CharacterSheet = () => {
   };
 
   const applyEffects = () => {
-    console.log("Applying effects.")
-    const appliedSheetData = effectService.Apply(
-      sheetData
-    );
-
-    const calculatedAbilityData = calculatorService.Calculate(
-      appliedSheetData.abilityData
-    );
-    setSheetData({
-      ...appliedSheetData,
-      abilityData: calculatedAbilityData,
-    });
+    setSheetData(applyEffects2(sheetData));
   };
 
-
+  
   return (
     <>
       <HeaderMenu
@@ -169,21 +181,35 @@ export const CharacterSheet = () => {
             placeholder="Search..."
             onChange={handleSearch}
             style={{
-              position: "absolute",
-              right: "100px",
-              top: "15px",
-            }}
-          />
+            position: "absolute",
+            right: "100px",
+            top: "15px",
+          }}
+        />
         <TabPanel value={0}>
-          {propertyGroupsBasic.map((group) => (
+          <TopInfo sheetData={sheetData} />
+          <Grid2 container sx={{placeItems: "center", alignSelf: "center"}}>
+            <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
+              <AbilityScores sheetData={sheetData} />
+            </Grid2>
+            <Grid2 size={5} sx={{ display: "flex", justifyContent: "center" }}>
+              <Portrait imageLink={sheetData.imageLink} />
+            </Grid2>
+            <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
+              <ExperienceInfo sheetData={sheetData} />
+            </Grid2>
+          </Grid2>
+
+          {propertyGroups.map((group) => (
             <PropertyGroup
-              key={group}
-              group={group}
+              key={group.name}
+              group={group.name}
               sheetData={sheetData}
               changeProperty={changeProperty}
               calculate={applyEffects}
               editView={editView}
               removeProperty={removeProperty}
+              layout={group.layout}
             />
           ))}
         </TabPanel>
@@ -195,6 +221,7 @@ export const CharacterSheet = () => {
             calculate={applyEffects}
             editView={editView}
             removeProperty={removeProperty}
+            layout={{}}
           />
           <label
             style={{

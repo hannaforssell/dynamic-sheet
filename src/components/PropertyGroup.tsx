@@ -2,9 +2,10 @@ import { AbilityData } from "../models/AbilityData";
 import { QualityData } from "../models/QualityData";
 import { Ability } from "./Ability";
 import { Quality } from "./Quality";
-import { Table } from "./Table";
+import { TableDisplay } from "./TableDisplay";
 import { ISheetData } from "../models/ISheetData";
 import { TableData } from "../models/TableData";
+import { Box, SxProps, Theme } from "@mui/material";
 
 interface IPropertyGroupProps {
   group: string;
@@ -13,6 +14,7 @@ interface IPropertyGroupProps {
   calculate: () => void;
   editView: boolean;
   removeProperty: (property: AbilityData | QualityData) => void;
+  layout: SxProps<Theme>
 }
 
 export const PropertyGroup = (props: IPropertyGroupProps) => {
@@ -35,24 +37,20 @@ export const PropertyGroup = (props: IPropertyGroupProps) => {
     if (q.group === props.group) {
       tables.push(q);
     }
-  });
+  });  
 
   return (
-    <>
-      <h2 style={{ margin: "0", paddingBottom: "10px" }}>{props.group}</h2>
+    <Box sx={props.layout}>
+      {/* <h2 style={{ margin: "0", paddingBottom: "10px" }}>{props.group}</h2> */}
       {abilities.sort((a, b) => a.sortOrder === b.sortOrder ? a.name.localeCompare(b.name) : a.sortOrder - b.sortOrder).map((ability) => (
-        <div
+        <Box
           key={ability.name}
           style={{
             // display: "flex",
             // paddingRight: `${props.editView ? "0" : "16px"}`,
           }}
         >
-          <Ability
-            abilityData={ability}
-            onChangeAbility={props.changeProperty}
-            calculate={props.calculate}
-          />
+          <Ability abilityData={ability} />
           {props.editView && (
             <button
               onClick={() => props.removeProperty(ability)}
@@ -61,10 +59,10 @@ export const PropertyGroup = (props: IPropertyGroupProps) => {
               x
             </button>
           )}
-        </div>
+        </Box>
       ))}
       {qualities.map((quality) => (
-        <div
+        <Box
           key={quality.name}
           style={{
             display: "flex",
@@ -74,7 +72,6 @@ export const PropertyGroup = (props: IPropertyGroupProps) => {
           <Quality
             key={quality.name}
             qualityData={quality}
-            onChangeQuality={props.changeProperty}
           />
           {props.editView && (
             <button
@@ -84,15 +81,14 @@ export const PropertyGroup = (props: IPropertyGroupProps) => {
               x
             </button>
           )}
-        </div>
+        </Box>
       ))}
       {tables.map((table, i) => (
-          <Table
-            headers={table.headers}
-            data={table.data}
+          <TableDisplay
+            tableData={table}
             key={i}
           />
       ))}
-    </>
+    </Box>
   );
 };

@@ -1,0 +1,33 @@
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { TableData } from "../models/TableData";
+import { defaultStyle } from "../helpers/stylingHelper";
+
+interface ITableDisplayProps {
+  tableData: TableData;
+}
+
+export const TableDisplay = (props: ITableDisplayProps) => {
+  return (
+    <TableContainer>
+      <Table sx={{":root": { color: "red"}}} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            {props.tableData.headers.map((header, i) => <TableCell key={i} sx={defaultStyle}>{header}</TableCell>)}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {props.tableData.data.map((row, i) => (
+            <TableRow
+              key={i}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              {row.map((cell, i) => <TableCell key={i} component="th" scope="row" sx={defaultStyle}>
+                {cell}
+              </TableCell>)}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
