@@ -1,12 +1,22 @@
 import { AbilityData } from "../models/AbilityData";
-import { Button, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
+import { Box, Button, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import React from "react";
 import { defaultStyle } from "../helpers/stylingHelper";
 
 interface IAbilityProps {
   abilityData: AbilityData;
+  showMod?: boolean;
 }
+
+const getAbilityMod = (score: number | null) => {
+  if (score === null) {
+    return "0";
+  }
+  const value = Math.floor(score / 2 - 5);
+
+  return value < 0 ? value : "+" + value;
+};
 
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -21,11 +31,11 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 }));
 
 export const Ability = (props: IAbilityProps) => {
-  const sumValue = props.abilityData.sum === null ? "—" : Math.floor(props.abilityData.sum);
+  const sumValue = props.abilityData.calculatedSum === null ? "—" : Math.floor(props.abilityData.calculatedSum);
 
   return (
-    <>
-      <span>{props.abilityData.name}: </span>
+    <Box sx={{display: "flex", justifyContent: "space-between"}}>
+      <Typography sx={defaultStyle}>{props.abilityData.displayName}: </Typography>
       <HtmlTooltip
         title={
           <React.Fragment>
@@ -34,8 +44,8 @@ export const Ability = (props: IAbilityProps) => {
           </React.Fragment>
         }
       >
-        <Button sx={defaultStyle}>{sumValue}</Button>
+        <Button sx={{...defaultStyle, padding: 0, paddingTop: "1px"}}>{props.showMod ? `${sumValue} ${getAbilityMod(props.abilityData.calculatedSum)}` : sumValue}</Button>
       </HtmlTooltip>
-    </>
+    </Box>
   );
 };

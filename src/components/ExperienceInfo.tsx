@@ -1,18 +1,17 @@
 import { Box } from "@mui/material";
-import { ISheetData } from "../models/ISheetData";
 import { Quality } from "./Quality";
-import { groupData } from "../helpers/dataGrouper";
 import { Ability } from "./Ability";
 import { TableDisplay } from "./TableDisplay";
-
-const groupName = "Experience";
+import { AbilityData } from "../models/AbilityData";
+import { QualityData } from "../models/QualityData";
+import { TableData } from "../models/TableData";
 
 interface IExperienceInfo {
-  sheetData: ISheetData;
+  data: [AbilityData[], QualityData[], TableData[]]
 }
 
 export const ExperienceInfo = (props: IExperienceInfo) => {
-  const [abilities, qualities, tables] = groupData(props.sheetData, groupName)
+  const [abilities, qualities, tables] = props.data;
 
   return (
     <Box sx={{ textAlign: "center", display: "flex", flexDirection: "column", gap: 2 }}>

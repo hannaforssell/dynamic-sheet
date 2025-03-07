@@ -6,8 +6,6 @@ import { QualityService } from "../services/qualityService";
 
 interface IQualityProps {
   qualityData: QualityData;
-  multiLine?: boolean;
-  readOnly?: boolean;
 }
 
 const qualityService = new QualityService();
@@ -27,7 +25,8 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 const localStyle = {
   ...defaultStyle, 
   width: 300, 
-  input: { color: "rgba(255, 255, 255, 0.87)", '&:Mui-TextField': { brandBorderColor: "rgba(255, 255, 255, 0.87)" } } 
+  input: { color: "rgba(255, 255, 255, 0.87)", '&:Mui-TextField': { brandBorderColor: "rgba(255, 255, 255, 0.87)" } } ,
+  fontSize: "14px"
 };
 
 export const Quality = (props: IQualityProps) => {
@@ -48,18 +47,12 @@ export const Quality = (props: IQualityProps) => {
       title={
         <>
           <Typography color="inherit"> {props.qualityData.name}</Typography>
-          {props.qualityData.originalText != "" ? <p style={props.qualityData.qualityMods.length == 0 ? {} : { textDecoration: "line-through" }}>{`${props.qualityData.originalText} [Default]`}</p> : <></>}
+          {props.qualityData.originalText != "" ? <p style={props.qualityData.qualityMods.length == 0 ? {} : { textDecoration: "line-through" }}>{props.qualityData.originalText}</p> : <></>}
           {props.qualityData.qualityMods.map((m, i) => <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>{`${m.value} [${m.source}]`}</p>)}
         </>
       }
     >
-      {props.multiLine ? (
-        <textarea
-          value={props.qualityData.calculatedText}
-          readOnly={props.readOnly}
-        />
-      ) : (
-        <TextField
+      <TextField
           contentEditable={false}
           helperText={props.qualityData.name}
           variant="filled"
@@ -69,9 +62,9 @@ export const Quality = (props: IQualityProps) => {
           onBlur={onBlur}
           disabled={false}
           sx={localStyle}
-          slotProps={{ formHelperText: { sx: defaultStyle } }}
+          multiline={props.qualityData.calculatedText.includes("\n")}
+          slotProps={{ formHelperText: { sx: defaultStyle }, htmlInput: { sx: localStyle } }}
         />
-      )}
     </HtmlTooltip>
   );
 };

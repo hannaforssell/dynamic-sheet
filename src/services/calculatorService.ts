@@ -58,7 +58,7 @@ export class CalculatorService {
             //   abilityData.abilityMods
             // );
 
-            newAbility = {...abilityData, sum: result, calculationData: displayInput} 
+            newAbility = {...abilityData, calculatedSum: result, calculatedText: displayInput} 
 
             calculated.set(newAbility.name, newAbility);
           }
@@ -67,10 +67,7 @@ export class CalculatorService {
 
           newAbility = new AbilityData(
             abilityData.name,
-            abilityData.group,
-            0,
-            abilityData.calculationData,
-            abilityData.sortOrder
+            abilityData.group
           );
           calculated.set(newAbility.name, newAbility);
         }
@@ -122,7 +119,7 @@ export class CalculatorService {
         return;
       }
       const newValue =
-        referenceAbility.sum !== null ? referenceAbility.sum.toString() : "—";
+        referenceAbility.calculatedSum !== null ? referenceAbility.calculatedSum.toString() : "—";
 
       calculatedData = calculatedData.replaceAll(
         new RegExp(`(\\d+)(?=\\#${ref.refName})`, "g"),

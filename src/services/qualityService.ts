@@ -19,7 +19,11 @@ export class QualityService {
     quality.calculatedText = quality.originalText;
 
     quality.qualityMods.forEach((mod => {
-      quality.calculatedText = mod.value;
+      if(mod.operator == "SET") {
+        quality.calculatedText = mod.value;
+      } else if(mod.operator == "ADD") {
+        quality.calculatedText += (quality.calculatedText === "" ? "" : "\n") + mod.value;
+      }
     }))
   };
 }

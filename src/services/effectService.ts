@@ -73,13 +73,27 @@ export function SetQuality(qualityName: string, value: string) {
   quality.qualityMods.push(new QualityDataMod(currEffect.name, "SET", value));
 }
 
+export function AddQualityLine(qualityName: string, value: string) {
+  if(!currSheet || !currEffect) {
+    console.log("Error adding ability mod.")
+    return;
+  }
+
+  const quality = currSheet.qualityData.get(qualityName);
+  if(!quality) {
+    return;
+  }
+
+  quality.qualityMods.push(new QualityDataMod(currEffect.name, "ADD", value));
+}
+
 export class EffectService {
   constructor() {}
 
   public Apply = (
     characterSheet: ISheetData
   ) => {
-    characterSheet.abilityData.forEach(a => { a.calculationData = ""; a.abilityMods = [] });
+    characterSheet.abilityData.forEach(a => { a.calculatedText = ""; a.abilityMods = [] });
     characterSheet.qualityData.forEach(a => { a.calculatedText = ""; a.qualityMods = [] });
 
     const orderedEffects = characterSheet.effects

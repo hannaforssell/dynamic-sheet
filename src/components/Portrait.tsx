@@ -12,8 +12,9 @@ export const Portrait = (props: IPortrait) => {
       style={{
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        maxWidth: "60%",
-        padding: "20%"
+        maxWidth: "50%",
+        maxHeight: "30%",
+        paddingTop: "30px"
       }}
     >
         <div className="mid-border">

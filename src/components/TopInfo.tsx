@@ -1,19 +1,18 @@
 import { Box } from "@mui/material";
-import { ISheetData } from "../models/ISheetData";
 import { Quality } from "./Quality";
-import { groupData } from "../helpers/dataGrouper";
 import { Ability } from "./Ability";
 import { TableDisplay } from "./TableDisplay";
 import React from "react";
-
-const groupName = "Top Info";
+import { AbilityData } from "../models/AbilityData";
+import { QualityData } from "../models/QualityData";
+import { TableData } from "../models/TableData";
 
 interface IBasicInfo {
-  sheetData: ISheetData;
+  data: [AbilityData[], QualityData[], TableData[]]
 }
 
 export const TopInfo = (props: IBasicInfo) => {
-  const [abilities, qualities, tables] = groupData(props.sheetData, groupName)
+  const [abilities, qualities, tables] = props.data;
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>

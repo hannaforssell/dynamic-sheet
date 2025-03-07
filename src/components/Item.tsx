@@ -36,7 +36,7 @@ export const Item = (props: IItemProps) => {
         <label className="itemLabels">
           <span>Value: </span>
           <input
-            value={item.value.sum?.toString()}
+            value={item.value.calculatedSum?.toString()}
             onChange={(e) => {
               setItem((prevState) => ({
                 ...prevState,
@@ -44,7 +44,7 @@ export const Item = (props: IItemProps) => {
                   item.value.name,
                   item.value.group,
                   Number(e.target.value),
-                  item.value.calculationData
+                  item.value.calculatedText
                 ),
               }));
             }}

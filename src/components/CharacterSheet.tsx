@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AbilityData } from "../models/AbilityData";
 import { QualityData } from "../models/QualityData";
 import { ISheetData } from "../models/ISheetData";
@@ -14,12 +14,16 @@ import { ItemData } from "../models/ItemData";
 import { EffectsFooter } from "./EffectsFooter";
 import { EffectService } from "../services/effectService";
 import { TabContext, TabPanel } from "@mui/lab";
-import { Grid2, SxProps, Tab, Tabs, Theme } from "@mui/material";
+import { Box, Grid2, SxProps, Tab, Tabs, Theme } from "@mui/material";
 import { AbilityScores } from "./AbilityScores";
 import { TopInfo } from "./TopInfo";
 import { ExperienceInfo } from "./ExperienceInfo";
 import { QualityService } from "../services/qualityService";
 import { Portrait } from "./Portrait";
+import { defaultStyle } from "../helpers/stylingHelper";
+import { groupData } from "../helpers/dataGrouper";
+import { Hitpoints } from "./Hitpoints";
+import { Defenses } from "./Defenses";
 
 const healthLayout: SxProps<Theme> = {
   display: "flex",
@@ -84,8 +88,6 @@ export const CharacterSheet = () => {
         new AbilityData(
           property.name,
           property.group,
-          property.sum,
-          property.calculationData,
           property.sortOrder
         )
       );
@@ -99,7 +101,7 @@ export const CharacterSheet = () => {
         property.name,
         new ItemData(
           property.name,
-          new AbilityData(property.name, "Items", 0, ""),
+          new AbilityData(property.name, "Items", 0),
           property.location,
           property.weight
         )
@@ -125,7 +127,7 @@ export const CharacterSheet = () => {
 
   const addProperty = (name: string, group: string, type: PropertyType) => {
     if (type === PropertyType.Ability) {
-      sheetData.abilityData.set(name, new AbilityData(name, group, 0, ""));
+      sheetData.abilityData.set(name, new AbilityData(name, group, 0));
       setSheetData({
         ...sheetData,
         abilityData: sheetData.abilityData,
@@ -163,13 +165,15 @@ export const CharacterSheet = () => {
       />
       <TabContext value={tabIndex}>
         <Tabs value={tabIndex} onChange={handleTabChange}>
-          <Tab label={"Basic"} value={0} />
-          <Tab label={"Skills"} value={1} />
-          <Tab label={"Items"} value={2} />
+          <Tab label={"Basic"} value={0} sx={defaultStyle}/>
+          <Tab label={"Offense"} value={1} sx={defaultStyle}/>
+          <Tab label={"Defense"} value={2} sx={defaultStyle}/>
+          <Tab label={"Skills"} value={3} sx={defaultStyle}/>
+          <Tab label={"Items"} value={4} sx={defaultStyle}/>
           {search && (
            <Tab
               label={`Search result: ${search}`}
-              value={3}
+              value={5}
               autoFocus={false}
               onFocus={() => document.getElementById("searchBar")?.focus()}
             />
@@ -187,16 +191,16 @@ export const CharacterSheet = () => {
           }}
         />
         <TabPanel value={0}>
-          <TopInfo sheetData={sheetData} />
+          <TopInfo data={groupData(sheetData, "Top Info")} />
           <Grid2 container sx={{placeItems: "center", alignSelf: "center"}}>
             <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
-              <AbilityScores sheetData={sheetData} />
+              <AbilityScores data={groupData(sheetData, "Ability Scores")} />
             </Grid2>
             <Grid2 size={5} sx={{ display: "flex", justifyContent: "center" }}>
               <Portrait imageLink={sheetData.imageLink} />
             </Grid2>
             <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
-              <ExperienceInfo sheetData={sheetData} />
+              <ExperienceInfo data={groupData(sheetData, "Experience")} />
             </Grid2>
           </Grid2>
 
@@ -214,6 +218,14 @@ export const CharacterSheet = () => {
           ))}
         </TabPanel>
         <TabPanel value={1}>
+        </TabPanel>
+        <TabPanel value={2}>
+          <Box sx={{display: "flex"}}>
+            <Hitpoints data={groupData(sheetData, "Hit Points")}></Hitpoints>
+            <Defenses data={groupData(sheetData, "Defense")}></Defenses>
+          </Box>
+        </TabPanel>
+        <TabPanel value={3}>
           <PropertyGroup
             group="Skills"
             sheetData={sheetData}
@@ -235,13 +247,13 @@ export const CharacterSheet = () => {
           </label>
 
         </TabPanel>
-        <TabPanel value={2}>
+        <TabPanel value={4}>
           {sheetData.itemData && [...sheetData.itemData].map(([key, value]) => (
             <Item key={key} item={value} editView={editView} changeItem={changeProperty} />
           ))}
         </TabPanel>
         {search && (
-          <TabPanel value={3}>
+          <TabPanel value={5}>
             <SearchResult
               search={search}
               sheetData={sheetData}
