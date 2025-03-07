@@ -1,25 +1,32 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "";
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+import * as mongoDB from "mongodb";
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
+export const collections: { characterSheets?: mongoDB.Collection } = {}
+
+export async function connectToDatabase() {
+    console.log("start")
+
+    const connString = import.meta.env.VITE_REACT_APP_DB_CONN_STRING;
+    const dbName = import.meta.env.VITE_REACT_APP_DB_NAME;
+    const characterSheetCollectionName = import.meta.env.VITE_REACT_APP_CHARACTERSHEETS_COLLECTION_NAME;
+
+    if (!connString || !characterSheetCollectionName || !dbName) {
+        console.log("connString", connString)
+        console.log("characterSheetCollectionName", characterSheetCollectionName)
+        console.log("dbName", dbName)
+        throw new Error("Unable to read .env file.")
+    }
+
+    console.log("test1")
+    const client: mongoDB.MongoClient = new mongoDB.MongoClient(connString);
+
+    // console.log("test2")
+    // await client.connect();
+
+    // const db: mongoDB.Db = client.db(dbName);
+
+    // const characterSheetCollection: mongoDB.Collection = db.collection(characterSheetCollectionName);
+
+    // collections.characterSheets = characterSheetCollection;
+
+    // console.log(`Successfully connected to database: ${db.databaseName} and collection: ${characterSheetCollection.collectionName}`);
 }
-
-run().catch(console.dir);
