@@ -1,4 +1,4 @@
-import { QualityData } from "../models/QualityData";
+import { QualityData } from "../models/characterSheet/QualityData";
 
 export class QualityService {
   constructor() {}

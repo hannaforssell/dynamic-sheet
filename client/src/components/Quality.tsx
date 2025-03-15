@@ -1,4 +1,4 @@
-import { QualityData } from "../models/QualityData";
+import { QualityData } from "../models/characterSheet/QualityData";
 import { styled, TextField, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
 import { useState } from "react";
 import { defaultStyle } from "../helpers/stylingHelper";

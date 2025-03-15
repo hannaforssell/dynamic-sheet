@@ -1,4 +1,4 @@
-import { Token } from "../models/Token";
+import { Token } from "../models/calculator/Token";
 
 export class Tokenizer {
   private index: number = 0;

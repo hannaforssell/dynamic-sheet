@@ -1,4 +1,4 @@
-import { AbilityData } from "../models/AbilityData";
+import { AbilityData } from "../models/characterSheet/AbilityData";
 import { Box, Button, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import React from "react";

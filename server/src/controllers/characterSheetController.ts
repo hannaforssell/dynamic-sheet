@@ -6,21 +6,25 @@ export async function create(req: Request, res: Response, next: NextFunction) {
         const ret = await mongoService.upsertCharacterSheet(req.body)
 		res.status(ret.status);
 		res.json(ret.body);
-
 	} catch (err) {
 		console.error(`Error`, err.message);
 		next(err);
-	}
+    }
 }
 
 export async function get(req: Request, res: Response, next: NextFunction) {
-	try {
+    try {
         const ret = await mongoService.getCharacterSheet(req.params["id"]);
-		res.status(200);
-		res.json(ret);
+        if (!ret) {
+            res.status(404);
+            res.json();
+            return;
+        }
 
-	} catch (err) {
-		console.error(`Error`, err.message);
-		next(err);
-	}
+        res.status(200);
+        res.json(ret);
+    } catch (err) {
+        console.error(`Error`, err.message);
+        next(err);
+    }
 }

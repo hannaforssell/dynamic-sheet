@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
-import { Schema, model, connect } from "mongoose";
-import { CharacterSheet, characterSheetSchema } from "../models/ISheetData";
+import { Schema, connect } from "mongoose";
+import { CharacterSheet } from "../models/CharacterSheet";
 
 
 export async function run() {
@@ -19,17 +19,18 @@ export async function run() {
 }
 
 export async function getCharacterSheet(id: string) {
-    return CharacterSheet.findById(id);
+    const ret = CharacterSheet.findById(id);
+    return ret;
 }
 
 export async function upsertCharacterSheet(body: string) {
     const cs = new CharacterSheet(body);
 
     if(cs._id) {
-        await CharacterSheet.findOneAndUpdate({"_id": cs.id}, cs, {upsert: true});
-        return {body: {"_id": cs._id}, status: 200}
+        await CharacterSheet.findOneAndUpdate({ "_id": cs.id }, cs, { upsert: true });
+        return { body: {"_id": cs._id}, status: 200 }
     }
 
     const ret = await cs.save();
-    return {body: {"_id": ret._id}, status: 201}
+    return { body: {"_id": ret._id}, status: 201 }
 }

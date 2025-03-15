@@ -1,9 +1,9 @@
-import { AbilityData } from "../models/AbilityData";
-import { ISheetData } from "../models/ISheetData";
-import { QualityData } from "../models/QualityData";
-import { TableData } from "../models/TableData";
+import { AbilityData } from "../models/characterSheet/AbilityData";
+import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
+import { QualityData } from "../models/characterSheet/QualityData";
+import { TableData } from "../models/characterSheet/TableData";
 
-export const groupData = (sheetData: ISheetData, groupName: string): [AbilityData[], QualityData[], TableData[]] => {
+export const groupData = (sheetData: ICharacterSheet, groupName: string): [AbilityData[], QualityData[], TableData[]] => {
   const abilities: AbilityData[] = [];
   sheetData.abilityData.forEach((a) => {
     if (a.group === groupName) {

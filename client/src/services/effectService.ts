@@ -1,10 +1,10 @@
-import { AbilityDataMod } from "../models/AbilityDataMod";
-import { Effect } from "../models/Effect";
-import { ISheetData } from "../models/ISheetData";
-import { QualityDataMod } from "../models/QualityDataMod";
+import { AbilityDataMod } from "../models/characterSheet/AbilityDataMod";
+import { Effect } from "../models/characterSheet/Effect";
+import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
+import { QualityDataMod } from "../models/characterSheet/QualityDataMod";
 
 let currEffect: Effect | null = null;
-let currSheet: ISheetData | null = null;
+let currSheet: ICharacterSheet | null = null;
 
 export function AddAbilityMod(attributeName: string, value: string, type: string) {
   if(!currSheet || !currEffect) {
@@ -91,7 +91,7 @@ export class EffectService {
   constructor() {}
 
   public Apply = (
-    characterSheet: ISheetData
+    characterSheet: ICharacterSheet
   ) => {
     characterSheet.abilityData.forEach(a => { a.calculatedText = ""; a.abilityMods = [] });
     characterSheet.qualityData.forEach(a => { a.calculatedText = ""; a.qualityMods = [] });

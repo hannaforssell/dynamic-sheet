@@ -1,4 +1,4 @@
-import { Token } from "../models/Token";
+import { Token } from "../models/calculator/Token";
 import { Tokenizer } from "../services/tokenizer";
 
 test("can tokenize simple number", () => {

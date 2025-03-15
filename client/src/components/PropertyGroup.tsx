@@ -1,15 +1,15 @@
-import { AbilityData } from "../models/AbilityData";
-import { QualityData } from "../models/QualityData";
+import { AbilityData } from "../models/characterSheet/AbilityData";
+import { QualityData } from "../models/characterSheet/QualityData";
 import { Ability } from "./Ability";
 import { Quality } from "./Quality";
 import { TableDisplay } from "./TableDisplay";
-import { ISheetData } from "../models/ISheetData";
-import { TableData } from "../models/TableData";
+import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
+import { TableData } from "../models/characterSheet/TableData";
 import { Box, SxProps, Theme } from "@mui/material";
 
 interface IPropertyGroupProps {
   group: string;
-  sheetData: ISheetData
+  sheetData: ICharacterSheet
   changeProperty: (property: AbilityData | QualityData) => void;
   calculate: () => void;
   editView: boolean;

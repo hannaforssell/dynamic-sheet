@@ -1,13 +1,13 @@
-import { AbilityData } from "../models/AbilityData";
-import { ISheetData } from "../models/ISheetData";
-import { QualityData } from "../models/QualityData";
+import { AbilityData } from "../models/characterSheet/AbilityData";
+import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
+import { QualityData } from "../models/characterSheet/QualityData";
 import { Section } from "../styles/styled-components/Section";
 import { Ability } from "./Ability";
 import { Quality } from "./Quality";
 
 interface ISearchResultProps {
   search: string;
-  sheetData: ISheetData;
+  sheetData: ICharacterSheet;
   changeProperty: (property: AbilityData | QualityData) => void;
   calculate: () => void;
 }
@@ -20,7 +20,7 @@ export const SearchResult = (props: ISearchResultProps) => {
   const regexp = new RegExp(`(${props.search})`, "gi");
 
   const searchResultAbilities = [...props.sheetData.abilityData].filter(
-    ([_, v]) => v.name.match(regexp) || v.calculationData.match(regexp)
+    ([_, v]) => v.name.match(regexp) || v.calculatedText.match(regexp)
   );
 
   const searchResultQualities = [...props.sheetData.qualityData].filter(

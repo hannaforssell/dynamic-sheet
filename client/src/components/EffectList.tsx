@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Effect } from "../models/Effect";
+import { Effect } from "../models/characterSheet/Effect";
 import { Box, Button, Checkbox, FormGroup, List, ListItemButton, ListItemText, MenuItem, TextField } from "@mui/material";
-import { EffectType } from "../models/EffectType";
+import { EffectType } from "../models/characterSheet/EffectType";
 import { memCopy } from "../helpers/memCopy";
 
 const effectTypes = Object.values(EffectType)

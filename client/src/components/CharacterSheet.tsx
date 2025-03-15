@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { AbilityData } from "../models/AbilityData";
-import { QualityData } from "../models/QualityData";
-import { ISheetData } from "../models/ISheetData";
+import { AbilityData } from "../models/characterSheet/AbilityData";
+import { QualityData } from "../models/characterSheet/QualityData";
+import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { HeaderMenu } from "./Menu";
 import { PropertyGroup } from "./PropertyGroup";
 import { defaultSheetPF } from "../helpers/sheetHelper";
@@ -10,7 +10,7 @@ import { SearchResult } from "./SearchResult";
 import { AddNew } from "./AddNew";
 import { PropertyType } from "../models/PropertyType";
 import { Item } from "./Item";
-import { ItemData } from "../models/ItemData";
+import { ItemData } from "../models/characterSheet/ItemData";
 import { EffectsFooter } from "./EffectsFooter";
 import { EffectService } from "../services/effectService";
 import { TabContext, TabPanel } from "@mui/lab";
@@ -44,7 +44,7 @@ const calculatorService = new CalculatorService();
 const qualityService = new QualityService();
 const effectService = new EffectService();
 
-const applyEffects2 = (sheetData: ISheetData): ISheetData => {
+const applyEffects2 = (sheetData: ICharacterSheet): ICharacterSheet => {
   console.log("Applying effects.")
   const appliedSheetData = effectService.Apply(
     sheetData
@@ -61,7 +61,7 @@ const applyEffects2 = (sheetData: ISheetData): ISheetData => {
 }
 
 export const CharacterSheet = () => {
-  const [sheetData, setSheetData] = useState<ISheetData>(applyEffects2(defaultSheetPF));
+  const [sheetData, setSheetData] = useState<ICharacterSheet>(applyEffects2(defaultSheetPF));
   const [search, setSearch] = useState<string>("");
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [editView, setEditView] = useState<boolean>(false);

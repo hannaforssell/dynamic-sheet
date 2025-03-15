@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { TableData } from "../models/TableData";
+import { TableData } from "../models/characterSheet/TableData";
 import { defaultStyle } from "../helpers/stylingHelper";
 
 interface ITableDisplayProps {

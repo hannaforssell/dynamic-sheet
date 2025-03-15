@@ -1,8 +1,8 @@
-import { Node } from "../models/Node";
-import { NodeBinary } from "../models/NodeBinary";
-import { NodeNumber } from "../models/NodeNumber";
-import { NodeUnary } from "../models/NodeUnary";
-import { Token } from "../models/Token";
+import { Node } from "../models/calculator/Node";
+import { NodeBinary } from "../models/calculator/NodeBinary";
+import { NodeNumber } from "../models/calculator/NodeNumber";
+import { NodeUnary } from "../models/calculator/NodeUnary";
+import { Token } from "../models/calculator/Token";
 import { Tokenizer } from "./tokenizer";
 
 export class Parser {

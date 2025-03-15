@@ -1,12 +1,12 @@
-import { AbilityData } from "../models/AbilityData";
-import { Effect } from "../models/Effect";
-import { EffectType } from "../models/EffectType";
-import { ISheetData } from "../models/ISheetData";
-import { ItemData } from "../models/ItemData";
-import { QualityData } from "../models/QualityData";
-import { TableData } from "../models/TableData";
+import { AbilityData } from "../models/characterSheet/AbilityData";
+import { Effect } from "../models/characterSheet/Effect";
+import { EffectType } from "../models/characterSheet/EffectType";
+import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
+import { ItemData } from "../models/characterSheet/ItemData";
+import { QualityData } from "../models/characterSheet/QualityData";
+import { TableData } from "../models/characterSheet/TableData";
 
-export const defaultSheetPF: ISheetData = {
+export const defaultSheetPF: ICharacterSheet = {
   qualityData: new Map([
     ["Name", new QualityData("Name", "Top Info", "Ario 'Lightbringer' Takashi", 0)],
     ["Race", new QualityData("Race", "Top Info", "", 1)],

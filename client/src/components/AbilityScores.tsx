@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 import { Ability } from "./Ability";
-import { AbilityData } from "../models/AbilityData";
-import { QualityData } from "../models/QualityData";
-import { TableData } from "../models/TableData";
+import { AbilityData } from "../models/characterSheet/AbilityData";
+import { QualityData } from "../models/characterSheet/QualityData";
+import { TableData } from "../models/characterSheet/TableData";
 
 interface IAbilityScores {
   data: [AbilityData[], QualityData[], TableData[]]

@@ -1,7 +1,7 @@
-import { AbilityData } from "../models/AbilityData";
+import { AbilityData } from "../models/characterSheet/AbilityData";
 import { Parser } from "./parser";
-import { AbilityReference } from "../models/AbilityReference";
-import { AbilityDataMod } from "../models/AbilityDataMod";
+import { AbilityReference } from "../models/calculator/AbilityReference";
+import { AbilityDataMod } from "../models/characterSheet/AbilityDataMod";
 
 export class CalculatorService {
   constructor() {}
@@ -48,15 +48,6 @@ export class CalculatorService {
               const node = parser.ParseExpression();
               result = node.Eval();
             }
-
-            // newAbility = new AbilityData(
-            //   abilityData.name,
-            //   abilityData.group,
-            //   result,
-            //   displayInput,
-            //   abilityData.sortOrder,
-            //   abilityData.abilityMods
-            // );
 
             newAbility = {...abilityData, calculatedSum: result, calculatedText: displayInput} 
 

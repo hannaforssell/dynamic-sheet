@@ -1,10 +1,13 @@
+import { model, Schema } from "mongoose";
+
 import { AbilityData } from "./AbilityData";
 import { Effect } from "./Effect";
 import { ItemData } from "./ItemData";
 import { QualityData } from "./QualityData";
 import { TableData } from "./TableData";
 
-export interface ISheetData {
+export interface ICharacterSheet {
+  _id: string;
   qualityData: Map<string, QualityData>;
   abilityData: Map<string, AbilityData>;
   classSkills: Set<string>;
@@ -14,3 +17,8 @@ export interface ISheetData {
   imageLink: string;
 }
 
+export const characterSheetSchema = new Schema<ICharacterSheet>({
+  imageLink: { type: String, required: true }
+}, { collection: "characterSheet" });
+
+export const CharacterSheet = model<ICharacterSheet>('CharacterSheet', characterSheetSchema);

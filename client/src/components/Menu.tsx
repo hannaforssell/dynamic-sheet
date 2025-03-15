@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { replacer, reviver } from "../helpers/JSONHelper";
-import { ISheetData } from "../models/ISheetData";
+import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { MenuModal } from "../styles/styled-components/MenuModal";
 import { MenuButton } from "../styles/styled-components/MenuButton";
 
 interface IHeaderMenuProps {
-  sheetData: ISheetData;
-  setSheetData: (sheetData: ISheetData) => void;
+  sheetData: ICharacterSheet;
+  setSheetData: (sheetData: ICharacterSheet) => void;
   calculate: () => void;
   setEditView: () => void;
   openAddNewModal: () => void;
@@ -39,7 +39,7 @@ export const HeaderMenu = (props: IHeaderMenuProps) => {
         });
 
         const data = await result.json();
-        const parsedData = JSON.parse(data.files.file, reviver) as ISheetData;
+        const parsedData = JSON.parse(data.files.file, reviver) as ICharacterSheet;
 
         props.setSheetData({...parsedData});
 

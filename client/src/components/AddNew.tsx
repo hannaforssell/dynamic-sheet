@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { IFormData } from "../models/IFormData";
 import { AddNewModal } from "../styles/styled-components/AddNewModal";
-import { ISheetData } from "../models/ISheetData";
+import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { PropertyType } from "../models/PropertyType";
 
 interface IAddNewProps {
-  sheetData: ISheetData;
-  setSheetData: (sheetData: ISheetData) => void;
+  sheetData: ICharacterSheet;
+  setSheetData: (sheetData: ICharacterSheet) => void;
   isAddNewModalOpen: boolean;
   setIsAddNewModalOpen: (isOpen: boolean) => void;
   addProperty: (name: string, group: string, type: PropertyType) => void;

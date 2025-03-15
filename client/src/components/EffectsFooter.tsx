@@ -1,5 +1,5 @@
-import { EffectType } from "../models/EffectType";
-import { Effect } from "../models/Effect";
+import { EffectType } from "../models/characterSheet/EffectType";
+import { Effect } from "../models/characterSheet/Effect";
 import { Box, Button, Drawer, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import { EffectList } from "./EffectList";

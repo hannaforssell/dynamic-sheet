@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { ItemData } from "../models/ItemData";
+import { ItemData } from "../models/characterSheet/ItemData";
 import { Section } from "../styles/styled-components/Section";
-import { AbilityData } from "../models/AbilityData";
+import { AbilityData } from "../models/characterSheet/AbilityData";
 
 interface IItemProps {
   item: ItemData;
