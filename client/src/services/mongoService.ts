@@ -17,7 +17,7 @@ export async function connectToDatabase() {
     }
 
     console.log("test1")
-    const client: mongoDB.MongoClient = new mongoDB.MongoClient(connString);
+    //const client: mongoDB.MongoClient = new mongoDB.MongoClient(connString);
 
     // console.log("test2")
     // await client.connect();
