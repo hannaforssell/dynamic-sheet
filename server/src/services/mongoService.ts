@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv";
-import { Schema, connect } from "mongoose";
-import { CharacterSheet } from "../models/CharacterSheet";
+import mongoose, { Schema, connect } from "mongoose";
+import { CharacterSheet } from "../models/ICharacterSheetDTO";
 
 
-export async function run() {
+export async function connectToDb() {
     console.log("Running")
     dotenv.config();
 
@@ -26,11 +26,14 @@ export async function getCharacterSheet(id: string) {
 export async function upsertCharacterSheet(body: string) {
     const cs = new CharacterSheet(body);
 
+
+
     if(cs._id) {
         await CharacterSheet.findOneAndUpdate({ "_id": cs.id }, cs, { upsert: true });
         return { body: {"_id": cs._id}, status: 200 }
     }
 
+    cs._id = new mongoose.Types.ObjectId();
     const ret = await cs.save();
     return { body: {"_id": ret._id}, status: 201 }
 }

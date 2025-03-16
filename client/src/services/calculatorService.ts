@@ -2,13 +2,41 @@ import { AbilityData } from "../models/characterSheet/AbilityData";
 import { Parser } from "./parser";
 import { AbilityReference } from "../models/calculator/AbilityReference";
 import { AbilityDataMod } from "../models/characterSheet/AbilityDataMod";
+import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 
 export class CalculatorService {
-  constructor() {}
+  private currEffect: Effect | null = null;
+  private currSheet: ICharacterSheet | null = null;
 
-  public calculate = (
-    sheetData: Map<string, AbilityData>
-  ): Map<string, AbilityData> => {
+  constructor() { }
+
+  public calculate = (characterSheet: ICharacterSheet): ICharacterSheet => { 
+  }
+
+  public applyEffects = (characterSheet: ICharacterSheet) => {
+      characterSheet.abilityData.forEach(a => { a.calculatedText = ""; a.abilityMods = [] });
+      characterSheet.qualityData.forEach(a => { a.calculatedText = ""; a.qualityMods = [] });
+  
+      const orderedEffects = characterSheet.effects
+        .filter(e => e.enabled)
+        .sort((a, b) => a.order - b.order)
+  
+      this.currSheet = characterSheet;
+  
+      orderedEffects.forEach(effect => {
+        this.currEffect = effect;
+        try {
+          eval(effect.exec)
+        } catch(ex) {
+          console.error("Error evaluating: ", effect.name, effect.exec)
+          console.log(ex)
+        }
+      });
+      
+      return characterSheet;
+    }
+
+  public calculateAbilityData = (sheetData: Map<string, AbilityData>): Map<string, AbilityData> => {
     const calculated: Map<string, AbilityData> = new Map();
     let currentBatch: AbilityData[] = Array.from(
       sheetData,
@@ -28,7 +56,7 @@ export class CalculatorService {
           const references = this.getReferences(modifiedInput);
 
           if (references.some((r) => !calculated.has(r.refName))) {
-            nextBatch.push(abilityData);            
+            nextBatch.push(abilityData);
           } else {
             modifiedInput = this.replaceReferences(
               modifiedInput,
@@ -36,7 +64,7 @@ export class CalculatorService {
               references,
               calculated
             );
-            const displayInput = modifiedInput;           
+            const displayInput = modifiedInput;
 
             modifiedInput = this.handleSetOperation(modifiedInput);
             modifiedInput = this.removeReferences(modifiedInput);
@@ -49,7 +77,7 @@ export class CalculatorService {
               result = node.Eval();
             }
 
-            newAbility = {...abilityData, calculatedSum: result, calculatedText: displayInput} 
+            newAbility = { ...abilityData, calculatedSum: result, calculatedText: displayInput }
 
             calculated.set(newAbility.name, newAbility);
           }

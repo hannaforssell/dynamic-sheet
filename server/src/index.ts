@@ -22,9 +22,9 @@ app.use(
 //     res.json({ 'message': 'ok' });
 // })
 
-app.use('/api/charactersheets', characterSheetRouter);
+app.use('/api/charactersheet', characterSheetRouter);
 
-mongoService.run();
+await mongoService.connectToDb();
 
 app.listen(3000, '0.0.0.0', () => {
     console.log(`Example app listening at http://localhost:${3000}`)

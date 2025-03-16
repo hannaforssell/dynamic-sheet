@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AbilityData } from "../models/characterSheet/AbilityData";
 import { QualityData } from "../models/characterSheet/QualityData";
 import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { HeaderMenu } from "./Menu";
 import { PropertyGroup } from "./PropertyGroup";
-import { defaultSheetPF } from "../helpers/sheetHelper";
 import { CalculatorService } from "../services/calculatorService";
 import { SearchResult } from "./SearchResult";
 import { AddNew } from "./AddNew";
@@ -25,6 +24,8 @@ import { groupData } from "../helpers/dataGrouper";
 import { Hitpoints } from "./Hitpoints";
 import { Defenses } from "./Defenses";
 
+import * as backendService from "../services/backendService"
+
 const healthLayout: SxProps<Theme> = {
   display: "flex",
 }
@@ -44,6 +45,7 @@ const calculatorService = new CalculatorService();
 const qualityService = new QualityService();
 const effectService = new EffectService();
 
+
 const applyEffects2 = (sheetData: ICharacterSheet): ICharacterSheet => {
   console.log("Applying effects.")
   const appliedSheetData = effectService.Apply(
@@ -61,11 +63,29 @@ const applyEffects2 = (sheetData: ICharacterSheet): ICharacterSheet => {
 }
 
 export const CharacterSheet = () => {
-  const [sheetData, setSheetData] = useState<ICharacterSheet>(applyEffects2(defaultSheetPF));
+  const [loading, setLoading] = useState(false);
+  const [sheetData, setSheetData] = useState<ICharacterSheet>();
   const [search, setSearch] = useState<string>("");
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [editView, setEditView] = useState<boolean>(false);
   const [isAddNewModalOpen, setIsAddNewModalOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setLoading(true);
+    console.log("making call")
+    backendService.getCharacterSheet("67d67b9503753db8340379c1")
+      .then((x) => {
+        if(x) {
+          setSheetData(applyEffects2(x))
+        }
+      })
+      .catch(e => alert(`Getting data failed: ${e.message}`))
+      .finally(() => { setLoading(false) })
+  }, []);
+
+  if(!sheetData) {
+    return <></>
+  }
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
@@ -149,8 +169,8 @@ export const CharacterSheet = () => {
   return (
     <>
       <HeaderMenu
-        sheetData={sheetData}
-        setSheetData={setSheetData}
+        characterSheet={sheetData}
+        setCharacterSheet={setSheetData}
         calculate={applyEffects}
         setEditView={() => setEditView(!editView)}
         openAddNewModal={() => setIsAddNewModalOpen(!isAddNewModalOpen)}

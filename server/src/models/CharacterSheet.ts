@@ -18,6 +18,12 @@ export interface ICharacterSheet {
 }
 
 export const characterSheetSchema = new Schema<ICharacterSheet>({
+   qualityData: { type: Map, of: Object, required: true },
+  // abilityData: { type: Map<string, AbilityData>, required: true },
+  // classSkills: { type: Set<string>, required: true },
+  // itemData: { type: Map<string, ItemData>, required: true },
+  // tableData: { type: Map<string, TableData>, required: true },
+  // effects: { type: [Effect], required: true },
   imageLink: { type: String, required: true }
 }, { collection: "characterSheet" });
 

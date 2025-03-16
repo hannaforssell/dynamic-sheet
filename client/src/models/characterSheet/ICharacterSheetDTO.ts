@@ -4,13 +4,13 @@ import { ItemData } from "./ItemData";
 import { QualityData } from "./QualityData";
 import { TableData } from "./TableData";
 
-export interface ICharacterSheet {
-  _id: string | null
-  qualityData: Map<string, QualityData>;
-  abilityData: Map<string, AbilityData>;
-  classSkills: Set<string>;
-  itemData: Map<string, ItemData>;
-  tableData: Map<string, TableData>;
+export interface ICharacterSheetDTO {
+  _id: string | null,
+  qualityData: [string, QualityData][];
+  abilityData: [string, AbilityData][];
+  classSkills: string[];
+  itemData: [string, ItemData][];
+  tableData: [string, TableData][];
   effects: Effect[];
   imageLink: string;
 }

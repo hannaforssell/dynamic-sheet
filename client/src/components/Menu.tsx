@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { replacer, reviver } from "../helpers/JSONHelper";
 import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { MenuModal } from "../styles/styled-components/MenuModal";
 import { MenuButton } from "../styles/styled-components/MenuButton";
 
+import * as backendService from "../services/backendService"
+
 interface IHeaderMenuProps {
-  sheetData: ICharacterSheet;
-  setSheetData: (sheetData: ICharacterSheet) => void;
+  characterSheet: ICharacterSheet;
+  setCharacterSheet: (characterSheet: ICharacterSheet) => void;
   calculate: () => void;
   setEditView: () => void;
   openAddNewModal: () => void;
@@ -14,50 +15,17 @@ interface IHeaderMenuProps {
 
 export const HeaderMenu = (props: IHeaderMenuProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) {
-      return;
-    }
-    const file = e.target.files[0];
 
-    importData(file);
-    setIsMenuOpen(false);
+  const saveSheet = async () => {
+    const res = await backendService.postCharacterSheet(props.characterSheet)
+    props.characterSheet._id = res._id;
   };
 
-  const importData = async (file: File) => {
-    if (file) {
-      console.log("Uploading file...");
-
-      const formData = new FormData();
-      formData.append("file", file);
-
-      try {
-        // You can write the URL of your server or any other endpoint used for file upload
-        const result = await fetch("https://httpbin.org/post", {
-          method: "POST",
-          body: formData,
-        });
-
-        const data = await result.json();
-        const parsedData = JSON.parse(data.files.file, reviver) as ICharacterSheet;
-
-        props.setSheetData({...parsedData});
-
-      } catch (error) {
-        console.error(error);
-      }
+  const loadSheet = async () => {
+    const characterSheet = await backendService.getCharacterSheet("67d67b9503753db8340379c1");
+    if(characterSheet) {
+      props.setCharacterSheet(characterSheet)
     }
-  };
-
-  const exportSheet = () => {
-    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-      JSON.stringify(props.sheetData, replacer)
-    )}`;
-    const link = document.createElement("a");
-    link.href = jsonString;
-    link.download = "characterSheet.json";
-
-    link.click();
   };
 
   return (
@@ -66,12 +34,8 @@ export const HeaderMenu = (props: IHeaderMenuProps) => {
 
       {isMenuOpen && (
         <MenuModal $toggle={isMenuOpen}>
-        <label>
-          Choose a file
-          <input type="file" onChange={handleFileChange} />
-        </label>
-
-        <button onClick={exportSheet}>Save sheet</button>
+        <button onClick={saveSheet}>Save sheet</button>
+        <button onClick={loadSheet}>Load sheet</button>
 
         <button onClick={props.calculate}>Calculate</button>
 

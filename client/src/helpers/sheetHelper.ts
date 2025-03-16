@@ -7,6 +7,7 @@ import { QualityData } from "../models/characterSheet/QualityData";
 import { TableData } from "../models/characterSheet/TableData";
 
 export const defaultSheetPF: ICharacterSheet = {
+  _id: null,
   qualityData: new Map([
     ["Name", new QualityData("Name", "Top Info", "Ario 'Lightbringer' Takashi", 0)],
     ["Race", new QualityData("Race", "Top Info", "", 1)],
@@ -116,7 +117,7 @@ export const defaultSheetPF: ICharacterSheet = {
     ["Swim", new AbilityData("Swim", "Skills")],
     ["UMD", new AbilityData("UMD", "Skills", 100, "Use Magic Device")],
   ]),
-  classSkills: new Set(),
+  classSkills: new Set(["Appraise"]),
   itemData: new Map([
     ["Staff", new ItemData("Staff", new AbilityData("Staff", "Items"), "Bag", 5)],
     ["Shoes", new ItemData("Shoes", new AbilityData("Shoes", "Items"), "Bag", 3, [{name: "Name", desc: "Desc"}])],
