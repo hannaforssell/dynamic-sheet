@@ -6,6 +6,8 @@ import { TableData } from "../models/characterSheet/TableData";
 
 interface IAbilityScores {
   data: [AbilityData[], QualityData[], TableData[]]
+  editMode: boolean;
+  removeAbility(quality: AbilityData): void;
 }
 export const AbilityScores = (props: IAbilityScores) => {
   const [abilities, _q, _t] = props.data;
@@ -13,8 +15,13 @@ export const AbilityScores = (props: IAbilityScores) => {
   return (
     <Box>
       {abilities.map(ability =>
-        <Box key={ability.name}  sx={{display: "flex", placeItems: "center"}}>
-          <Ability abilityData={ability} showMod={true}></Ability>
+        <Box key={ability.name} sx={{ display: "flex", placeItems: "center" }}>
+          <Ability
+            abilityData={ability}
+            showMod={true}
+            editMode={props.editMode}
+            removeAbility={props.removeAbility}>
+          </Ability>
         </Box>)}
     </Box>
   );

@@ -3,92 +3,26 @@ import { QualityData } from "../models/characterSheet/QualityData";
 import { Ability } from "./Ability";
 import { Quality } from "./Quality";
 import { TableDisplay } from "./TableDisplay";
-import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { TableData } from "../models/characterSheet/TableData";
-import { Box, SxProps, Theme } from "@mui/material";
+import { Box } from "@mui/material";
+import { DataGroupType } from "../models/characterSheet/DataGroupType";
 
 interface IPropertyGroupProps {
-  group: string;
-  sheetData: ICharacterSheet
-  changeProperty: (property: AbilityData | QualityData) => void;
-  calculate: () => void;
-  editView: boolean;
-  removeProperty: (property: AbilityData | QualityData) => void;
-  layout: SxProps<Theme>
+  group: DataGroupType;
+  data: [AbilityData[], QualityData[], TableData[]]
+  editMode: boolean;
+  removeAbility(quality: AbilityData): void;
+  removeQuality(quality: QualityData): void;  
 }
 
 export const PropertyGroup = (props: IPropertyGroupProps) => {
-  const abilities: AbilityData[] = [];
-  props.sheetData.abilityData.forEach((a) => {
-    if (a.group === props.group) {
-      abilities.push(a);
-    }
-  });
-
-  const qualities: QualityData[] = [];
-  props.sheetData.qualityData.forEach((q) => {
-    if (q.group === props.group) {
-      qualities.push(q);
-    }
-  });
-
-  const tables: TableData[] = [];
-  props.sheetData.tableData.forEach((q) => {
-    if (q.group === props.group) {
-      tables.push(q);
-    }
-  });  
+  const [abilities, qualities, tables] = props.data;
 
   return (
-    <Box sx={props.layout}>
-      {/* <h2 style={{ margin: "0", paddingBottom: "10px" }}>{props.group}</h2> */}
-      {abilities.sort((a, b) => a.sortOrder === b.sortOrder ? a.name.localeCompare(b.name) : a.sortOrder - b.sortOrder).map((ability) => (
-        <Box
-          key={ability.name}
-          style={{
-            // display: "flex",
-            // paddingRight: `${props.editView ? "0" : "16px"}`,
-          }}
-        >
-          <Ability abilityData={ability} />
-          {props.editView && (
-            <button
-              onClick={() => props.removeProperty(ability)}
-              style={{ padding: "0 3px 3px 3px", fontSize: "12px" }}
-            >
-              x
-            </button>
-          )}
-        </Box>
-      ))}
-      {qualities.map((quality) => (
-        <Box
-          key={quality.name}
-          style={{
-            display: "flex",
-            paddingRight: `${props.editView ? "0" : "16px"}`,
-          }}
-        >
-          <Quality
-            key={quality.name}
-            qualityData={quality}
-          />
-          {props.editView && (
-            <button
-              onClick={() => props.removeProperty(quality)}
-              style={{ padding: "0 3px 3px 3px", fontSize: "12px" }}
-            >
-              x
-            </button>
-          )}
-        </Box>
-      ))}
-      {tables.map((table, i) => (
-          <TableDisplay
-            tableData={table}
-            key={i}
-          />
-      ))}
+    <Box sx={{ textAlign: "center", display: "flex", flexDirection: "column", gap: 2 }}>
+      {abilities.map(ability => <Box key={ability.name}><Ability key={ability.name} abilityData={ability} editMode={props.editMode} removeAbility={props.removeAbility}></Ability></Box>)}
+      {qualities.map(quality => <Box key={quality.name}><Quality key={quality.name} qualityData={quality} editMode={props.editMode} removeQuality={props.removeQuality}></Quality></Box>)}
+      {tables.map(table => <Box key={table.name}><TableDisplay key={table.name} tableData={table} /></Box>)}
     </Box>
   );
 };

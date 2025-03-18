@@ -7,9 +7,10 @@ import { Quality } from "./Quality";
 
 interface ISearchResultProps {
   search: string;
-  sheetData: ICharacterSheet;
-  changeProperty: (property: AbilityData | QualityData) => void;
-  calculate: () => void;
+  characterSheet: ICharacterSheet;
+  editMode: boolean;
+  removeAbility(quality: AbilityData): void;
+  removeQuality(quality: QualityData): void;  
 }
 
 export const SearchResult = (props: ISearchResultProps) => {
@@ -19,11 +20,11 @@ export const SearchResult = (props: ISearchResultProps) => {
 
   const regexp = new RegExp(`(${props.search})`, "gi");
 
-  const searchResultAbilities = [...props.sheetData.abilityData].filter(
+  const searchResultAbilities = [...props.characterSheet.abilityData].filter(
     ([_, v]) => v.name.match(regexp) || v.calculatedText.match(regexp)
   );
 
-  const searchResultQualities = [...props.sheetData.qualityData].filter(
+  const searchResultQualities = [...props.characterSheet.qualityData].filter(
     ([_, v]) => v.name.match(regexp) || v.originalText.match(regexp)
   );
 
@@ -52,11 +53,15 @@ export const SearchResult = (props: ISearchResultProps) => {
               <Ability
                 key={v.name}
                 abilityData={v}
+                editMode={props.editMode}
+                removeAbility={props.removeAbility}
               />
             ) : v instanceof AbilityData ? (
               <Quality
                 key={v.name}
                 qualityData={v}
+                editMode={props.editMode}
+                removeQuality={props.removeQuality}
               />
             ) : (
               <>ERROR</>
@@ -64,34 +69,6 @@ export const SearchResult = (props: ISearchResultProps) => {
           )}
         </Section>
       ))}
-
-      {/* <Section>
-        <h2 style={{ margin: "0", paddingBottom: "10px" }}>{"Results"}</h2>
-        {searchResultAbilities && (
-          <>
-            {searchResultAbilities.map(([k, v]) => (
-              <Ability
-                key={v.name}
-                abilityData={v}
-                onChangeAbility={props.changeAbility}
-                calculate={props.calculate}
-              />
-            ))}
-          </>
-        )}
-
-        {searchResultQualities && (
-          <>
-            {searchResultQualities.map(([k, v]) => (
-              <Quality
-                key={v.name}
-                qualityData={v}
-                onChangeQuality={props.changeQuality}
-              />
-            ))}
-          </>
-        )}
-      </Section> */}
     </>
   );
 };

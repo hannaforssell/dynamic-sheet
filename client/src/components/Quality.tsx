@@ -1,11 +1,13 @@
 import { QualityData } from "../models/characterSheet/QualityData";
-import { styled, TextField, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
+import { Button, styled, SxProps, TextField, Theme, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
 import { useState } from "react";
 import { defaultStyle } from "../helpers/stylingHelper";
 import { QualityService } from "../services/qualityService";
 
 interface IQualityProps {
   qualityData: QualityData;
+  editMode: boolean;
+  removeQuality(quality: QualityData): void;
 }
 
 const qualityService = new QualityService();
@@ -22,11 +24,13 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }));
 
-const localStyle = {
-  ...defaultStyle, 
-  width: 300, 
-  input: { color: "rgba(255, 255, 255, 0.87)", '&:Mui-TextField': { brandBorderColor: "rgba(255, 255, 255, 0.87)" } } ,
-  fontSize: "14px"
+const localStyle: SxProps<Theme> = {
+  ...defaultStyle,
+  width: 300,
+  input: { color: "rgba(255, 255, 255, 0.87)", '&:Mui-TextField': { brandBorderColor: "rgba(255, 255, 255, 0.87)" } },
+  fontSize: "14px",
+  margin: "3px 10px",
+  "& .MuiInputBase-input": { color: "rgba(255, 255, 255, 0.87)", fontFamily: "Roboto Mono, serif", maxHeight: 1, padding: 1, fontSize: 14 }
 };
 
 export const Quality = (props: IQualityProps) => {
@@ -43,16 +47,17 @@ export const Quality = (props: IQualityProps) => {
   };
 
   return (
-    <HtmlTooltip
-      title={
-        <>
-          <Typography color="inherit"> {props.qualityData.name}</Typography>
-          {props.qualityData.originalText != "" ? <p style={props.qualityData.qualityMods.length == 0 ? {} : { textDecoration: "line-through" }}>{props.qualityData.originalText}</p> : <></>}
-          {props.qualityData.qualityMods.map((m, i) => <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>{`${m.value} [${m.source}]`}</p>)}
-        </>
-      }
-    >
-      <TextField
+    <>
+      <HtmlTooltip
+        title={
+          <>
+            <Typography color="inherit"> {props.qualityData.name}</Typography>
+            {props.qualityData.originalText != "" ? <p style={props.qualityData.qualityMods.length == 0 ? {} : { textDecoration: "line-through" }}>{props.qualityData.originalText}</p> : <></>}
+            {props.qualityData.qualityMods.map((m, i) => <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>{`${m.value} [${m.source}]`}</p>)}
+          </>
+        }
+      >
+        <TextField
           contentEditable={false}
           helperText={props.qualityData.name}
           variant="filled"
@@ -63,8 +68,10 @@ export const Quality = (props: IQualityProps) => {
           disabled={false}
           sx={localStyle}
           multiline={props.qualityData.calculatedText.includes("\n")}
-          slotProps={{ formHelperText: { sx: defaultStyle }, htmlInput: { sx: localStyle } }}
+          slotProps={{ formHelperText: { sx: defaultStyle } }}
         />
-    </HtmlTooltip>
+      </HtmlTooltip>
+      {(props.editMode && <Button onClick={() => props.removeQuality(props.qualityData)} >X</Button>)}
+    </>
   );
 };

@@ -6,6 +6,8 @@ import { defaultStyle } from "../helpers/stylingHelper";
 
 interface IAbilityProps {
   abilityData: AbilityData;
+  editMode: boolean;
+  removeAbility(quality: AbilityData): void;
   showMod?: boolean;
 }
 
@@ -34,18 +36,20 @@ export const Ability = (props: IAbilityProps) => {
   const sumValue = props.abilityData.calculatedSum === null ? "—" : Math.floor(props.abilityData.calculatedSum);
 
   return (
-    <Box sx={{display: "flex", justifyContent: "space-between"}}>
-      <Typography sx={defaultStyle}>{props.abilityData.displayName}: </Typography>
-      <HtmlTooltip
-        title={
-          <React.Fragment>
-            <Typography color="inherit"> {props.abilityData.name}: {sumValue}</Typography>
-            {props.abilityData.abilityMods.map((m, i) => <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>{m.toString()}</p>)}
-          </React.Fragment>
-        }
-      >
-        <Button sx={{...defaultStyle, padding: 0, paddingTop: "1px"}}>{props.showMod ? `${sumValue} ${getAbilityMod(props.abilityData.calculatedSum)}` : sumValue}</Button>
-      </HtmlTooltip>
-    </Box>
-  );
+    <>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography sx={defaultStyle}>{props.abilityData.displayName}: </Typography>
+        <HtmlTooltip
+          title={
+            <React.Fragment>
+              <Typography color="inherit"> {props.abilityData.name}: {sumValue}</Typography>
+              {props.abilityData.abilityMods.map((m, i) => <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>{m.toString()}</p>)}
+            </React.Fragment>
+          }
+        >
+          <Button sx={{ ...defaultStyle, padding: 0, paddingTop: "1px" }}>{props.showMod ? `${sumValue} ${getAbilityMod(props.abilityData.calculatedSum)}` : sumValue}</Button>
+        </HtmlTooltip>
+      </Box>
+      {(props.editMode && <Button onClick={() => props.removeAbility(props.abilityData)} >X</Button>)}
+    </>);
 };

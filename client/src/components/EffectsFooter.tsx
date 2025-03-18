@@ -13,7 +13,7 @@ const effectTypes = Object.values(EffectType)
 
 interface IEffectsFooterProps {
   effects: Effect[],
-  applyEffects(): void
+  calculate(): void
 }
 
 export const EffectsFooter = (props: IEffectsFooterProps) => {
@@ -46,16 +46,12 @@ export const EffectsFooter = (props: IEffectsFooterProps) => {
 
   return (
     <>
-      <Box sx={{
-        position: "absolute",
-        left: 0,
-        bottom: 0,
-        width: "100%",
-        minHeight: "35px",
-        maxHeight: "35px",
-        backgroundColor: "rgba(255, 255, 255, 0.87)",
-      }}>
-        <Button sx={{ position: "absolute", right: "0" }} onClick={toggleDrawer}>{<ArrowUpwardIcon />}</Button>
+      <Box
+      position="fixed"
+      bottom={0}
+      right={0}
+      >
+        <Button onClick={toggleDrawer}>{<ArrowUpwardIcon fontSize="large"/>}</Button>
       </Box>
       <Drawer
         anchor="bottom"
@@ -75,8 +71,8 @@ export const EffectsFooter = (props: IEffectsFooterProps) => {
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <EffectList
                 effects={props.effects.filter(e => e.type == t)}
-                applyEffects={props.applyEffects}
-                addEffect={addEffect} 
+                calculate={props.calculate}
+                addEffect={addEffect}
                 removeEffect={removeEffect}>
               </EffectList>
             </Box>

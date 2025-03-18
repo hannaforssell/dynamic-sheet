@@ -8,7 +8,7 @@ const effectTypes = Object.values(EffectType)
 
 interface IEffectListProps {
   effects: Effect[],
-  applyEffects(): void,
+  calculate(): void,
   addEffect(effect: Effect): void
   removeEffect(effect: Effect): void
 }
@@ -43,7 +43,7 @@ export const EffectList = (props: IEffectListProps) => {
 
     memCopy(originalEffect, activeEffect);
     
-    props.applyEffects();
+    props.calculate();
   };
 
   const onDelete = () => {
@@ -56,7 +56,7 @@ export const EffectList = (props: IEffectListProps) => {
     setOriginalEffect(null);
     setActiveEffect(null);
     
-    props.applyEffects();
+    props.calculate();
   };
 
   return (

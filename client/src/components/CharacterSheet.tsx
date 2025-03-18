@@ -26,20 +26,6 @@ import { CalculatorService } from "../services/calculatorService";
 import { defaultSheetPF } from "../helpers/sheetHelper";
 import { DataGroupType } from "../models/characterSheet/DataGroupType";
 
-const healthLayout: SxProps<Theme> = {
-  display: "flex",
-}
-
-
-const propertyGroups = [
-  // {name: "Basic Info", layout: basicInfoLayout},
-  // {name: "Ability Scores", layout: abilityScoresLayout},
-  {name: "Health", layout: healthLayout},
-  {name: "Defense", layout: {}},
-  {name: "AC", layout: {}},
-  {name: "Saves", layout: {}},
-  {name: "Offense", layout: {}},
-];
 
 const calculatorService = new CalculatorService();
 
@@ -48,15 +34,16 @@ export const CharacterSheet = () => {
   const [sheetData, setSheetData] = useState<ICharacterSheet>();
   const [search, setSearch] = useState<string>("");
   const [tabIndex, setTabIndex] = useState<number>(0);
-  const [editView, setEditView] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
     console.log("making call")
-    backendService.getCharacterSheet("67d8423d5f1ba04d834d2d97")
+    //setSheetData(calculatorService.calculate(defaultSheetPF));
+
+    backendService.getCharacterSheet("67d91ffdb4078b185a5422ce")
       .then((x) => {
-        if(x) {
-          //setSheetData(calculatorService.calculate(defaultSheetPF));
+        if (x) {
           setSheetData(calculatorService.calculate(x))
         }
       })
@@ -64,7 +51,7 @@ export const CharacterSheet = () => {
       .finally(() => { setLoading(false) })
   }, []);
 
-  if(!sheetData) {
+  if (!sheetData) {
     return <></>
   }
 
@@ -73,7 +60,7 @@ export const CharacterSheet = () => {
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if(e.target.value == "") {
+    if (e.target.value == "") {
       setSearch("");
       setTabIndex(0);
       return
@@ -110,39 +97,17 @@ export const CharacterSheet = () => {
     }
   };
 
-  const removeProperty = (property: AbilityData | QualityData) => {
-    if (property instanceof AbilityData) {
-      sheetData.abilityData.delete(property.name);
-      setSheetData({
-        ...sheetData,
-        abilityData: sheetData.abilityData,
-      });
-    } else if (property instanceof QualityData) {
-      sheetData.qualityData.delete(property.name);
-      setSheetData({
-        ...sheetData,
-        qualityData: sheetData.qualityData,
-      });
-    }
-  };
+  const removeAbility = (ability: AbilityData) => {
+    sheetData.abilityData.delete(ability.name)
+    setSheetData({ ...sheetData });
+  }
 
-  const addProperty = (name: string, group: DataGroupType, type: PropertyType) => {
-    if (type === PropertyType.Ability) {
-      sheetData.abilityData.set(name, new AbilityData(name, group, 0));
-      setSheetData({
-        ...sheetData,
-        abilityData: sheetData.abilityData,
-      });
-    } else if (type === PropertyType.Quality) {
-      sheetData.qualityData.set(name, new QualityData(name, group, ""));
-      setSheetData({
-        ...sheetData,
-        qualityData: sheetData.qualityData,
-      });
-    }
-  };
+  const removeQuality = (quality: QualityData) => {
+    sheetData.qualityData.delete(quality.name)
+    setSheetData({ ...sheetData });
+  }
 
-  const applyEffects = () => {
+  const calculate = () => {
     setSheetData(calculatorService.calculate(sheetData));
   };
 
@@ -151,19 +116,19 @@ export const CharacterSheet = () => {
       <HeaderMenu
         characterSheet={sheetData}
         setCharacterSheet={setSheetData}
-        calculate={applyEffects}
-        setEditView={() => setEditView(!editView)}
+        calculate={calculate}
+        setEditView={() => setEditMode(!editMode)}
       />
 
       <TabContext value={tabIndex}>
         <Tabs value={tabIndex} onChange={handleTabChange}>
-          <Tab label={"Basic"} value={0} sx={defaultStyle}/>
-          <Tab label={"Offense"} value={1} sx={defaultStyle}/>
-          <Tab label={"Defense"} value={2} sx={defaultStyle}/>
-          <Tab label={"Skills"} value={3} sx={defaultStyle}/>
-          <Tab label={"Items"} value={4} sx={defaultStyle}/>
+          <Tab label={"Basic"} value={0} sx={defaultStyle} />
+          <Tab label={"Offense"} value={1} sx={defaultStyle} />
+          <Tab label={"Defense"} value={2} sx={defaultStyle} />
+          <Tab label={"Skills"} value={3} sx={defaultStyle} />
+          <Tab label={"Items"} value={4} sx={defaultStyle} />
           {search && (
-           <Tab
+            <Tab
               label={`Search result: ${search}`}
               value={5}
               autoFocus={false}
@@ -172,60 +137,67 @@ export const CharacterSheet = () => {
           )}
         </Tabs>
         <input
-            id="searchBar"
-            type="text"
-            placeholder="Search..."
-            onChange={handleSearch}
-            style={{
+          id="searchBar"
+          type="text"
+          placeholder="Search..."
+          onChange={handleSearch}
+          style={{
             position: "absolute",
             right: "100px",
             top: "15px",
           }}
         />
         <TabPanel value={0}>
-          <TopInfo data={groupData(sheetData, DataGroupType.TopInfo)} />
-          <Grid2 container sx={{placeItems: "center", alignSelf: "center"}}>
+          <TopInfo
+            data={groupData(sheetData, DataGroupType.TopInfo)}
+            editMode={editMode}
+            removeAbility={removeAbility}
+            removeQuality={removeQuality}
+          />
+          <Grid2 container sx={{ placeItems: "center", alignSelf: "center" }}>
             <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
-              <AbilityScores data={groupData(sheetData, DataGroupType.AbilityScores)} />
+              <AbilityScores
+                data={groupData(sheetData, DataGroupType.AbilityScores)}
+                editMode={editMode}
+                removeAbility={removeAbility}
+              />
             </Grid2>
             <Grid2 size={5} sx={{ display: "flex", justifyContent: "center" }}>
               <Portrait imageLink={sheetData.imageLink} />
             </Grid2>
             <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
-              <ExperienceInfo data={groupData(sheetData, DataGroupType.Experience)} />
+              <ExperienceInfo
+                data={groupData(sheetData, DataGroupType.Experience)}
+                editMode={editMode}
+                removeAbility={removeAbility}
+                removeQuality={removeQuality}
+              />
             </Grid2>
           </Grid2>
-
-          {propertyGroups.map((group) => (
-            <PropertyGroup
-              key={group.name}
-              group={group.name}
-              sheetData={sheetData}
-              changeProperty={changeProperty}
-              calculate={applyEffects}
-              editView={editView}
-              removeProperty={removeProperty}
-              layout={group.layout}
-            />
-          ))}
         </TabPanel>
         <TabPanel value={1}>
         </TabPanel>
         <TabPanel value={2}>
-          <Box sx={{display: "flex"}}>
-            <Hitpoints data={groupData(sheetData, DataGroupType.HitPoints)}></Hitpoints>
-            <Defenses data={groupData(sheetData, DataGroupType.Defense)}></Defenses>
+          <Box sx={{ display: "flex" }}>
+            <Hitpoints
+              data={groupData(sheetData, DataGroupType.HitPoints)}
+              editMode={editMode}
+              removeAbility={removeAbility}
+              removeQuality={removeQuality}></Hitpoints>
+            <Defenses
+              data={groupData(sheetData, DataGroupType.Defense)}
+              editMode={editMode}
+              removeAbility={removeAbility}
+              removeQuality={removeQuality}></Defenses>
           </Box>
         </TabPanel>
         <TabPanel value={3}>
           <PropertyGroup
-            group="Skills"
-            sheetData={sheetData}
-            changeProperty={changeProperty}
-            calculate={applyEffects}
-            editView={editView}
-            removeProperty={removeProperty}
-            layout={{}}
+            group={DataGroupType.Skills}
+            data={groupData(sheetData, DataGroupType.Skills)}
+            editMode={false}
+            removeAbility={removeAbility}
+            removeQuality={removeQuality}
           />
           <label
             style={{
@@ -241,21 +213,22 @@ export const CharacterSheet = () => {
         </TabPanel>
         <TabPanel value={4}>
           {sheetData.itemData && [...sheetData.itemData].map(([key, value]) => (
-            <Item key={key} item={value} editView={editView} changeItem={changeProperty} />
+            <Item key={key} item={value} editView={editMode} changeItem={changeProperty} />
           ))}
         </TabPanel>
         {search && (
           <TabPanel value={5}>
             <SearchResult
               search={search}
-              sheetData={sheetData}
-              changeProperty={changeProperty}
-              calculate={applyEffects}
+              characterSheet={sheetData}
+              editMode={editMode}
+              removeAbility={removeAbility}
+              removeQuality={removeQuality}
             />
           </TabPanel>
         )}
       </TabContext>
-      <EffectsFooter effects={sheetData.effects} applyEffects={applyEffects} />
+      <EffectsFooter effects={sheetData.effects} calculate={calculate} />
     </>
   );
 };
