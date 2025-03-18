@@ -1,5 +1,5 @@
 import { AbilityData } from "../models/AbilityData";
-import { CalculatorService } from "../services/calculatorService";
+import { CalculatorService } from "../services/abilityService";
 
 test("can handle change of value", () => {
     //arrange

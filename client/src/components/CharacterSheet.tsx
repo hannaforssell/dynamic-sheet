@@ -2,22 +2,19 @@ import { useEffect, useState } from "react";
 import { AbilityData } from "../models/characterSheet/AbilityData";
 import { QualityData } from "../models/characterSheet/QualityData";
 import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
-import { HeaderMenu } from "./Menu";
+import { HeaderMenu } from "./HeaderMenu";
 import { PropertyGroup } from "./PropertyGroup";
-import { CalculatorService } from "../services/calculatorService";
 import { SearchResult } from "./SearchResult";
-import { AddNew } from "./AddNew";
+import { AddDataModal } from "./AddDataModal";
 import { PropertyType } from "../models/PropertyType";
 import { Item } from "./Item";
 import { ItemData } from "../models/characterSheet/ItemData";
 import { EffectsFooter } from "./EffectsFooter";
-import { EffectService } from "../services/effectService";
 import { TabContext, TabPanel } from "@mui/lab";
 import { Box, Grid2, SxProps, Tab, Tabs, Theme } from "@mui/material";
 import { AbilityScores } from "./AbilityScores";
 import { TopInfo } from "./TopInfo";
 import { ExperienceInfo } from "./ExperienceInfo";
-import { QualityService } from "../services/qualityService";
 import { Portrait } from "./Portrait";
 import { defaultStyle } from "../helpers/stylingHelper";
 import { groupData } from "../helpers/dataGrouper";
@@ -25,6 +22,9 @@ import { Hitpoints } from "./Hitpoints";
 import { Defenses } from "./Defenses";
 
 import * as backendService from "../services/backendService"
+import { CalculatorService } from "../services/calculatorService";
+import { defaultSheetPF } from "../helpers/sheetHelper";
+import { DataGroupType } from "../models/characterSheet/DataGroupType";
 
 const healthLayout: SxProps<Theme> = {
   display: "flex",
@@ -42,25 +42,6 @@ const propertyGroups = [
 ];
 
 const calculatorService = new CalculatorService();
-const qualityService = new QualityService();
-const effectService = new EffectService();
-
-
-const applyEffects2 = (sheetData: ICharacterSheet): ICharacterSheet => {
-  console.log("Applying effects.")
-  const appliedSheetData = effectService.Apply(
-    sheetData
-  );
-
-  const calculatedAbilityData = calculatorService.calculate(appliedSheetData.abilityData);
-  const calculatedQualityData = qualityService.calculate(appliedSheetData.qualityData);
-
-  return {
-    ...appliedSheetData,
-    abilityData: calculatedAbilityData,
-    qualityData: calculatedQualityData
-  };
-}
 
 export const CharacterSheet = () => {
   const [loading, setLoading] = useState(false);
@@ -68,15 +49,15 @@ export const CharacterSheet = () => {
   const [search, setSearch] = useState<string>("");
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [editView, setEditView] = useState<boolean>(false);
-  const [isAddNewModalOpen, setIsAddNewModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
     console.log("making call")
-    backendService.getCharacterSheet("67d67b9503753db8340379c1")
+    backendService.getCharacterSheet("67d8423d5f1ba04d834d2d97")
       .then((x) => {
         if(x) {
-          setSheetData(applyEffects2(x))
+          //setSheetData(calculatorService.calculate(defaultSheetPF));
+          setSheetData(calculatorService.calculate(x))
         }
       })
       .catch(e => alert(`Getting data failed: ${e.message}`))
@@ -121,7 +102,7 @@ export const CharacterSheet = () => {
         property.name,
         new ItemData(
           property.name,
-          new AbilityData(property.name, "Items", 0),
+          new AbilityData(property.name, DataGroupType.Items, 0),
           property.location,
           property.weight
         )
@@ -145,7 +126,7 @@ export const CharacterSheet = () => {
     }
   };
 
-  const addProperty = (name: string, group: string, type: PropertyType) => {
+  const addProperty = (name: string, group: DataGroupType, type: PropertyType) => {
     if (type === PropertyType.Ability) {
       sheetData.abilityData.set(name, new AbilityData(name, group, 0));
       setSheetData({
@@ -162,10 +143,9 @@ export const CharacterSheet = () => {
   };
 
   const applyEffects = () => {
-    setSheetData(applyEffects2(sheetData));
+    setSheetData(calculatorService.calculate(sheetData));
   };
 
-  
   return (
     <>
       <HeaderMenu
@@ -173,16 +153,8 @@ export const CharacterSheet = () => {
         setCharacterSheet={setSheetData}
         calculate={applyEffects}
         setEditView={() => setEditView(!editView)}
-        openAddNewModal={() => setIsAddNewModalOpen(!isAddNewModalOpen)}
       />
 
-      <AddNew
-        sheetData={sheetData}
-        setSheetData={setSheetData}
-        isAddNewModalOpen={isAddNewModalOpen}
-        setIsAddNewModalOpen={setIsAddNewModalOpen}
-        addProperty={addProperty}
-      />
       <TabContext value={tabIndex}>
         <Tabs value={tabIndex} onChange={handleTabChange}>
           <Tab label={"Basic"} value={0} sx={defaultStyle}/>
@@ -211,16 +183,16 @@ export const CharacterSheet = () => {
           }}
         />
         <TabPanel value={0}>
-          <TopInfo data={groupData(sheetData, "Top Info")} />
+          <TopInfo data={groupData(sheetData, DataGroupType.TopInfo)} />
           <Grid2 container sx={{placeItems: "center", alignSelf: "center"}}>
             <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
-              <AbilityScores data={groupData(sheetData, "Ability Scores")} />
+              <AbilityScores data={groupData(sheetData, DataGroupType.AbilityScores)} />
             </Grid2>
             <Grid2 size={5} sx={{ display: "flex", justifyContent: "center" }}>
               <Portrait imageLink={sheetData.imageLink} />
             </Grid2>
             <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
-              <ExperienceInfo data={groupData(sheetData, "Experience")} />
+              <ExperienceInfo data={groupData(sheetData, DataGroupType.Experience)} />
             </Grid2>
           </Grid2>
 
@@ -241,8 +213,8 @@ export const CharacterSheet = () => {
         </TabPanel>
         <TabPanel value={2}>
           <Box sx={{display: "flex"}}>
-            <Hitpoints data={groupData(sheetData, "Hit Points")}></Hitpoints>
-            <Defenses data={groupData(sheetData, "Defense")}></Defenses>
+            <Hitpoints data={groupData(sheetData, DataGroupType.HitPoints)}></Hitpoints>
+            <Defenses data={groupData(sheetData, DataGroupType.Defense)}></Defenses>
           </Box>
         </TabPanel>
         <TabPanel value={3}>

@@ -14,7 +14,7 @@ export const MenuModal = styled.div<{ $toggle: boolean }>`
 display: flex;
 flex-direction: column;
   position: absolute;
-  //z-index: 1;
+  z-index: 100;
   top: 57px;
   right: 20px;
   width: 150px;

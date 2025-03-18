@@ -1,4 +1,4 @@
-import { EffectType } from "../EffectType";
+import { EffectType } from "./EffectType";
 
 export class Effect {
     constructor(

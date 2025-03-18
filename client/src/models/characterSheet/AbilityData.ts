@@ -1,4 +1,5 @@
 import { AbilityDataMod } from "./AbilityDataMod";
+import { DataGroupType } from "./DataGroupType";
 
 export class AbilityData {
     sortOrder: number;
@@ -9,7 +10,7 @@ export class AbilityData {
     
     constructor(
         public name: string,
-        public group: string,
+        public group: DataGroupType,
         sortOrder?: number,
         displayName?: string,
         abilityMods?: AbilityDataMod[]

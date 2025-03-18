@@ -1,26 +1,27 @@
 import { AbilityData } from "../models/characterSheet/AbilityData";
+import { DataGroupType } from "../models/characterSheet/DataGroupType";
 import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { QualityData } from "../models/characterSheet/QualityData";
 import { TableData } from "../models/characterSheet/TableData";
 
-export const groupData = (sheetData: ICharacterSheet, groupName: string): [AbilityData[], QualityData[], TableData[]] => {
+export const groupData = (sheetData: ICharacterSheet, group: DataGroupType): [AbilityData[], QualityData[], TableData[]] => {
   const abilities: AbilityData[] = [];
   sheetData.abilityData.forEach((a) => {
-    if (a.group === groupName) {
+    if (a.group === group) {
       abilities.push(a);
     }
   });
 
   const qualities: QualityData[] = [];
   sheetData.qualityData.forEach((q) => {
-    if (q.group === groupName) {
+    if (q.group === group) {
       qualities.push(q);
     }
   });
 
   const tables: TableData[] = [];
   sheetData.tableData.forEach((t) => {
-    if (t.group === groupName) {
+    if (t.group === group) {
       tables.push(t);
     }
   });

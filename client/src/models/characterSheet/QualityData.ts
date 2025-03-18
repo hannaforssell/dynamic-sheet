@@ -1,3 +1,4 @@
+import { DataGroupType } from "./DataGroupType";
 import { QualityDataMod } from "./QualityDataMod";
 
 export class QualityData {
@@ -8,7 +9,7 @@ export class QualityData {
 
     constructor(
         public name: string,
-        public group: string,
+        public group: DataGroupType,
         public originalText: string,
         sortOrder?: number,
         displayName?: string,

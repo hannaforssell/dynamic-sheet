@@ -1,4 +1,4 @@
-import { CalculatorService } from "../services/calculatorService";
+import { CalculatorService } from "../services/abilityService";
 import { AbilityData } from "../models/AbilityData";
 
 test("can calculate expression containing non numerical characters", () => {

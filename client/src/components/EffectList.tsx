@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Effect } from "../models/characterSheet/Effect";
-import { Box, Button, Checkbox, FormGroup, List, ListItemButton, ListItemText, MenuItem, TextField } from "@mui/material";
+import { Box, Button, Checkbox, colors, FormGroup, List, ListItemButton, ListItemText, MenuItem, TextField } from "@mui/material";
 import { EffectType } from "../models/characterSheet/EffectType";
 import { memCopy } from "../helpers/memCopy";
 
@@ -8,7 +8,9 @@ const effectTypes = Object.values(EffectType)
 
 interface IEffectListProps {
   effects: Effect[],
-  applyEffects(): void
+  applyEffects(): void,
+  addEffect(effect: Effect): void
+  removeEffect(effect: Effect): void
 }
 
 export const EffectList = (props: IEffectListProps) => {
@@ -25,12 +27,34 @@ export const EffectList = (props: IEffectListProps) => {
     setActiveEffect({...props.effects[index]})
   };
 
+  const onNew= () => {
+    const newEffect = new Effect("New Effect", true, originalEffect?.order ?? 0, originalEffect?.type ?? EffectType.Base, "");
+
+    props.addEffect(newEffect);
+
+    setActiveEffect(newEffect);
+    setOriginalEffect(newEffect);
+  };
+
   const onSave = () => {
     if(!originalEffect || !activeEffect) {
       return;
     }
 
     memCopy(originalEffect, activeEffect);
+    
+    props.applyEffects();
+  };
+
+  const onDelete = () => {
+    if(!originalEffect || !activeEffect) {
+      return;
+    }
+
+    props.removeEffect(originalEffect)
+
+    setOriginalEffect(null);
+    setActiveEffect(null);
     
     props.applyEffects();
   };
@@ -71,17 +95,14 @@ export const EffectList = (props: IEffectListProps) => {
           multiline
           rows={8}
           value={activeEffect.exec}
-          onChange={(e) => { setActiveEffect({...activeEffect, exec: e.target.value}) }}
+          onChange={(e) => { setActiveEffect({ ...activeEffect, exec: e.target.value }) }}
         />
-        <Button
-          component="label"
-          variant="contained"
-          tabIndex={-1}
-          onClick={onSave}
-        >
-          Save
-        </Button>
+        <Box>
+          <Button component="label" variant="contained" onClick={onNew}>New</Button>
+          <Button component="label" variant="contained" onClick={onSave}>Save</Button>
+          <Button sx={{backgroundColor: "red"}} component="label" variant="contained" onClick={onDelete}>Delete</Button>
+        </Box>
       </FormGroup>)}
-      
+
     </>)
 };

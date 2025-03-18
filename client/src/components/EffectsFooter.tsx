@@ -7,6 +7,7 @@ import { TabContext, TabPanel } from "@mui/lab";
 import React from "react";
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import Sugar from "sugar";
 
 const effectTypes = Object.values(EffectType)
 
@@ -33,6 +34,14 @@ export const EffectsFooter = (props: IEffectsFooterProps) => {
     }
 
     setDrawerOpen(!drawerOpen);
+  };
+
+  const addEffect = (effect: Effect) => {
+    props.effects.push(effect)
+  };
+
+  const removeEffect = (effect: Effect) => {
+    Sugar.Array.remove(props.effects, (e) => effect === e)
   };
 
   return (
@@ -66,7 +75,9 @@ export const EffectsFooter = (props: IEffectsFooterProps) => {
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <EffectList
                 effects={props.effects.filter(e => e.type == t)}
-                applyEffects={props.applyEffects}>
+                applyEffects={props.applyEffects}
+                addEffect={addEffect} 
+                removeEffect={removeEffect}>
               </EffectList>
             </Box>
           </TabPanel>))}
