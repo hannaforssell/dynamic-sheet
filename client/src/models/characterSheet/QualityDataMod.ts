@@ -1,11 +1,11 @@
 export class QualityDataMod {
-  enabled: boolean;
+    enabled: boolean;
 
-  constructor(
-    public source: string,
-    public operator: string,
-    public value: string
-  ) {
-    this.enabled = true;
-  }
+    constructor(
+        public source: string,
+        public operator: string,
+        public value: string
+    ) {
+        this.enabled = true;
+    }
 }

@@ -1,86 +1,63 @@
 import { AbilityData } from "../models/characterSheet/AbilityData";
-import {
-  Box,
-  Button,
-  Tooltip,
-  tooltipClasses,
-  TooltipProps,
-  Typography
-} from "@mui/material";
+import { Box, Button, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React from "react";
 import { defaultStyle } from "../helpers/stylingHelper";
 
 interface IAbilityProps {
-  abilityData: AbilityData;
-  editMode: boolean;
-  removeAbility(quality: AbilityData): void;
-  showMod?: boolean;
+    abilityData: AbilityData;
+    editMode: boolean;
+    removeAbility(quality: AbilityData): void;
+    showMod?: boolean;
 }
 
 const getAbilityMod = (score: number | null) => {
-  if (score === null) {
-    return "0";
-  }
-  const value = Math.floor(score / 2 - 5);
+    if (score === null) {
+        return "0";
+    }
+    const value = Math.floor(score / 2 - 5);
 
-  return value < 0 ? value : "+" + value;
+    return value < 0 ? value : "+" + value;
 };
 
-const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: "#f5f5f9",
-    color: "rgba(0, 0, 0, 0.87)",
-    maxWidth: 220,
-    fontSize: theme.typography.pxToRem(12),
-    border: "1px solid #dadde9"
-  }
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {...props} classes={{ popper: className }} />)(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: "#f5f5f9",
+        color: "rgba(0, 0, 0, 0.87)",
+        maxWidth: 220,
+        fontSize: theme.typography.pxToRem(12),
+        border: "1px solid #dadde9"
+    }
 }));
 
 export const Ability = (props: IAbilityProps) => {
-  const sumValue =
-    props.abilityData.calculatedSum === null
-      ? "—"
-      : Math.floor(props.abilityData.calculatedSum);
+    const sumValue = props.abilityData.calculatedSum === null ? "—" : Math.floor(props.abilityData.calculatedSum);
 
-  return (
-    <>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography sx={defaultStyle}>
-          {props.abilityData.displayName}:{" "}
-        </Typography>
-        <HtmlTooltip
-          title={
-            <React.Fragment>
-              <Typography color="inherit">
-                {" "}
-                {props.abilityData.name}: {sumValue}
-              </Typography>
-              {props.abilityData.abilityMods.map((m, i) => (
-                <p
-                  key={i}
-                  style={m.enabled ? {} : { textDecoration: "line-through" }}
+    return (
+        <>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography sx={defaultStyle}>{props.abilityData.displayName}: </Typography>
+                <HtmlTooltip
+                    title={
+                        <React.Fragment>
+                            <Typography color="inherit">
+                                {" "}
+                                {props.abilityData.name}: {sumValue}
+                            </Typography>
+                            {props.abilityData.abilityMods.map((m, i) => (
+                                <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>
+                                    {m.toString()}
+                                </p>
+                            ))}
+                        </React.Fragment>
+                    }
                 >
-                  {m.toString()}
-                </p>
-              ))}
-            </React.Fragment>
-          }
-        >
-          <Button sx={{ ...defaultStyle, padding: 0, paddingTop: "1px" }}>
-            {props.showMod
-              ? `${sumValue} ${getAbilityMod(props.abilityData.calculatedSum)}`
-              : sumValue}
-          </Button>
-        </HtmlTooltip>
-      </Box>
-      {props.editMode && (
-        <Button onClick={() => props.removeAbility(props.abilityData)}>
-          X
-        </Button>
-      )}
-    </>
-  );
+                    <Button sx={{ ...defaultStyle, padding: 0, paddingTop: "1px" }}>
+                        {props.showMod ? `${sumValue} ${getAbilityMod(props.abilityData.calculatedSum)}` : sumValue}
+                    </Button>
+                </HtmlTooltip>
+            </Box>
+            {props.editMode && <Button onClick={() => props.removeAbility(props.abilityData)}>X</Button>}
+        </>
+    );
 };

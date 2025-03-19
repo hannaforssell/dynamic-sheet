@@ -2,38 +2,38 @@ import { Token } from "../models/calculator/Token";
 import { Tokenizer } from "../services/tokenizer";
 
 test("can tokenize simple number", () => {
-  //arrange
-  const input = "537";
-  const tokenizer = new Tokenizer(input);
+    //arrange
+    const input = "537";
+    const tokenizer = new Tokenizer(input);
 
-  //act
-  tokenizer.NextToken();
+    //act
+    tokenizer.NextToken();
 
-  //assert
-  expect(tokenizer.getCurrentToken()).toBe(Token.Number);
-  expect(tokenizer.num).toBe(537);
+    //assert
+    expect(tokenizer.getCurrentToken()).toBe(Token.Number);
+    expect(tokenizer.num).toBe(537);
 });
 
 test("can tokenize simple number", () => {
-  //arrange
-  const input = "537+3";
-  const tokenizer = new Tokenizer(input);
+    //arrange
+    const input = "537+3";
+    const tokenizer = new Tokenizer(input);
 
-  //act
-  tokenizer.NextToken();
+    //act
+    tokenizer.NextToken();
 
-  //assert
-  expect(tokenizer.getCurrentToken()).toBe(Token.Number);
-  expect(tokenizer.num).toBe(537);
+    //assert
+    expect(tokenizer.getCurrentToken()).toBe(Token.Number);
+    expect(tokenizer.num).toBe(537);
 
-  tokenizer.NextToken();
+    tokenizer.NextToken();
 
-  //assert
-  expect(tokenizer.getCurrentToken()).toBe(Token.Add);
+    //assert
+    expect(tokenizer.getCurrentToken()).toBe(Token.Add);
 
-  tokenizer.NextToken();
+    tokenizer.NextToken();
 
-  //assert
-  expect(tokenizer.getCurrentToken()).toBe(Token.Number);
-  expect(tokenizer.num).toBe(3);
+    //assert
+    expect(tokenizer.getCurrentToken()).toBe(Token.Number);
+    expect(tokenizer.num).toBe(3);
 });

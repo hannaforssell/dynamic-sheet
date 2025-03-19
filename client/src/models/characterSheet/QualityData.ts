@@ -2,22 +2,22 @@ import { DataGroupType } from "./DataGroupType";
 import { QualityDataMod } from "./QualityDataMod";
 
 export class QualityData {
-  sortOrder: number;
-  displayName: string;
-  qualityMods: QualityDataMod[];
-  calculatedText: string;
+    sortOrder: number;
+    displayName: string;
+    qualityMods: QualityDataMod[];
+    calculatedText: string;
 
-  constructor(
-    public name: string,
-    public group: DataGroupType,
-    public originalText: string,
-    sortOrder?: number,
-    displayName?: string,
-    qualityMods?: QualityDataMod[]
-  ) {
-    this.displayName = displayName ?? name;
-    this.calculatedText = "";
-    this.sortOrder = sortOrder ?? 100;
-    this.qualityMods = qualityMods ?? [];
-  }
+    constructor(
+        public name: string,
+        public group: DataGroupType,
+        public originalText: string,
+        sortOrder?: number,
+        displayName?: string,
+        qualityMods?: QualityDataMod[]
+    ) {
+        this.displayName = displayName ?? name;
+        this.calculatedText = "";
+        this.sortOrder = sortOrder ?? 100;
+        this.qualityMods = qualityMods ?? [];
+    }
 }

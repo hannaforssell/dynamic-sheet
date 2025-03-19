@@ -15,36 +15,32 @@ const BASE_URL = `http://localhost:3000/api`;
 //     return response
 // })
 
-export async function getCharacterSheet(
-  id: string
-): Promise<ICharacterSheet | null> {
-  return axios({
-    method: "get",
-    url: BASE_URL + "/charactersheet/" + id
-  })
-    .then((data) => {
-      const res = MapFromDTO(data.data);
-      return res;
+export async function getCharacterSheet(id: string): Promise<ICharacterSheet | null> {
+    return axios({
+        method: "get",
+        url: BASE_URL + "/charactersheet/" + id
     })
-    .catch(() => {
-      return null;
-    });
+        .then((data) => {
+            const res = MapFromDTO(data.data);
+            return res;
+        })
+        .catch(() => {
+            return null;
+        });
 }
 
-export async function postCharacterSheet(
-  characterSheet: ICharacterSheet
-): Promise<IIdResponse> {
-  const req = MapToDTO(characterSheet);
+export async function postCharacterSheet(characterSheet: ICharacterSheet): Promise<IIdResponse> {
+    const req = MapToDTO(characterSheet);
 
-  return axios({
-    method: "post",
-    url: BASE_URL + "/charactersheet",
-    data: req
-  })
-    .then((data) => {
-      return data.data;
+    return axios({
+        method: "post",
+        url: BASE_URL + "/charactersheet",
+        data: req
     })
-    .catch(() => {
-      return null;
-    });
+        .then((data) => {
+            return data.data;
+        })
+        .catch(() => {
+            return null;
+        });
 }

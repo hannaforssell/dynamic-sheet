@@ -11,25 +11,25 @@ const leave = keyframes`
 `;
 
 export const MenuModal = styled.div<{ $toggle: boolean }>`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  z-index: 100;
-  top: 57px;
-  right: 20px;
-  width: 150px;
-  height: auto;
-  padding: 20px;
-  border: 1px solid grey;
-  border-radius: 20px;
-  background-color: #242424;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 100;
+    top: 57px;
+    right: 20px;
+    width: 150px;
+    height: auto;
+    padding: 20px;
+    border: 1px solid grey;
+    border-radius: 20px;
+    background-color: #242424;
 
-  animation: ${({ $toggle }) =>
-    $toggle
-      ? css`
-          ${enter} 0.1s linear forwards
-        `
-      : css`
-          ${leave} 0.1s linear forwards
-        `};
+    animation: ${({ $toggle }) =>
+        $toggle
+            ? css`
+                  ${enter} 0.1s linear forwards
+              `
+            : css`
+                  ${leave} 0.1s linear forwards
+              `};
 `;

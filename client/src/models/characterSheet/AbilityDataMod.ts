@@ -1,16 +1,16 @@
 export class AbilityDataMod {
-  enabled: boolean;
+    enabled: boolean;
 
-  constructor(
-    public type: string,
-    public source: string,
-    public operator: string,
-    public value: string
-  ) {
-    this.enabled = true;
-  }
+    constructor(
+        public type: string,
+        public source: string,
+        public operator: string,
+        public value: string
+    ) {
+        this.enabled = true;
+    }
 
-  public toString() {
-    return `${this.operator}${this.value} [${this.type}, ${this.source}]`;
-  }
+    public toString() {
+        return `${this.operator}${this.value} [${this.type}, ${this.source}]`;
+    }
 }

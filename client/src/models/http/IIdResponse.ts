@@ -1,3 +1,3 @@
 export interface IIdResponse {
-  _id: string;
+    _id: string;
 }
