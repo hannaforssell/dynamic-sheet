@@ -21,11 +21,11 @@ export const SearchResult = (props: ISearchResultProps) => {
   const regexp = new RegExp(`(${props.search})`, "gi");
 
   const searchResultAbilities = [...props.characterSheet.abilityData].filter(
-    ([_, v]) => v.name.match(regexp) || v.calculatedText.match(regexp)
+    ([, v]) => v.name.match(regexp) || v.calculatedText.match(regexp)
   );
 
   const searchResultQualities = [...props.characterSheet.qualityData].filter(
-    ([_, v]) => v.name.match(regexp) || v.originalText.match(regexp)
+    ([, v]) => v.name.match(regexp) || v.originalText.match(regexp)
   );
 
   if (
@@ -37,7 +37,7 @@ export const SearchResult = (props: ISearchResultProps) => {
 
   const resultsToDisplay = new Map<string, (AbilityData | QualityData)[]>();
 
-  searchResultAbilities.forEach(([_, v]) => {
+  searchResultAbilities.forEach(([, v]) => {
     const displayList = resultsToDisplay.get(v.group) ?? [];
     displayList.push(v);
     resultsToDisplay.set(v.group, displayList);

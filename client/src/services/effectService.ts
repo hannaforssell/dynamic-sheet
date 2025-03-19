@@ -28,11 +28,11 @@ export function AddAbilityMod(attributeName: string, value: string, type: string
     operator = "+";
   }
 
-  var newMod = new AbilityDataMod(type ?? "Untyped", currEffect.name, operator, value);
+  const newMod = new AbilityDataMod(type ?? "Untyped", currEffect.name, operator, value);
   if(newMod.operator == "+") {
     attribute.abilityMods.forEach(m => {
       if(m.type == newMod.type && m.operator == "+") {
-        let toDisable = (m.value ?? 0) > (newMod.value ?? 0) ? newMod : m;
+        const toDisable = (m.value ?? 0) > (newMod.value ?? 0) ? newMod : m;
         toDisable.enabled = false;
       }
     });

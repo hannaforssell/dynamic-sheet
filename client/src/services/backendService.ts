@@ -29,14 +29,7 @@ export async function getCharacterSheet(id: string): Promise<ICharacterSheet | n
 
 
 export async function postCharacterSheet(characterSheet: ICharacterSheet): Promise<IIdResponse> {
-    const req : any = MapToDTO(characterSheet);
-
-    // let filtered : any = {};
-    // Object.keys(req).map((key) => {
-    //     if (req[key]) {
-    //         filtered[key] = req[key]
-    //     }
-    // });
+    const req = MapToDTO(characterSheet);
 
     return axios({
         method: 'post',

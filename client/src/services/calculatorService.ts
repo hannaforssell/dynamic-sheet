@@ -1,4 +1,3 @@
-import { AbilityData } from "../models/characterSheet/AbilityData";
 import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { AbilityService } from "./abilityService";
 import { EffectService } from "./effectService";

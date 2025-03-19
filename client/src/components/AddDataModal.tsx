@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { IFormData } from "../models/IFormData";
-import { AddNewModal } from "../styles/styled-components/AddNewModal";
 import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { PropertyType } from "../models/PropertyType";
 import { DataGroupType } from "../models/characterSheet/DataGroupType";
-import { Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Modal, Select, SxProps, TextField, Theme, Typography } from "@mui/material";
-import zIndex from "@mui/material/styles/zIndex";
-import { EffectType } from "../models/characterSheet/EffectType";
+import { Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Modal, Select, SxProps, TextField, Theme } from "@mui/material";
 import { defaultStyle } from "../helpers/stylingHelper";
 import { AbilityData } from "../models/characterSheet/AbilityData";
 

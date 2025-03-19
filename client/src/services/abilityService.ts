@@ -7,13 +7,9 @@ export class AbilityService {
 
   constructor() { }
 
-  public calculate = (sheetData: Map<string, AbilityData>): Map<string, AbilityData> => {
+  public calculate = (abilityData: Map<string, AbilityData>): Map<string, AbilityData> => {
     const calculated: Map<string, AbilityData> = new Map();
-    let currentBatch: AbilityData[] = Array.from(
-      sheetData,
-      ([_, value]) => value
-    );
-
+    let currentBatch: AbilityData[] = Array.from(abilityData, ([, value]) => value);
     let nextBatch: AbilityData[] = [];
     const maxDepth = 100;
     let currentDepth = 0;

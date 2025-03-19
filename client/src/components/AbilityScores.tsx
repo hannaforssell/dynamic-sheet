@@ -10,7 +10,7 @@ interface IAbilityScores {
   removeAbility(quality: AbilityData): void;
 }
 export const AbilityScores = (props: IAbilityScores) => {
-  const [abilities, _q, _t] = props.data;
+  const [abilities] = props.data;
 
   return (
     <Box>

@@ -5,13 +5,11 @@ import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { HeaderMenu } from "./HeaderMenu";
 import { PropertyGroup } from "./PropertyGroup";
 import { SearchResult } from "./SearchResult";
-import { AddDataModal } from "./AddDataModal";
-import { PropertyType } from "../models/PropertyType";
 import { Item } from "./Item";
 import { ItemData } from "../models/characterSheet/ItemData";
 import { EffectsFooter } from "./EffectsFooter";
 import { TabContext, TabPanel } from "@mui/lab";
-import { Box, Grid2, SxProps, Tab, Tabs, Theme } from "@mui/material";
+import { Box, Grid2, Tab, Tabs } from "@mui/material";
 import { AbilityScores } from "./AbilityScores";
 import { TopInfo } from "./TopInfo";
 import { ExperienceInfo } from "./ExperienceInfo";
@@ -23,14 +21,13 @@ import { Defenses } from "./Defenses";
 
 import * as backendService from "../services/backendService"
 import { CalculatorService } from "../services/calculatorService";
-import { defaultSheetPF } from "../helpers/sheetHelper";
 import { DataGroupType } from "../models/characterSheet/DataGroupType";
 
 
 const calculatorService = new CalculatorService();
 
 export const CharacterSheet = () => {
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [sheetData, setSheetData] = useState<ICharacterSheet>();
   const [search, setSearch] = useState<string>("");
   const [tabIndex, setTabIndex] = useState<number>(0);
