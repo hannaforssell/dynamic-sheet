@@ -10,7 +10,7 @@ export class QualityService {
       this.recalculate(quality);
 
       calculated.set(quality.name, quality);
-    })
+    });
 
     return calculated;
   };
@@ -18,14 +18,13 @@ export class QualityService {
   public recalculate = (quality: QualityData) => {
     quality.calculatedText = quality.originalText;
 
-    quality.qualityMods.forEach((mod => {
-      if(mod.operator == "SET") {
+    quality.qualityMods.forEach((mod) => {
+      if (mod.operator == "SET") {
         quality.calculatedText = mod.value;
-      } else if(mod.operator == "ADD") {
-        quality.calculatedText += (quality.calculatedText === "" ? "" : "\n") + mod.value;
+      } else if (mod.operator == "ADD") {
+        quality.calculatedText +=
+          (quality.calculatedText === "" ? "" : "\n") + mod.value;
       }
-    }))
+    });
   };
 }
-
-

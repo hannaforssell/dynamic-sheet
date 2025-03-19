@@ -10,23 +10,41 @@ import { TableData } from "../models/characterSheet/TableData";
 export const defaultSheetPF: ICharacterSheet = {
   _id: null,
   qualityData: new Map([
-    ["Name", new QualityData("Name", DataGroupType.TopInfo, "Ario 'Lightbringer' Takashi", 0)],
+    [
+      "Name",
+      new QualityData(
+        "Name",
+        DataGroupType.TopInfo,
+        "Ario 'Lightbringer' Takashi",
+        0
+      )
+    ],
     ["Player", new QualityData("Player", DataGroupType.TopInfo, "EvilKurt", 1)],
-    ["Campaign", new QualityData("Campaign", DataGroupType.TopInfo, "Delve into Mujinzawa", 2)],
+    [
+      "Campaign",
+      new QualityData(
+        "Campaign",
+        DataGroupType.TopInfo,
+        "Delve into Mujinzawa",
+        2
+      )
+    ],
     ["Race", new QualityData("Race", DataGroupType.TopInfo, "", 3)],
     ["Type", new QualityData("Type", DataGroupType.TopInfo, "", 4)],
     ["Size", new QualityData("Size", DataGroupType.TopInfo, "", 5)],
     ["Alignment", new QualityData("Alignment", DataGroupType.TopInfo, "", 6)],
     ["Deity", new QualityData("Deity", DataGroupType.TopInfo, "", 7)],
-    
 
-    ["CurrHP", new QualityData("CurrHP", DataGroupType.HitPoints, "132", 2, "Current HP")],
+    [
+      "CurrHP",
+      new QualityData("CurrHP", DataGroupType.HitPoints, "132", 2, "Current HP")
+    ],
 
     ["DR", new QualityData("DR", DataGroupType.Defense, "")],
     ["Immunities", new QualityData("Immunities", DataGroupType.Defense, "")],
     ["Resistances", new QualityData("Resistances", DataGroupType.Defense, "")],
     ["Miss Chance", new QualityData("Miss Chance", DataGroupType.Defense, "")],
-    ["Senses", new QualityData("Senses", DataGroupType.Defense, "")],
+    ["Senses", new QualityData("Senses", DataGroupType.Defense, "")]
   ]),
   abilityData: new Map([
     ["Str", new AbilityData("Str", DataGroupType.AbilityScores, 1)],
@@ -37,7 +55,10 @@ export const defaultSheetPF: ICharacterSheet = {
     ["Cha", new AbilityData("Cha", DataGroupType.AbilityScores, 6)],
 
     ["Level", new AbilityData("Level", DataGroupType.Experience, 0)],
-    [DataGroupType.Experience, new AbilityData(DataGroupType.Experience, DataGroupType.Experience, 1)],
+    [
+      DataGroupType.Experience,
+      new AbilityData(DataGroupType.Experience, DataGroupType.Experience, 1)
+    ],
 
     ["HP", new AbilityData("HP", DataGroupType.HitPoints, 0)],
     ["THP", new AbilityData("THP", DataGroupType.HitPoints, 1)],
@@ -46,15 +67,24 @@ export const defaultSheetPF: ICharacterSheet = {
     ["Touch", new AbilityData("Touch", DataGroupType.AC, 0)],
     ["Flat-Footed", new AbilityData("Flat-Footed", DataGroupType.AC, 0)],
     ["Initiative", new AbilityData("Initiative", DataGroupType.AC, 0)],
-    ["Speed(Land)", new AbilityData("Speed(Land)", DataGroupType.AC, 0, "Speed (Land)")],
+    [
+      "Speed(Land)",
+      new AbilityData("Speed(Land)", DataGroupType.AC, 0, "Speed (Land)")
+    ],
 
     ["Fortitude", new AbilityData("Fortitude", DataGroupType.Saves)],
     ["Reflex", new AbilityData("Reflex", DataGroupType.Saves)],
     ["Will", new AbilityData("Will", DataGroupType.Saves)],
 
     ["BaB", new AbilityData("BaB", DataGroupType.Offense)],
-    ["MeleeToHit", new AbilityData("MeleeToHit", DataGroupType.Offense, 0, "MeleeToHit")],
-    ["RangedToHit", new AbilityData("RangedToHit", DataGroupType.Offense, 0, "RangedToHit")],
+    [
+      "MeleeToHit",
+      new AbilityData("MeleeToHit", DataGroupType.Offense, 0, "MeleeToHit")
+    ],
+    [
+      "RangedToHit",
+      new AbilityData("RangedToHit", DataGroupType.Offense, 0, "RangedToHit")
+    ],
     ["CMB", new AbilityData("CMB", DataGroupType.Offense)],
     ["CMD", new AbilityData("CMD", DataGroupType.Offense)],
 
@@ -74,76 +104,214 @@ export const defaultSheetPF: ICharacterSheet = {
     ["Intimidate", new AbilityData("Intimidate", DataGroupType.Skills)],
     [
       "Knowledge(Arcana)",
-      new AbilityData("Knowledge(Arcana)", DataGroupType.Skills, 0),
+      new AbilityData("Knowledge(Arcana)", DataGroupType.Skills, 0)
     ],
     [
       "Knowledge(Dungeoneering)",
-      new AbilityData("Knowledge(Dungeoneering)", DataGroupType.Skills),
+      new AbilityData("Knowledge(Dungeoneering)", DataGroupType.Skills)
     ],
     [
       "Knowledge(Geography)",
-      new AbilityData("Knowledge(Geography)", DataGroupType.Skills),
+      new AbilityData("Knowledge(Geography)", DataGroupType.Skills)
     ],
     [
       "Knowledge(History)",
-      new AbilityData("Knowledge(History)", DataGroupType.Skills),
+      new AbilityData("Knowledge(History)", DataGroupType.Skills)
     ],
     [
       "Knowledge(Local)",
-      new AbilityData("Knowledge(Local)", DataGroupType.Skills),
+      new AbilityData("Knowledge(Local)", DataGroupType.Skills)
     ],
     [
       "Knowledge(Nature)",
-      new AbilityData("Knowledge(Nature)", DataGroupType.Skills),
+      new AbilityData("Knowledge(Nature)", DataGroupType.Skills)
     ],
     [
       "Knowledge(Nobility)",
-      new AbilityData("Knowledge(Nobility)", DataGroupType.Skills),
+      new AbilityData("Knowledge(Nobility)", DataGroupType.Skills)
     ],
     [
       "Knowledge(The Planes)",
-      new AbilityData("Knowledge(The Planes)", DataGroupType.Skills),
+      new AbilityData("Knowledge(The Planes)", DataGroupType.Skills)
     ],
     [
       "Knowledge(Religion)",
-      new AbilityData("Knowledge(Religion)", DataGroupType.Skills),
+      new AbilityData("Knowledge(Religion)", DataGroupType.Skills)
     ],
     ["Linguistics", new AbilityData("Linguistics", DataGroupType.Skills)],
-    ["LucidDreaming", new AbilityData("LucidDreaming", DataGroupType.Skills, 100, "Lucid Dreaming")],
+    [
+      "LucidDreaming",
+      new AbilityData(
+        "LucidDreaming",
+        DataGroupType.Skills,
+        100,
+        "Lucid Dreaming"
+      )
+    ],
     ["Perception", new AbilityData("Perception", DataGroupType.Skills)],
     ["Perform", new AbilityData("Perform", DataGroupType.Skills)],
     ["Profession", new AbilityData("Profession", DataGroupType.Skills)],
     ["Ride", new AbilityData("Ride", DataGroupType.Skills)],
-    ["SenseMotive", new AbilityData("SenseMotive", DataGroupType.Skills, 100, "Sense Motive")],
-    ["SlightOfHand", new AbilityData("SlightOfHand", DataGroupType.Skills, 100, "Sleight of Hand")],
+    [
+      "SenseMotive",
+      new AbilityData("SenseMotive", DataGroupType.Skills, 100, "Sense Motive")
+    ],
+    [
+      "SlightOfHand",
+      new AbilityData(
+        "SlightOfHand",
+        DataGroupType.Skills,
+        100,
+        "Sleight of Hand"
+      )
+    ],
     ["Spellcraft", new AbilityData("Spellcraft", DataGroupType.Skills)],
     ["Stealth", new AbilityData("Stealth", DataGroupType.Skills)],
     ["Survival", new AbilityData("Survival", DataGroupType.Skills)],
     ["Swim", new AbilityData("Swim", DataGroupType.Skills)],
-    ["UMD", new AbilityData("UMD", DataGroupType.Skills, 100, "Use Magic Device")],
+    [
+      "UMD",
+      new AbilityData("UMD", DataGroupType.Skills, 100, "Use Magic Device")
+    ]
   ]),
   classSkills: new Set(["Appraise"]),
   itemData: new Map([
-    ["Staff", new ItemData("Staff", new AbilityData("Staff", DataGroupType.Items), "Bag", 5)],
-    ["Shoes", new ItemData("Shoes", new AbilityData("Shoes", DataGroupType.Items), "Bag", 3, [{name: "Name", desc: "Desc"}])],
+    [
+      "Staff",
+      new ItemData(
+        "Staff",
+        new AbilityData("Staff", DataGroupType.Items),
+        "Bag",
+        5
+      )
+    ],
+    [
+      "Shoes",
+      new ItemData(
+        "Shoes",
+        new AbilityData("Shoes", DataGroupType.Items),
+        "Bag",
+        3,
+        [{ name: "Name", desc: "Desc" }]
+      )
+    ]
   ]),
   tableData: new Map([
-    ["Levels", new TableData("Levels", DataGroupType.Experience, ["Class", "Level", "Total Level"], [["S-Class Wizard // Incanter", "1 // 1", "1"], ["S-Class Wizard // Incanter", "2 // 2", "2"], ["S-Class Wizard	// Incanter", "3 // 3", "3"], ["S-Class Wizard	// Incanter", "4 // 4", "4"], ["S-Class Wizard	// Incanter", "5 // 5", "5"], ["Stargazer // Incanter", "1 // 6", "6"], ["Stargazer // Incanter", "2 // 7", "7"], ["Stargazer // Incanter", "3 // 8", "8"], ["Stargazer // Incanter", "4 // 9", "9"], ["Stargazer // Incanter", "5 // 10", "10"], ["Loremaster // Incanter", "1 // 11", "11"]])]
+    [
+      "Levels",
+      new TableData(
+        "Levels",
+        DataGroupType.Experience,
+        ["Class", "Level", "Total Level"],
+        [
+          ["S-Class Wizard // Incanter", "1 // 1", "1"],
+          ["S-Class Wizard // Incanter", "2 // 2", "2"],
+          ["S-Class Wizard	// Incanter", "3 // 3", "3"],
+          ["S-Class Wizard	// Incanter", "4 // 4", "4"],
+          ["S-Class Wizard	// Incanter", "5 // 5", "5"],
+          ["Stargazer // Incanter", "1 // 6", "6"],
+          ["Stargazer // Incanter", "2 // 7", "7"],
+          ["Stargazer // Incanter", "3 // 8", "8"],
+          ["Stargazer // Incanter", "4 // 9", "9"],
+          ["Stargazer // Incanter", "5 // 10", "10"],
+          ["Loremaster // Incanter", "1 // 11", "11"]
+        ]
+      )
+    ]
   ]),
   effects: [
-    new Effect("Rolls", true, -1, EffectType.Base, "SetAbility('Str', '7');\nSetAbility('Dex', '7');\nSetAbility('Con', '7');\nSetAbility('Int', '18');\nSetAbility('Wis', '18');\nSetAbility('Cha', '15');\n\nAddAbilityMod('HP', '6*0#Level', 'Rolls');"),
-    new Effect("Formulas", true, -1, EffectType.Base, "AddAbilityMod('HP', '0@Con*0#Level', 'Base');\nAddAbilityMod('AC', '10', 'Base');"),
-    new Effect("Yueren Racial", true, -1, EffectType.Racial, "SetQuality('Race', 'Yueyinren');SetQuality('Type', 'Humanoid');\nAddAbilityMod('Dex', '2', 'Racial');\nAddAbilityMod('Con', '-2', 'Racial');\nAddAbilityMod('Int', '2', 'Racial');"),
-    new Effect("Level", true, 0, EffectType.Base, "AddAbilityMod('Level', '11');\nAddAbilityMod('Int', '4');\n\nAddAbilityMod('Experience', '1000', 'Session 1');"),
-    new Effect("Age", true, 0, EffectType.Base, "AddAbilityMod('Str', '-6');\nAddAbilityMod('Dex', '-6');\nAddAbilityMod('Con', '-6');\nAddAbilityMod('Int', '+3');\nAddAbilityMod('Wis', '+3');\nAddAbilityMod('Cha', '+3');\n"),
-    new Effect("Magic Jar (Barbed Devil)", true, 2, EffectType.Spell, "SetQuality('Type', 'Outsider (Devil, Evil, Extraplanar, Lawful)');\nAddQualityLine('DR', '10/Good');\nAddQualityLine('Immunities', 'Fire');\nAddQualityLine('Immunities', 'Poison');\nAddQualityLine('Resistances', 'Acid 10');\nAddQualityLine('Resistances', 'Cold 10');\n\n\nSetAbility('Str', '23');\nSetAbility('Dex', '23');\nSetAbility('Con', '22');\nAddQualityLine('Senses', 'Darkvision 60');\nAddQualityLine('Senses', 'See in Darkness');"),
-    new Effect("Ablative Barrier", true, 2, EffectType.Spell, "AddQualityLine('DR', '5/-');"),
-    new Effect("Protection from Arrows, Commual", true, 2, EffectType.Spell, "AddQualityLine('DR', '10/Magic (vs Ranged Weapons)');"),
-    new Effect("Maximized Greater False Life", true, 2, EffectType.Spell, "SetAbility('THP', '40');"),
-    new Effect("Ghost Syrup", true, 1, EffectType.Item, "SetAbility('Str', '—');"),
-    new Effect("Soothsayer's Rainment(Mental Acuity)", true, 2, EffectType.Item, "AddAbilityMod('Int', '(0#UMD - 12)/3', 'Inherent');"),
-    new Effect("Skill mods", true, -1, EffectType.Base, "AddAbilityMod('UMD', '+0@Cha', 'AbMod');\nAddAbilityMod('Acrobatics', '+0@Dex', 'AbMod');\nAddAbilityMod('Appraise', '+0@Int', 'AbMod');\nAddAbilityMod('Bluff', '+0@Cha', 'AbMod');\nAddAbilityMod('Climb', '+0@Str', 'AbMod');\nAddAbilityMod('Craft(Alchemy)', '+0@Int', 'AbMod');\nAddAbilityMod('Diplomacy', '+0@Cha', 'AbMod');\nAddAbilityMod('Disable Device', '+0@Dex', 'AbMod');\nAddAbilityMod('Disguise', '+0@Cha', 'AbMod');\nAddAbilityMod('Escape Artist', '+0@Dex', 'AbMod');\nAddAbilityMod('Fly', '+0@Dex', 'AbMod');\nAddAbilityMod('Handle Animal', '+0@Cha', 'AbMod');\nAddAbilityMod('Heal', '+0@Wis', 'AbMod');\nAddAbilityMod('Intimidate', '+0@Cha', 'AbMod');\nAddAbilityMod('Knowledge(Arcana)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Dungeoneering)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Geography)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(History)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Nature)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Nobility)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(The Planes)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Religion)', '+0@Int', 'AbMod');\nAddAbilityMod('Linguistics', '+0@Int', 'AbMod');\nAddAbilityMod('Perception', '+0@Wis', 'AbMod');\nAddAbilityMod('Perform', '+0@Cha', 'AbMod');\nAddAbilityMod('Profession', '+0@Wis', 'AbMod');\nAddAbilityMod('Ride', '+0@Dex', 'AbMod');\nAddAbilityMod('Sense Motive', '+0@Wis', 'AbMod');\nAddAbilityMod('Slight of Hand', '+0@Dex', 'AbMod');\nAddAbilityMod('Spellcraft', '+0@Int', 'AbMod');\nAddAbilityMod('Stealth', '+0@Dex', 'AbMod');\nAddAbilityMod('Survival', '+0@Wis', 'AbMod');\nAddAbilityMod('Swim', '+0@Str', 'AbMod');\nAddAbilityMod('UMD', '+0@Cha', 'AbMod');\n"),
-    new Effect("Skill ranks", true, -1, EffectType.Base, "AddAbilityMod('Acrobatics', '11', 'Ranks');\nAddAbilityMod('Appraise', '1', 'Ranks');\nAddAbilityMod('Bluff', '11', 'Ranks');\nAddAbilityMod('Craft(Alchemy)', '11', 'Ranks');\nAddAbilityMod('Diplomacy', '11', 'Ranks');\nAddAbilityMod('Fly', '11', 'Ranks');\nAddAbilityMod('Intimidate', '11', 'Ranks');\nAddAbilityMod('Knowledge(Arcana)', '11', 'Ranks');\nAddAbilityMod('Knowledge(Dungeoneering)', '11', 'Ranks');\nAddAbilityMod('Knowledge(Geography)', '11', 'Ranks');\nAddAbilityMod('Knowledge(History)', '6', 'Ranks');\nAddAbilityMod('Knowledge(Local)', '11', 'Ranks');\nAddAbilityMod('Knowledge(Nature)', '11', 'Ranks');\nAddAbilityMod('Knowledge(The Planes)', '11', 'Ranks');\nAddAbilityMod('Knowledge(Religion)', '11', 'Ranks');\nAddAbilityMod('Perception', '11', 'Ranks');\nAddAbilityMod('Ride', '1', 'Ranks');\nAddAbilityMod('Sense Motive', '11', 'Ranks');\nAddAbilityMod('Spellcraft', '11', 'Ranks');\nAddAbilityMod('Survival', '3', 'Ranks');\nAddAbilityMod('UMD', '11', 'Ranks');\n"),
+    new Effect(
+      "Rolls",
+      true,
+      -1,
+      EffectType.Base,
+      "SetAbility('Str', '7');\nSetAbility('Dex', '7');\nSetAbility('Con', '7');\nSetAbility('Int', '18');\nSetAbility('Wis', '18');\nSetAbility('Cha', '15');\n\nAddAbilityMod('HP', '6*0#Level', 'Rolls');"
+    ),
+    new Effect(
+      "Formulas",
+      true,
+      -1,
+      EffectType.Base,
+      "AddAbilityMod('HP', '0@Con*0#Level', 'Base');\nAddAbilityMod('AC', '10', 'Base');"
+    ),
+    new Effect(
+      "Yueren Racial",
+      true,
+      -1,
+      EffectType.Racial,
+      "SetQuality('Race', 'Yueyinren');SetQuality('Type', 'Humanoid');\nAddAbilityMod('Dex', '2', 'Racial');\nAddAbilityMod('Con', '-2', 'Racial');\nAddAbilityMod('Int', '2', 'Racial');"
+    ),
+    new Effect(
+      "Level",
+      true,
+      0,
+      EffectType.Base,
+      "AddAbilityMod('Level', '11');\nAddAbilityMod('Int', '4');\n\nAddAbilityMod('Experience', '1000', 'Session 1');"
+    ),
+    new Effect(
+      "Age",
+      true,
+      0,
+      EffectType.Base,
+      "AddAbilityMod('Str', '-6');\nAddAbilityMod('Dex', '-6');\nAddAbilityMod('Con', '-6');\nAddAbilityMod('Int', '+3');\nAddAbilityMod('Wis', '+3');\nAddAbilityMod('Cha', '+3');\n"
+    ),
+    new Effect(
+      "Magic Jar (Barbed Devil)",
+      true,
+      2,
+      EffectType.Spell,
+      "SetQuality('Type', 'Outsider (Devil, Evil, Extraplanar, Lawful)');\nAddQualityLine('DR', '10/Good');\nAddQualityLine('Immunities', 'Fire');\nAddQualityLine('Immunities', 'Poison');\nAddQualityLine('Resistances', 'Acid 10');\nAddQualityLine('Resistances', 'Cold 10');\n\n\nSetAbility('Str', '23');\nSetAbility('Dex', '23');\nSetAbility('Con', '22');\nAddQualityLine('Senses', 'Darkvision 60');\nAddQualityLine('Senses', 'See in Darkness');"
+    ),
+    new Effect(
+      "Ablative Barrier",
+      true,
+      2,
+      EffectType.Spell,
+      "AddQualityLine('DR', '5/-');"
+    ),
+    new Effect(
+      "Protection from Arrows, Commual",
+      true,
+      2,
+      EffectType.Spell,
+      "AddQualityLine('DR', '10/Magic (vs Ranged Weapons)');"
+    ),
+    new Effect(
+      "Maximized Greater False Life",
+      true,
+      2,
+      EffectType.Spell,
+      "SetAbility('THP', '40');"
+    ),
+    new Effect(
+      "Ghost Syrup",
+      true,
+      1,
+      EffectType.Item,
+      "SetAbility('Str', '—');"
+    ),
+    new Effect(
+      "Soothsayer's Rainment(Mental Acuity)",
+      true,
+      2,
+      EffectType.Item,
+      "AddAbilityMod('Int', '(0#UMD - 12)/3', 'Inherent');"
+    ),
+    new Effect(
+      "Skill mods",
+      true,
+      -1,
+      EffectType.Base,
+      "AddAbilityMod('UMD', '+0@Cha', 'AbMod');\nAddAbilityMod('Acrobatics', '+0@Dex', 'AbMod');\nAddAbilityMod('Appraise', '+0@Int', 'AbMod');\nAddAbilityMod('Bluff', '+0@Cha', 'AbMod');\nAddAbilityMod('Climb', '+0@Str', 'AbMod');\nAddAbilityMod('Craft(Alchemy)', '+0@Int', 'AbMod');\nAddAbilityMod('Diplomacy', '+0@Cha', 'AbMod');\nAddAbilityMod('Disable Device', '+0@Dex', 'AbMod');\nAddAbilityMod('Disguise', '+0@Cha', 'AbMod');\nAddAbilityMod('Escape Artist', '+0@Dex', 'AbMod');\nAddAbilityMod('Fly', '+0@Dex', 'AbMod');\nAddAbilityMod('Handle Animal', '+0@Cha', 'AbMod');\nAddAbilityMod('Heal', '+0@Wis', 'AbMod');\nAddAbilityMod('Intimidate', '+0@Cha', 'AbMod');\nAddAbilityMod('Knowledge(Arcana)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Dungeoneering)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Geography)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(History)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Nature)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Nobility)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(The Planes)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Religion)', '+0@Int', 'AbMod');\nAddAbilityMod('Linguistics', '+0@Int', 'AbMod');\nAddAbilityMod('Perception', '+0@Wis', 'AbMod');\nAddAbilityMod('Perform', '+0@Cha', 'AbMod');\nAddAbilityMod('Profession', '+0@Wis', 'AbMod');\nAddAbilityMod('Ride', '+0@Dex', 'AbMod');\nAddAbilityMod('Sense Motive', '+0@Wis', 'AbMod');\nAddAbilityMod('Slight of Hand', '+0@Dex', 'AbMod');\nAddAbilityMod('Spellcraft', '+0@Int', 'AbMod');\nAddAbilityMod('Stealth', '+0@Dex', 'AbMod');\nAddAbilityMod('Survival', '+0@Wis', 'AbMod');\nAddAbilityMod('Swim', '+0@Str', 'AbMod');\nAddAbilityMod('UMD', '+0@Cha', 'AbMod');\n"
+    ),
+    new Effect(
+      "Skill ranks",
+      true,
+      -1,
+      EffectType.Base,
+      "AddAbilityMod('Acrobatics', '11', 'Ranks');\nAddAbilityMod('Appraise', '1', 'Ranks');\nAddAbilityMod('Bluff', '11', 'Ranks');\nAddAbilityMod('Craft(Alchemy)', '11', 'Ranks');\nAddAbilityMod('Diplomacy', '11', 'Ranks');\nAddAbilityMod('Fly', '11', 'Ranks');\nAddAbilityMod('Intimidate', '11', 'Ranks');\nAddAbilityMod('Knowledge(Arcana)', '11', 'Ranks');\nAddAbilityMod('Knowledge(Dungeoneering)', '11', 'Ranks');\nAddAbilityMod('Knowledge(Geography)', '11', 'Ranks');\nAddAbilityMod('Knowledge(History)', '6', 'Ranks');\nAddAbilityMod('Knowledge(Local)', '11', 'Ranks');\nAddAbilityMod('Knowledge(Nature)', '11', 'Ranks');\nAddAbilityMod('Knowledge(The Planes)', '11', 'Ranks');\nAddAbilityMod('Knowledge(Religion)', '11', 'Ranks');\nAddAbilityMod('Perception', '11', 'Ranks');\nAddAbilityMod('Ride', '1', 'Ranks');\nAddAbilityMod('Sense Motive', '11', 'Ranks');\nAddAbilityMod('Spellcraft', '11', 'Ranks');\nAddAbilityMod('Survival', '3', 'Ranks');\nAddAbilityMod('UMD', '11', 'Ranks');\n"
+    )
   ],
-  imageLink: "https://i.pinimg.com/550x/fd/51/0d/fd510d5cea4970b1d1d36201be01075d.jpg"
+  imageLink:
+    "https://i.pinimg.com/550x/fd/51/0d/fd510d5cea4970b1d1d36201be01075d.jpg"
 };

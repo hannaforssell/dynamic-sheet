@@ -1,20 +1,19 @@
-import { createTheme, ThemeProvider } from '@mui/material';
-import './App.css'
-import { CharacterSheet } from './components/CharacterSheet'
-
+import { createTheme, ThemeProvider } from "@mui/material";
+import "./App.css";
+import { CharacterSheet } from "./components/CharacterSheet";
 
 const darkTheme = createTheme({
   palette: {
-    mode: 'dark',
-  },
+    mode: "dark"
+  }
 });
 
 function App() {
-
   return (
     <ThemeProvider theme={darkTheme}>
       <CharacterSheet />
-    </ThemeProvider>);
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;

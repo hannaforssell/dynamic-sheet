@@ -4,7 +4,10 @@ import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { QualityData } from "../models/characterSheet/QualityData";
 import { TableData } from "../models/characterSheet/TableData";
 
-export const groupData = (sheetData: ICharacterSheet, group: DataGroupType): [AbilityData[], QualityData[], TableData[]] => {
+export const groupData = (
+  sheetData: ICharacterSheet,
+  group: DataGroupType
+): [AbilityData[], QualityData[], TableData[]] => {
   const abilities: AbilityData[] = [];
   sheetData.abilityData.forEach((a) => {
     if (a.group === group) {
@@ -26,9 +29,21 @@ export const groupData = (sheetData: ICharacterSheet, group: DataGroupType): [Ab
     }
   });
 
-  abilities.sort((a, b) => a.sortOrder === b.sortOrder ? a.name.localeCompare(b.name) : a.sortOrder - b.sortOrder);
-  qualities.sort((a, b) => a.sortOrder === b.sortOrder ? a.name.localeCompare(b.name) : a.sortOrder - b.sortOrder);
-  tables.sort((a, b) => a.sortOrder === b.sortOrder ? a.name.localeCompare(b.name) : a.sortOrder - b.sortOrder);
-  
+  abilities.sort((a, b) =>
+    a.sortOrder === b.sortOrder
+      ? a.name.localeCompare(b.name)
+      : a.sortOrder - b.sortOrder
+  );
+  qualities.sort((a, b) =>
+    a.sortOrder === b.sortOrder
+      ? a.name.localeCompare(b.name)
+      : a.sortOrder - b.sortOrder
+  );
+  tables.sort((a, b) =>
+    a.sortOrder === b.sortOrder
+      ? a.name.localeCompare(b.name)
+      : a.sortOrder - b.sortOrder
+  );
+
   return [abilities, qualities, tables];
-}
+};

@@ -10,7 +10,7 @@ interface ISearchResultProps {
   characterSheet: ICharacterSheet;
   editMode: boolean;
   removeAbility(quality: AbilityData): void;
-  removeQuality(quality: QualityData): void;  
+  removeQuality(quality: QualityData): void;
 }
 
 export const SearchResult = (props: ISearchResultProps) => {

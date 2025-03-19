@@ -1,7 +1,6 @@
 export class AbilityReference {
-    constructor(
-      public original: string,
-      public refName: string
-    ){}
-  }
-  
+  constructor(
+    public original: string,
+    public refName: string
+  ) {}
+}

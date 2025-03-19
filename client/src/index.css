@@ -2,7 +2,7 @@
   font-family: "Roboto Mono", serif;
   font-optical-sizing: auto;
   font-style: normal;
-  font-variation-settings:"width" 100;
+  font-variation-settings: "width" 100;
   line-height: 1;
   font-weight: 400;
 
@@ -63,10 +63,10 @@
 
   &:focus {
     -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 }

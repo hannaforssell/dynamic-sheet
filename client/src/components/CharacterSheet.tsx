@@ -19,10 +19,9 @@ import { groupData } from "../helpers/dataGrouper";
 import { Hitpoints } from "./Hitpoints";
 import { Defenses } from "./Defenses";
 
-import * as backendService from "../services/backendService"
+import * as backendService from "../services/backendService";
 import { CalculatorService } from "../services/calculatorService";
 import { DataGroupType } from "../models/characterSheet/DataGroupType";
-
 
 const calculatorService = new CalculatorService();
 
@@ -35,21 +34,24 @@ export const CharacterSheet = () => {
 
   useEffect(() => {
     setLoading(true);
-    console.log("making call")
+    console.log("making call");
     //setSheetData(calculatorService.calculate(defaultSheetPF));
 
-    backendService.getCharacterSheet("67d91ffdb4078b185a5422ce")
+    backendService
+      .getCharacterSheet("67d91ffdb4078b185a5422ce")
       .then((x) => {
         if (x) {
-          setSheetData(calculatorService.calculate(x))
+          setSheetData(calculatorService.calculate(x));
         }
       })
-      .catch(e => alert(`Getting data failed: ${e.message}`))
-      .finally(() => { setLoading(false) })
+      .catch((e) => alert(`Getting data failed: ${e.message}`))
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   if (!sheetData) {
-    return <></>
+    return <></>;
   }
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
@@ -60,7 +62,7 @@ export const CharacterSheet = () => {
     if (e.target.value == "") {
       setSearch("");
       setTabIndex(0);
-      return
+      return;
     }
     setSearch(e.target.value);
     setTabIndex(3);
@@ -70,11 +72,7 @@ export const CharacterSheet = () => {
     if (property instanceof AbilityData) {
       sheetData.abilityData.set(
         property.name,
-        new AbilityData(
-          property.name,
-          property.group,
-          property.sortOrder
-        )
+        new AbilityData(property.name, property.group, property.sortOrder)
       );
     } else if (property instanceof QualityData) {
       sheetData.qualityData.set(
@@ -95,14 +93,14 @@ export const CharacterSheet = () => {
   };
 
   const removeAbility = (ability: AbilityData) => {
-    sheetData.abilityData.delete(ability.name)
+    sheetData.abilityData.delete(ability.name);
     setSheetData({ ...sheetData });
-  }
+  };
 
   const removeQuality = (quality: QualityData) => {
-    sheetData.qualityData.delete(quality.name)
+    sheetData.qualityData.delete(quality.name);
     setSheetData({ ...sheetData });
-  }
+  };
 
   const calculate = () => {
     setSheetData(calculatorService.calculate(sheetData));
@@ -141,7 +139,7 @@ export const CharacterSheet = () => {
           style={{
             position: "absolute",
             right: "100px",
-            top: "15px",
+            top: "15px"
           }}
         />
         <TabPanel value={0}>
@@ -152,7 +150,10 @@ export const CharacterSheet = () => {
             removeQuality={removeQuality}
           />
           <Grid2 container sx={{ placeItems: "center", alignSelf: "center" }}>
-            <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
+            <Grid2
+              size={3.5}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
               <AbilityScores
                 data={groupData(sheetData, DataGroupType.AbilityScores)}
                 editMode={editMode}
@@ -162,7 +163,10 @@ export const CharacterSheet = () => {
             <Grid2 size={5} sx={{ display: "flex", justifyContent: "center" }}>
               <Portrait imageLink={sheetData.imageLink} />
             </Grid2>
-            <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
+            <Grid2
+              size={3.5}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
               <ExperienceInfo
                 data={groupData(sheetData, DataGroupType.Experience)}
                 editMode={editMode}
@@ -172,20 +176,21 @@ export const CharacterSheet = () => {
             </Grid2>
           </Grid2>
         </TabPanel>
-        <TabPanel value={1}>
-        </TabPanel>
+        <TabPanel value={1}></TabPanel>
         <TabPanel value={2}>
           <Box sx={{ display: "flex" }}>
             <Hitpoints
               data={groupData(sheetData, DataGroupType.HitPoints)}
               editMode={editMode}
               removeAbility={removeAbility}
-              removeQuality={removeQuality}></Hitpoints>
+              removeQuality={removeQuality}
+            ></Hitpoints>
             <Defenses
               data={groupData(sheetData, DataGroupType.Defense)}
               editMode={editMode}
               removeAbility={removeAbility}
-              removeQuality={removeQuality}></Defenses>
+              removeQuality={removeQuality}
+            ></Defenses>
           </Box>
         </TabPanel>
         <TabPanel value={3}>
@@ -200,18 +205,23 @@ export const CharacterSheet = () => {
             style={{
               textAlign: "left",
               display: "grid",
-              gridTemplateColumns: "150px 180px",
+              gridTemplateColumns: "150px 180px"
             }}
           >
             <span>Skillpoints spent</span>
             <div>sum</div>
           </label>
-
         </TabPanel>
         <TabPanel value={4}>
-          {sheetData.itemData && [...sheetData.itemData].map(([key, value]) => (
-            <Item key={key} item={value} editView={editMode} changeItem={changeProperty} />
-          ))}
+          {sheetData.itemData &&
+            [...sheetData.itemData].map(([key, value]) => (
+              <Item
+                key={key}
+                item={value}
+                editView={editMode}
+                changeItem={changeProperty}
+              />
+            ))}
         </TabPanel>
         {search && (
           <TabPanel value={5}>

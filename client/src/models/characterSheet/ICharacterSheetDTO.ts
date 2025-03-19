@@ -5,7 +5,7 @@ import { QualityData } from "./QualityData";
 import { TableData } from "./TableData";
 
 export interface ICharacterSheetDTO {
-  _id: string | null,
+  _id: string | null;
   qualityData: [string, QualityData][];
   abilityData: [string, AbilityData][];
   classSkills: string[];

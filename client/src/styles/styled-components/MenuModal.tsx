@@ -11,8 +11,8 @@ const leave = keyframes`
 `;
 
 export const MenuModal = styled.div<{ $toggle: boolean }>`
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
   position: absolute;
   z-index: 100;
   top: 57px;

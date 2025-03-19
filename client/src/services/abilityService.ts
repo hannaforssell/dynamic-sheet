@@ -4,12 +4,16 @@ import { AbilityReference } from "../models/calculator/AbilityReference";
 import { AbilityDataMod } from "../models/characterSheet/AbilityDataMod";
 
 export class AbilityService {
+  constructor() {}
 
-  constructor() { }
-
-  public calculate = (abilityData: Map<string, AbilityData>): Map<string, AbilityData> => {
+  public calculate = (
+    abilityData: Map<string, AbilityData>
+  ): Map<string, AbilityData> => {
     const calculated: Map<string, AbilityData> = new Map();
-    let currentBatch: AbilityData[] = Array.from(abilityData, ([, value]) => value);
+    let currentBatch: AbilityData[] = Array.from(
+      abilityData,
+      ([, value]) => value
+    );
     let nextBatch: AbilityData[] = [];
     const maxDepth = 100;
     let currentDepth = 0;
@@ -18,7 +22,10 @@ export class AbilityService {
       currentBatch.map((abilityData) => {
         let newAbility: AbilityData;
         try {
-          let modifiedInput = abilityData.abilityMods.reduce((acc, m) => m.enabled ? acc + m.toString() : acc, "");
+          let modifiedInput = abilityData.abilityMods.reduce(
+            (acc, m) => (m.enabled ? acc + m.toString() : acc),
+            ""
+          );
 
           const references = this.getReferences(modifiedInput);
 
@@ -44,17 +51,18 @@ export class AbilityService {
               result = node.Eval();
             }
 
-            newAbility = { ...abilityData, calculatedSum: result, calculatedText: displayInput }
+            newAbility = {
+              ...abilityData,
+              calculatedSum: result,
+              calculatedText: displayInput
+            };
 
             calculated.set(newAbility.name, newAbility);
           }
         } catch (error) {
           console.log("error: ", error);
 
-          newAbility = new AbilityData(
-            abilityData.name,
-            abilityData.group
-          );
+          newAbility = new AbilityData(abilityData.name, abilityData.group);
           calculated.set(newAbility.name, newAbility);
         }
       });
@@ -105,7 +113,9 @@ export class AbilityService {
         return;
       }
       const newValue =
-        referenceAbility.calculatedSum !== null ? referenceAbility.calculatedSum.toString() : "—";
+        referenceAbility.calculatedSum !== null
+          ? referenceAbility.calculatedSum.toString()
+          : "—";
 
       calculatedData = calculatedData.replaceAll(
         new RegExp(`(\\d+)(?=\\#${ref.refName})`, "g"),
@@ -116,7 +126,7 @@ export class AbilityService {
         this.getAbilityMod(newValue)
       );
 
-      mods.forEach(m => {
+      mods.forEach((m) => {
         m.value = m.value.replaceAll(
           new RegExp(`(\\d+)(?=\\#${ref.refName})`, "g"),
           newValue
@@ -125,7 +135,7 @@ export class AbilityService {
           new RegExp(`(\\d+)(?=\\@${ref.refName})`, "g"),
           this.getAbilityMod(newValue)
         );
-      })
+      });
     });
     return calculatedData;
   };
@@ -146,5 +156,3 @@ export class AbilityService {
     return input;
   };
 }
-
-

@@ -5,7 +5,7 @@ import { QualityData } from "../models/characterSheet/QualityData";
 import { TableData } from "../models/characterSheet/TableData";
 
 interface IAbilityScores {
-  data: [AbilityData[], QualityData[], TableData[]]
+  data: [AbilityData[], QualityData[], TableData[]];
   editMode: boolean;
   removeAbility(quality: AbilityData): void;
 }
@@ -14,15 +14,16 @@ export const AbilityScores = (props: IAbilityScores) => {
 
   return (
     <Box>
-      {abilities.map(ability =>
+      {abilities.map((ability) => (
         <Box key={ability.name} sx={{ display: "flex", placeItems: "center" }}>
           <Ability
             abilityData={ability}
             showMod={true}
             editMode={props.editMode}
-            removeAbility={props.removeAbility}>
-          </Ability>
-        </Box>)}
+            removeAbility={props.removeAbility}
+          ></Ability>
+        </Box>
+      ))}
     </Box>
   );
 };

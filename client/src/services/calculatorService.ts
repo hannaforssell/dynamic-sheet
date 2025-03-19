@@ -8,7 +8,7 @@ export class CalculatorService {
   private qualityService = new QualityService();
   private effectService = new EffectService();
 
-  constructor() { }
+  constructor() {}
 
   public calculate = (characterSheet: ICharacterSheet): ICharacterSheet => {
     this.effectService.Apply(characterSheet);
@@ -16,9 +16,7 @@ export class CalculatorService {
     return {
       ...characterSheet,
       abilityData: this.abilityService.calculate(characterSheet.abilityData),
-      qualityData: this.qualityService.calculate(characterSheet.qualityData),
+      qualityData: this.qualityService.calculate(characterSheet.qualityData)
     };
-  }
+  };
 }
-
-

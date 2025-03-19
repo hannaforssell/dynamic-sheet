@@ -1,3 +1,3 @@
 export abstract class Node {
-    abstract Eval: () => number | null;
+  abstract Eval: () => number | null;
 }

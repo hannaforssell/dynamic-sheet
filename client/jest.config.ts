@@ -1,10 +1,10 @@
-import type {Config} from 'jest';
+import type { Config } from "jest";
 
 const config: Config = {
   verbose: true,
   transform: {
-    "^.+\\.tsx?$": "ts-jest",
-    }
+    "^.+\\.tsx?$": "ts-jest"
+  }
 };
 
 export default config;

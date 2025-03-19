@@ -1,5 +1,5 @@
 export enum PropertyType {
-    Ability = "Ability",
-    Quality = "Quality",
-    Item = "Item"
+  Ability = "Ability",
+  Quality = "Quality",
+  Item = "Item"
 }

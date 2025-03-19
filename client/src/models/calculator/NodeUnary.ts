@@ -4,7 +4,10 @@ import { Node } from "./Node";
 export class NodeUnary extends Node {
   // Constructor accepts the two nodes to be operated on and function
   // that performs the actual operation
-  constructor(public rhs: Node, public op: (arg0: number | null) => number | null) {
+  constructor(
+    public rhs: Node,
+    public op: (arg0: number | null) => number | null
+  ) {
     super();
   }
 

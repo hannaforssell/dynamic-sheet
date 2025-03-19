@@ -26,7 +26,7 @@ export const Item = (props: IItemProps) => {
           onChange={(e) => {
             setItem((prevState) => ({
               ...prevState,
-              name: e.target.value,
+              name: e.target.value
             }));
           }}
           readOnly={!props.editView}
@@ -45,7 +45,7 @@ export const Item = (props: IItemProps) => {
                   item.value.group,
                   Number(e.target.value),
                   item.value.calculatedText
-                ),
+                )
               }));
             }}
             readOnly={!props.editView}
@@ -60,7 +60,7 @@ export const Item = (props: IItemProps) => {
             onChange={(e) => {
               setItem((prevState) => ({
                 ...prevState,
-                weight: Number(e.target.value),
+                weight: Number(e.target.value)
               }));
             }}
             readOnly={!props.editView}
@@ -75,7 +75,7 @@ export const Item = (props: IItemProps) => {
             onChange={(e) => {
               setItem((prevState) => ({
                 ...prevState,
-                location: e.target.value,
+                location: e.target.value
               }));
             }}
             readOnly={!props.editView}
@@ -94,7 +94,12 @@ export const Item = (props: IItemProps) => {
                     onChange={(e) => {
                       setItem((prevState) => ({
                         ...prevState,
-                        listItems: [{ name: e.target.value, desc: "" }],
+                        listItems: [
+                          {
+                            name: e.target.value,
+                            desc: ""
+                          }
+                        ]
                       }));
                     }}
                     placeholder="Name"

@@ -5,7 +5,7 @@ import { QualityData } from "./QualityData";
 import { TableData } from "./TableData";
 
 export interface ICharacterSheet {
-  _id: string | null
+  _id: string | null;
   qualityData: Map<string, QualityData>;
   abilityData: Map<string, AbilityData>;
   classSkills: Set<string>;

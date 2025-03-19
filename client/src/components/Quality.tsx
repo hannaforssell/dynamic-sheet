@@ -1,5 +1,15 @@
 import { QualityData } from "../models/characterSheet/QualityData";
-import { Button, styled, SxProps, TextField, Theme, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
+import {
+  Button,
+  styled,
+  SxProps,
+  TextField,
+  Theme,
+  Tooltip,
+  tooltipClasses,
+  TooltipProps,
+  Typography
+} from "@mui/material";
 import { useState } from "react";
 import { defaultStyle } from "../helpers/stylingHelper";
 import { QualityService } from "../services/qualityService";
@@ -16,28 +26,39 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: '#f5f5f9',
-    color: 'rgba(0, 0, 0, 0.87)',
+    backgroundColor: "#f5f5f9",
+    color: "rgba(0, 0, 0, 0.87)",
     maxWidth: 220,
     fontSize: theme.typography.pxToRem(12),
-    border: '1px solid #dadde9',
-  },
+    border: "1px solid #dadde9"
+  }
 }));
 
 const localStyle: SxProps<Theme> = {
   ...defaultStyle,
   width: 300,
-  input: { color: "rgba(255, 255, 255, 0.87)", '&:Mui-TextField': { brandBorderColor: "rgba(255, 255, 255, 0.87)" } },
+  input: {
+    color: "rgba(255, 255, 255, 0.87)",
+    "&:Mui-TextField": { brandBorderColor: "rgba(255, 255, 255, 0.87)" }
+  },
   fontSize: "14px",
   margin: "3px 10px",
-  "& .MuiInputBase-input": { color: "rgba(255, 255, 255, 0.87)", fontFamily: "Roboto Mono, serif", maxHeight: 1, padding: 1, fontSize: 14 }
+  "& .MuiInputBase-input": {
+    color: "rgba(255, 255, 255, 0.87)",
+    fontFamily: "Roboto Mono, serif",
+    maxHeight: 1,
+    padding: 1,
+    fontSize: 14
+  }
 };
 
 export const Quality = (props: IQualityProps) => {
-  const [displayText, setDisplayText] = useState(props.qualityData.calculatedText);
+  const [displayText, setDisplayText] = useState(
+    props.qualityData.calculatedText
+  );
 
   const onFocus = () => {
-    setDisplayText(props.qualityData.originalText)
+    setDisplayText(props.qualityData.originalText);
   };
 
   const onBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -52,8 +73,25 @@ export const Quality = (props: IQualityProps) => {
         title={
           <>
             <Typography color="inherit"> {props.qualityData.name}</Typography>
-            {props.qualityData.originalText != "" ? <p style={props.qualityData.qualityMods.length == 0 ? {} : { textDecoration: "line-through" }}>{props.qualityData.originalText}</p> : <></>}
-            {props.qualityData.qualityMods.map((m, i) => <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>{`${m.value} [${m.source}]`}</p>)}
+            {props.qualityData.originalText != "" ? (
+              <p
+                style={
+                  props.qualityData.qualityMods.length == 0
+                    ? {}
+                    : { textDecoration: "line-through" }
+                }
+              >
+                {props.qualityData.originalText}
+              </p>
+            ) : (
+              <></>
+            )}
+            {props.qualityData.qualityMods.map((m, i) => (
+              <p
+                key={i}
+                style={m.enabled ? {} : { textDecoration: "line-through" }}
+              >{`${m.value} [${m.source}]`}</p>
+            ))}
           </>
         }
       >
@@ -62,7 +100,7 @@ export const Quality = (props: IQualityProps) => {
           helperText={props.qualityData.name}
           variant="filled"
           value={displayText}
-          onChange={e => setDisplayText(e.target.value)}
+          onChange={(e) => setDisplayText(e.target.value)}
           onFocus={onFocus}
           onBlur={onBlur}
           disabled={false}
@@ -71,7 +109,11 @@ export const Quality = (props: IQualityProps) => {
           slotProps={{ formHelperText: { sx: defaultStyle } }}
         />
       </HtmlTooltip>
-      {(props.editMode && <Button onClick={() => props.removeQuality(props.qualityData)} >X</Button>)}
+      {props.editMode && (
+        <Button onClick={() => props.removeQuality(props.qualityData)}>
+          X
+        </Button>
+      )}
     </>
   );
 };

@@ -73,7 +73,7 @@ export class Tokenizer {
         this.NextChar();
         this.currentToken = Token.Comma;
         return;
-      
+
       case "—":
         this.NextChar();
         this.currentToken = Token.NaN;
@@ -83,16 +83,18 @@ export class Tokenizer {
     // Number from other ability
 
     // Number?
-    if (Number(this.currentChar) || 
+    if (
+      Number(this.currentChar) ||
       this.currentChar === "0" ||
-      this.currentChar == ".") {
+      this.currentChar == "."
+    ) {
       // Capture digits/decimal point
       let sb = "";
       let haveDecimalPoint = false;
 
       while (
-        Number(this.currentChar) || 
-        this.currentChar === "0" || 
+        Number(this.currentChar) ||
+        this.currentChar === "0" ||
         (!haveDecimalPoint && this.currentChar == ".")
       ) {
         sb += this.currentChar;

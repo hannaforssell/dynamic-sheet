@@ -15,7 +15,7 @@ export class Parser {
   // Parse an entire expression and check EOF was reached
   public ParseExpression = (): Node => {
     this.tokenizer.NextToken();
-    
+
     // For the moment, all we understand is add and subtract
     const expr = this.ParseAddSubtract();
 
@@ -31,12 +31,14 @@ export class Parser {
     let lhs = this.ParseMultiplyDivide();
 
     while (true) {
-      let op: ((arg0: number | null, arg1: number | null) => number | null) | null = null;
+      let op:
+        | ((arg0: number | null, arg1: number | null) => number | null)
+        | null = null;
 
       if (this.tokenizer.getCurrentToken() === Token.Add) {
-        op = (a, b) => a === null || b === null ? null : a + b;
+        op = (a, b) => (a === null || b === null ? null : a + b);
       } else if (this.tokenizer.getCurrentToken() === Token.Subtract) {
-        op = (a, b) => a === null || b === null ? null : a - b;
+        op = (a, b) => (a === null || b === null ? null : a - b);
       }
 
       // Binary operator found?
@@ -59,12 +61,14 @@ export class Parser {
     let lhs = this.ParseUnary();
 
     while (true) {
-      let op: ((arg0: number | null, arg1: number | null) => number | null) | null = null;
+      let op:
+        | ((arg0: number | null, arg1: number | null) => number | null)
+        | null = null;
 
       if (this.tokenizer.getCurrentToken() === Token.Multiply) {
-        op = (a, b) => a === null || b === null ? null : a * b;
+        op = (a, b) => (a === null || b === null ? null : a * b);
       } else if (this.tokenizer.getCurrentToken() === Token.Divide) {
-        op = (a, b) => a === null || b === null ? null : a / b;
+        op = (a, b) => (a === null || b === null ? null : a / b);
       }
 
       // Binary operator found?
@@ -99,7 +103,7 @@ export class Parser {
 
         // Create unary node
         return new NodeUnary(rhs, (a) => {
-          if(a === null) {
+          if (a === null) {
             return null;
           }
           return -a;
@@ -140,7 +144,9 @@ export class Parser {
     }
 
     // Don't Understand
-    throw new Error(`Unexpect token: ${this.tokenizer.getCurrentToken()}, currChar: ${this.tokenizer.currentChar}`);
+    throw new Error(
+      `Unexpect token: ${this.tokenizer.getCurrentToken()}, currChar: ${this.tokenizer.currentChar}`
+    );
   };
 }
 

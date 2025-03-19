@@ -3,7 +3,7 @@ import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { MenuModal } from "../styles/styled-components/MenuModal";
 import { MenuButton } from "../styles/styled-components/MenuButton";
 
-import * as backendService from "../services/backendService"
+import * as backendService from "../services/backendService";
 import { AddDataModal } from "./AddDataModal";
 
 interface IHeaderMenuProps {
@@ -18,14 +18,16 @@ export const HeaderMenu = (props: IHeaderMenuProps) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const saveSheet = async () => {
-    const res = await backendService.postCharacterSheet(props.characterSheet)
+    const res = await backendService.postCharacterSheet(props.characterSheet);
     props.characterSheet._id = res._id;
   };
 
   const loadSheet = async () => {
-    const characterSheet = await backendService.getCharacterSheet("67d67b9503753db8340379c1");
+    const characterSheet = await backendService.getCharacterSheet(
+      "67d67b9503753db8340379c1"
+    );
     if (characterSheet) {
-      props.setCharacterSheet(characterSheet)
+      props.setCharacterSheet(characterSheet);
     }
   };
 
@@ -42,10 +44,11 @@ export const HeaderMenu = (props: IHeaderMenuProps) => {
 
           <hr />
 
-          <button onClick={() => {
-            setIsAddModalOpen(true);
-            setIsMenuOpen(false);
-          }}
+          <button
+            onClick={() => {
+              setIsAddModalOpen(true);
+              setIsMenuOpen(false);
+            }}
           >
             Add new
           </button>
@@ -56,13 +59,14 @@ export const HeaderMenu = (props: IHeaderMenuProps) => {
           </label>
         </MenuModal>
       )}
-      {isAddModalOpen &&
+      {isAddModalOpen && (
         <AddDataModal
           characterSheet={props.characterSheet}
           setCharacterSheet={props.setCharacterSheet}
           open={isAddModalOpen}
           setOpen={setIsAddModalOpen}
-        />}
+        />
+      )}
     </>
   );
 };
