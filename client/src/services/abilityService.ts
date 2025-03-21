@@ -17,7 +17,15 @@ export class AbilityService {
             currentBatch.map((abilityData) => {
                 let newAbility: AbilityData;
                 try {
-                    let modifiedInput = abilityData.abilityMods.reduce((acc, m) => (m.enabled ? acc + m.toString() : acc), "");
+                    let modifiedInput = abilityData.abilityMods.reduce((acc, m) => {
+                        if (!m.enabled) {
+                            return acc;
+                        }
+                        if (m.operator === "*") {
+                            return `(${acc})${m.toString()}`;
+                        }
+                        return acc + m.toString();
+                    }, "");
 
                     const references = this.getReferences(modifiedInput);
 

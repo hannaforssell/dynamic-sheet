@@ -22,7 +22,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {
     }
 }));
 
-const localStyle: SxProps<Theme> = {
+const singleLineStyle: SxProps<Theme> = {
     ...defaultStyle,
     width: 300,
     input: {
@@ -34,9 +34,26 @@ const localStyle: SxProps<Theme> = {
     "& .MuiInputBase-input": {
         color: "rgba(255, 255, 255, 0.87)",
         fontFamily: "Roboto Mono, serif",
+        backgroundColor: "#242424",
         maxHeight: 1,
         padding: 1,
         fontSize: 14
+    }
+};
+
+const multiLineStyle: SxProps<Theme> = {
+    ...defaultStyle,
+    input: {
+        color: "rgba(255, 255, 255, 0.87)",
+        "&:Mui-TextField": { brandBorderColor: "rgba(255, 255, 255, 0.87)" }
+    },
+    "& .MuiInputBase-input": {
+        color: "rgba(255, 255, 255, 0.87)",
+        fontFamily: "Roboto Mono, serif",
+        backgroundColor: "#242424",
+        maxHeight: 1,
+        padding: 1,
+        fontSize: 12
     }
 };
 
@@ -52,6 +69,8 @@ export const Quality = (props: IQualityProps) => {
         qualityService.recalculate(props.qualityData);
         setDisplayText(props.qualityData.calculatedText);
     };
+
+    const isMultiline = props.qualityData.calculatedText.includes("\n");
 
     return (
         <>
@@ -70,19 +89,32 @@ export const Quality = (props: IQualityProps) => {
                     </>
                 }
             >
-                <TextField
-                    contentEditable={false}
-                    helperText={props.qualityData.name}
-                    variant="filled"
-                    value={displayText}
-                    onChange={(e) => setDisplayText(e.target.value)}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    disabled={false}
-                    sx={localStyle}
-                    multiline={props.qualityData.calculatedText.includes("\n")}
-                    slotProps={{ formHelperText: { sx: defaultStyle } }}
-                />
+                {isMultiline ? (
+                    <TextField
+                        value={displayText}
+                        multiline={true}
+                        helperText={props.qualityData.displayName}
+                        onChange={(e) => setDisplayText(e.target.value)}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        sx={multiLineStyle}
+                        slotProps={{ formHelperText: { sx: defaultStyle }, htmlInput: { style: { padding: 0, margin: -5 } } }}
+                        fullWidth={true}
+                    />
+                ) : (
+                    <TextField
+                        contentEditable={false}
+                        helperText={props.qualityData.displayName}
+                        variant="filled"
+                        value={displayText}
+                        onChange={(e) => setDisplayText(e.target.value)}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        disabled={false}
+                        sx={singleLineStyle}
+                        slotProps={{ formHelperText: { sx: defaultStyle } }}
+                    />
+                )}
             </HtmlTooltip>
             {props.editMode && <Button onClick={() => props.removeQuality(props.qualityData)}>X</Button>}
         </>

@@ -5,20 +5,20 @@ import { TableData } from "../models/characterSheet/TableData";
 import { AbilityCollection } from "./AbilityCollection";
 import { QualityCollection } from "./QualityCollection";
 
-interface IHitpoints {
+interface IMisc {
     data: [AbilityData[], QualityData[], TableData[]];
     editMode: boolean;
     removeAbility(quality: AbilityData): void;
     removeQuality(quality: QualityData): void;
 }
 
-export const Hitpoints = (props: IHitpoints) => {
+export const Misc = (props: IMisc) => {
     const [abilities, qualities] = props.data;
 
     return (
-        <Box sx={{ display: "flex" }}>
-            <AbilityCollection abilities={abilities} editMode={props.editMode} removeAbility={props.removeAbility}></AbilityCollection>
-            <QualityCollection qualities={qualities} editMode={props.editMode} removeQuality={props.removeQuality}></QualityCollection>
+        <Box>
+            <AbilityCollection abilities={abilities} editMode={false} removeAbility={props.removeAbility}></AbilityCollection>
+            <QualityCollection qualities={qualities} editMode={false} removeQuality={props.removeQuality}></QualityCollection>
         </Box>
     );
 };

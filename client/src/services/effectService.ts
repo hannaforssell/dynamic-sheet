@@ -6,7 +6,7 @@ import { QualityDataMod } from "../models/characterSheet/QualityDataMod";
 let currEffect: Effect | null = null;
 let currSheet: ICharacterSheet | null = null;
 
-export function AddAbilityMod(attributeName: string, value: string, type: string) {
+export function AddAbilityMod(attributeName: string, value: string, type: string, sourceOverride?: string | null) {
     if (!currSheet || !currEffect) {
         console.log("Error adding ability mod.");
         return;
@@ -28,8 +28,8 @@ export function AddAbilityMod(attributeName: string, value: string, type: string
         operator = "+";
     }
 
-    const newMod = new AbilityDataMod(type ?? "Untyped", currEffect.name, operator, value);
-    if (newMod.operator == "+") {
+    const newMod = new AbilityDataMod(type ?? "Untyped", sourceOverride ?? currEffect.name, operator, value);
+    if (newMod.operator == "+" && newMod.type !== "Untyped") {
         attribute.abilityMods.forEach((m) => {
             if (m.type == newMod.type && m.operator == "+") {
                 const toDisable = (m.value ?? 0) > (newMod.value ?? 0) ? newMod : m;
@@ -38,7 +38,21 @@ export function AddAbilityMod(attributeName: string, value: string, type: string
         });
     }
 
-    attribute.abilityMods.push(new AbilityDataMod(type ?? "Untyped", currEffect.name, "+", value));
+    attribute.abilityMods.push(newMod);
+}
+
+export function MultAbilityMod(attributeName: string, value: string) {
+    if (!currSheet || !currEffect) {
+        console.log("Error multiplying ability mod.");
+        return;
+    }
+
+    const attribute = currSheet.abilityData.get(attributeName);
+    if (!attribute) {
+        return;
+    }
+
+    attribute.abilityMods.push(new AbilityDataMod("Untyped", currEffect.name, "*", value));
 }
 
 export function SetAbility(attributeName: string, value: string) {

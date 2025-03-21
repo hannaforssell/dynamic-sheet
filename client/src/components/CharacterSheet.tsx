@@ -18,10 +18,14 @@ import { defaultStyle } from "../helpers/stylingHelper";
 import { groupData } from "../helpers/dataGrouper";
 import { Hitpoints } from "./Hitpoints";
 import { Defenses } from "./Defenses";
+import { Misc } from "./Misc";
 
 import * as backendService from "../services/backendService";
 import { CalculatorService } from "../services/calculatorService";
 import { DataGroupType } from "../models/characterSheet/DataGroupType";
+import { Saves } from "./Saves";
+import { defaultSheetPF } from "../helpers/sheetHelper";
+import { AC } from "./AC";
 
 const calculatorService = new CalculatorService();
 
@@ -34,20 +38,19 @@ export const CharacterSheet = () => {
 
     useEffect(() => {
         setLoading(true);
-        console.log("making call");
-        //setSheetData(calculatorService.calculate(defaultSheetPF));
+        setSheetData(calculatorService.calculate(defaultSheetPF));
 
-        backendService
-            .getCharacterSheet("67d91ffdb4078b185a5422ce")
-            .then((x) => {
-                if (x) {
-                    setSheetData(calculatorService.calculate(x));
-                }
-            })
-            .catch((e) => alert(`Getting data failed: ${e.message}`))
-            .finally(() => {
-                setLoading(false);
-            });
+        // backendService
+        //     .getCharacterSheet("67da834627222e5c0fd047de")
+        //     .then((x) => {
+        //         if (x) {
+        //             setSheetData(calculatorService.calculate(x));
+        //         }
+        //     })
+        //     .catch((e) => alert(`Getting data failed: ${e.message}`))
+        //     .finally(() => {
+        //         setLoading(false);
+        //     });
     }, []);
 
     if (!sheetData) {
@@ -65,7 +68,7 @@ export const CharacterSheet = () => {
             return;
         }
         setSearch(e.target.value);
-        setTabIndex(3);
+        setTabIndex(6);
     };
 
     const changeProperty = (property: AbilityData | QualityData | ItemData) => {
@@ -106,6 +109,7 @@ export const CharacterSheet = () => {
                     <Tab label={"Defense"} value={2} sx={defaultStyle} />
                     <Tab label={"Skills"} value={3} sx={defaultStyle} />
                     <Tab label={"Items"} value={4} sx={defaultStyle} />
+                    <Tab label={"Misc"} value={5} sx={defaultStyle} />
                     {search && (
                         <Tab label={`Search result: ${search}`} value={5} autoFocus={false} onFocus={() => document.getElementById("searchBar")?.focus()} />
                     )}
@@ -130,7 +134,12 @@ export const CharacterSheet = () => {
                     />
                     <Grid2 container sx={{ placeItems: "center", alignSelf: "center" }}>
                         <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
-                            <AbilityScores data={groupData(sheetData, DataGroupType.AbilityScores)} editMode={editMode} removeAbility={removeAbility} />
+                            <AbilityScores
+                                data={groupData(sheetData, DataGroupType.AbilityScores)}
+                                editMode={editMode}
+                                removeAbility={removeAbility}
+                                removeQuality={removeQuality}
+                            />
                         </Grid2>
                         <Grid2 size={5} sx={{ display: "flex", justifyContent: "center" }}>
                             <Portrait imageLink={sheetData.imageLink} />
@@ -147,20 +156,40 @@ export const CharacterSheet = () => {
                 </TabPanel>
                 <TabPanel value={1}></TabPanel>
                 <TabPanel value={2}>
-                    <Box sx={{ display: "flex" }}>
-                        <Hitpoints
-                            data={groupData(sheetData, DataGroupType.HitPoints)}
-                            editMode={editMode}
-                            removeAbility={removeAbility}
-                            removeQuality={removeQuality}
-                        ></Hitpoints>
-                        <Defenses
-                            data={groupData(sheetData, DataGroupType.Defense)}
-                            editMode={editMode}
-                            removeAbility={removeAbility}
-                            removeQuality={removeQuality}
-                        ></Defenses>
-                    </Box>
+                    <Grid2 container sx={{ placeItems: "center", alignSelf: "center" }}>
+                        <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
+                            <Box sx={{ gap: "20px", display: "flex", flexDirection: "column" }}>
+                                <Hitpoints
+                                    data={groupData(sheetData, DataGroupType.HitPoints)}
+                                    editMode={editMode}
+                                    removeAbility={removeAbility}
+                                    removeQuality={removeQuality}
+                                ></Hitpoints>
+                                <Saves
+                                    data={groupData(sheetData, DataGroupType.Saves)}
+                                    editMode={editMode}
+                                    removeAbility={removeAbility}
+                                    removeQuality={removeQuality}
+                                ></Saves>
+                                <AC
+                                    data={groupData(sheetData, DataGroupType.AC)}
+                                    editMode={editMode}
+                                    removeAbility={removeAbility}
+                                    removeQuality={removeQuality}
+                                ></AC>
+                            </Box>
+                        </Grid2>
+                        <Grid2 size={5} sx={{ display: "flex", justifyContent: "center" }}>
+                            <Defenses
+                                data={groupData(sheetData, DataGroupType.Defense)}
+                                editMode={editMode}
+                                removeAbility={removeAbility}
+                                removeQuality={removeQuality}
+                            ></Defenses>
+                        </Grid2>
+                        <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}></Grid2>
+                    </Grid2>
+                    <Box sx={{ display: "flex" }}></Box>
                 </TabPanel>
                 <TabPanel value={3}>
                     <PropertyGroup
@@ -185,8 +214,11 @@ export const CharacterSheet = () => {
                     {sheetData.itemData &&
                         [...sheetData.itemData].map(([key, value]) => <Item key={key} item={value} editView={editMode} changeItem={changeProperty} />)}
                 </TabPanel>
+                <TabPanel value={5}>
+                    <Misc data={groupData(sheetData, DataGroupType.Misc)} editMode={editMode} removeAbility={removeAbility} removeQuality={removeQuality} />
+                </TabPanel>
                 {search && (
-                    <TabPanel value={5}>
+                    <TabPanel value={6}>
                         <SearchResult
                             search={search}
                             characterSheet={sheetData}

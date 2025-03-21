@@ -9,6 +9,7 @@ interface IAbilityProps {
     editMode: boolean;
     removeAbility(quality: AbilityData): void;
     showMod?: boolean;
+    showSign?: boolean;
 }
 
 const getAbilityMod = (score: number | null) => {
@@ -31,7 +32,16 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {
 }));
 
 export const Ability = (props: IAbilityProps) => {
-    const sumValue = props.abilityData.calculatedSum === null ? "—" : Math.floor(props.abilityData.calculatedSum);
+    let displaySum = "";
+    if (props.abilityData.calculatedSum === null) {
+        displaySum = "—";
+    } else {
+        if (props.abilityData.calculatedSum > 0 && props.showSign == true) {
+            displaySum = "+" + Math.floor(props.abilityData.calculatedSum);
+        } else {
+            displaySum = Math.floor(props.abilityData.calculatedSum).toString();
+        }
+    }
 
     return (
         <>
@@ -42,7 +52,7 @@ export const Ability = (props: IAbilityProps) => {
                         <React.Fragment>
                             <Typography color="inherit">
                                 {" "}
-                                {props.abilityData.name}: {sumValue}
+                                {props.abilityData.name}: {displaySum}
                             </Typography>
                             {props.abilityData.abilityMods.map((m, i) => (
                                 <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>
@@ -53,7 +63,7 @@ export const Ability = (props: IAbilityProps) => {
                     }
                 >
                     <Button sx={{ ...defaultStyle, padding: 0, paddingTop: "1px" }}>
-                        {props.showMod ? `${sumValue} ${getAbilityMod(props.abilityData.calculatedSum)}` : sumValue}
+                        {props.showMod ? `${displaySum} ${getAbilityMod(props.abilityData.calculatedSum)}` : displaySum}
                     </Button>
                 </HtmlTooltip>
             </Box>

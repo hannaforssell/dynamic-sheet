@@ -16,16 +16,28 @@ export const defaultSheetPF: ICharacterSheet = {
         ["Race", new QualityData("Race", DataGroupType.TopInfo, "", 3)],
         ["Type", new QualityData("Type", DataGroupType.TopInfo, "", 4)],
         ["Size", new QualityData("Size", DataGroupType.TopInfo, "", 5)],
-        ["Alignment", new QualityData("Alignment", DataGroupType.TopInfo, "", 6)],
-        ["Deity", new QualityData("Deity", DataGroupType.TopInfo, "", 7)],
+        ["Alignment", new QualityData("Alignment", DataGroupType.TopInfo, "Chatoic Good", 6)],
+        ["Deity", new QualityData("Deity", DataGroupType.TopInfo, "Pulura", 7)],
 
         ["CurrHP", new QualityData("CurrHP", DataGroupType.HitPoints, "132", 2, "Current HP")],
 
         ["DR", new QualityData("DR", DataGroupType.Defense, "")],
         ["Immunities", new QualityData("Immunities", DataGroupType.Defense, "")],
         ["Resistances", new QualityData("Resistances", DataGroupType.Defense, "")],
-        ["Miss Chance", new QualityData("Miss Chance", DataGroupType.Defense, "")],
-        ["Senses", new QualityData("Senses", DataGroupType.Defense, "")]
+        ["MissChance", new QualityData("MissChance", DataGroupType.Defense, "", 100, "Miss Chance")],
+        ["Senses", new QualityData("Senses", DataGroupType.Defense, "")],
+
+        [
+            "Assumptions",
+            new QualityData(
+                "Assumptions",
+                DataGroupType.Misc,
+                "I can pick advanced talents from Spheres of Power\nRegional feats are forbidden but regional talents are not.\nTelepathy is an automatic ability relating to Magic Jar\nI'm allowed to do some downtime casting during character creation.\nSpells such as Arcane Concordance affects sphere powers"
+            )
+        ],
+        ["Gender", new QualityData("Gender", DataGroupType.Misc, "")],
+        ["Height", new QualityData("Height", DataGroupType.Misc, "")],
+        ["Weight", new QualityData("Weight", DataGroupType.Misc, "")]
     ]),
     abilityData: new Map([
         ["Str", new AbilityData("Str", DataGroupType.AbilityScores, 1)],
@@ -42,14 +54,17 @@ export const defaultSheetPF: ICharacterSheet = {
         ["THP", new AbilityData("THP", DataGroupType.HitPoints, 1)],
 
         ["AC", new AbilityData("AC", DataGroupType.AC, 0)],
-        ["Touch", new AbilityData("Touch", DataGroupType.AC, 0)],
-        ["Flat-Footed", new AbilityData("Flat-Footed", DataGroupType.AC, 0)],
-        ["Initiative", new AbilityData("Initiative", DataGroupType.AC, 0)],
-        ["Speed(Land)", new AbilityData("Speed(Land)", DataGroupType.AC, 0, "Speed (Land)")],
+        ["TouchAC", new AbilityData("TouchAC", DataGroupType.AC, 1, "Touch")],
+        ["FlatFootedAC", new AbilityData("FlatFootedAC", DataGroupType.AC, 2, "Flat-Footed")],
+        ["Initiative", new AbilityData("Initiative", DataGroupType.Offense)],
+        ["Speed(Land)", new AbilityData("Speed(Land)", DataGroupType.Offense, 100, "Speed (Land)")],
 
-        ["Fortitude", new AbilityData("Fortitude", DataGroupType.Saves)],
-        ["Reflex", new AbilityData("Reflex", DataGroupType.Saves)],
+        ["Fort", new AbilityData("Fort", DataGroupType.Saves)],
+        ["Ref", new AbilityData("Ref", DataGroupType.Saves)],
         ["Will", new AbilityData("Will", DataGroupType.Saves)],
+
+        ["CL", new AbilityData("CL", DataGroupType.AbilityScores)],
+        ["BuffCL", new AbilityData("BuffCL", DataGroupType.AbilityScores)],
 
         ["BaB", new AbilityData("BaB", DataGroupType.Offense)],
         ["MeleeToHit", new AbilityData("MeleeToHit", DataGroupType.Offense, 0, "MeleeToHit")],
@@ -130,13 +145,12 @@ export const defaultSheetPF: ICharacterSheet = {
             EffectType.Base,
             "SetAbility('Str', '7');\nSetAbility('Dex', '7');\nSetAbility('Con', '7');\nSetAbility('Int', '18');\nSetAbility('Wis', '18');\nSetAbility('Cha', '15');\n\nAddAbilityMod('HP', '6*0#Level', 'Rolls');"
         ),
-        new Effect("Formulas", true, -1, EffectType.Base, "AddAbilityMod('HP', '0@Con*0#Level', 'Base');\nAddAbilityMod('AC', '10', 'Base');"),
         new Effect(
-            "Yueren Racial",
+            "Formulas",
             true,
             -1,
-            EffectType.Racial,
-            "SetQuality('Race', 'Yueyinren');SetQuality('Type', 'Humanoid');\nAddAbilityMod('Dex', '2', 'Racial');\nAddAbilityMod('Con', '-2', 'Racial');\nAddAbilityMod('Int', '2', 'Racial');"
+            EffectType.Base,
+            "AddAbilityMod('HP', '0@Con*0#Level', 'Base');\n\nAddAbilityMod('AC', '10', 'Base');\nAddAbilityMod('TouchAC', '10', 'Base');\nAddAbilityMod('FlatFootedAC', '10', 'Base');\n\nAddAbilityMod('Fort', '0@Con', 'Base');\nAddAbilityMod('Ref', '0@Dex', 'Base');\nAddAbilityMod('Will', '0@Wis', 'Base');"
         ),
         new Effect(
             "Level",
@@ -153,17 +167,46 @@ export const defaultSheetPF: ICharacterSheet = {
             "AddAbilityMod('Str', '-6');\nAddAbilityMod('Dex', '-6');\nAddAbilityMod('Con', '-6');\nAddAbilityMod('Int', '+3');\nAddAbilityMod('Wis', '+3');\nAddAbilityMod('Cha', '+3');\n"
         ),
         new Effect(
+            "Yueren Racial",
+            true,
+            -1,
+            EffectType.Racial,
+            "SetQuality('Race', 'Yueyinren');\nSetQuality('Type', 'Humanoid');\nSetQuality('Size', 'Medium');\nSetQuality('Gender', 'Male');\nSetQuality('Height', '6 ft.');\nSetQuality('Weight', '103 lbs');\n\nAddAbilityMod('Dex', '2', 'Racial');\nAddAbilityMod('Con', '-2', 'Racial');\nAddAbilityMod('Int', '2', 'Racial');"
+        ),
+        new Effect("Caster Level", true, 1, EffectType.Class, "SetAbility('CL', '11');\nAddAbilityMod('BuffCL', '0#CL', 'Untyped');"),
+        new Effect("Exploiter Wizard", true, 1, EffectType.Class, "AddAbilityMod('BuffCL', '2', 'Untyped', 'Exploit');"),
+        new Effect(
             "Magic Jar (Barbed Devil)",
             true,
             2,
             EffectType.Spell,
-            "SetQuality('Type', 'Outsider (Devil, Evil, Extraplanar, Lawful)');\nAddQualityLine('DR', '10/Good');\nAddQualityLine('Immunities', 'Fire');\nAddQualityLine('Immunities', 'Poison');\nAddQualityLine('Resistances', 'Acid 10');\nAddQualityLine('Resistances', 'Cold 10');\n\n\nSetAbility('Str', '23');\nSetAbility('Dex', '23');\nSetAbility('Con', '22');\nAddQualityLine('Senses', 'Darkvision 60');\nAddQualityLine('Senses', 'See in Darkness');"
+            "SetQuality('Type', 'Outsider (Devil, Evil, Extraplanar, Lawful)');\nSetQuality('Size', 'Medium');\nSetQuality('Height', '6\\\'9 ft.');\nSetQuality('Weight', '293 lbs');\n\nAddQualityLine('DR', '10/Good');\nAddQualityLine('Immunities', 'Fire');\nAddQualityLine('Immunities', 'Poison');\nAddQualityLine('Resistances', 'Acid 10');\nAddQualityLine('Resistances', 'Cold 10');\n\n\nSetAbility('Str', '23');\nSetAbility('Dex', '23');\nSetAbility('Con', '22');\nAddQualityLine('Senses', 'Darkvision 60');\nAddQualityLine('Senses', 'See in Darkness');"
         ),
         new Effect("Ablative Barrier", true, 2, EffectType.Spell, "AddQualityLine('DR', '5/-');"),
+        new Effect(
+            "Siphon Magic",
+            true,
+            2,
+            EffectType.Spell,
+            "AddQualityLine('Senses', 'See Invisibility');\nAddQualityLine('Senses', 'True Seeing');\nAddQualityLine('Senses', 'Arcane Sight');\nAddQualityLine('Senses', 'Detect Snares and Pits');\nAddQualityLine('Senses', 'Detect Chaos/Evil/Good/Law');"
+        ),
+        new Effect("Ablating Aegis", true, 2, EffectType.Spell, "AddQualityLine('MissChance', '45% (Drops by 5%)');"),
+        new Effect(
+            "Aegis - Deflection",
+            true,
+            2,
+            EffectType.Spell,
+            "AddAbilityMod('AC', '0#BuffCL/5', 'Deflection');\nAddAbilityMod('TouchAC', '0#BuffCL/5', 'Deflection');\nAddAbilityMod('FlatFootedAC', '0#BuffCL/5', 'Deflection');"
+        ),
+        new Effect("Blur", true, 2, EffectType.Spell, "AddQualityLine('MissChance', '20% (True Seeing)');"),
+        new Effect("Army Across Time", true, 3, EffectType.Spell, "MultAbilityMod('BuffCL', '1.5')"),
         new Effect("Protection from Arrows, Commual", true, 2, EffectType.Spell, "AddQualityLine('DR', '10/Magic (vs Ranged Weapons)');"),
         new Effect("Maximized Greater False Life", true, 2, EffectType.Spell, "SetAbility('THP', '40');"),
         new Effect("Ghost Syrup", true, 1, EffectType.Item, "SetAbility('Str', '—');"),
         new Effect("Soothsayer's Rainment(Mental Acuity)", true, 2, EffectType.Item, "AddAbilityMod('Int', '(0#UMD - 12)/3', 'Inherent');"),
+        new Effect("Orange Prism Ioun Stone", true, 2, EffectType.Item, "AddAbilityMod('CL', '1', 'Enchancement');"),
+        new Effect("Shaman's Paint", true, 2, EffectType.Item, "AddAbilityMod('BuffCL', '2', 'Alchemical');"),
+        new Effect("Bead of Karma", true, 2, EffectType.Item, "AddAbilityMod('BuffCL', '4');"),
         new Effect(
             "Skill mods",
             true,

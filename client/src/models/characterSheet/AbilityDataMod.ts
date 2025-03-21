@@ -11,6 +11,6 @@ export class AbilityDataMod {
     }
 
     public toString() {
-        return `${this.operator}${this.value} [${this.type}, ${this.source}]`;
+        return `${this.operator}${this.value}[${this.type}, ${this.source}]`;
     }
 }
