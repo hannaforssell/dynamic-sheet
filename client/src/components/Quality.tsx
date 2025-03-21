@@ -3,11 +3,11 @@ import { Button, styled, SxProps, TextField, Theme, Tooltip, tooltipClasses, Too
 import { useState } from "react";
 import { defaultStyle } from "../helpers/stylingHelper";
 import { QualityService } from "../services/qualityService";
+import { IModFunctions } from "../models/IModFunctions";
 
 interface IQualityProps {
     qualityData: QualityData;
-    editMode: boolean;
-    removeQuality(quality: QualityData): void;
+    modFunctions: IModFunctions;
 }
 
 const qualityService = new QualityService();
@@ -116,7 +116,7 @@ export const Quality = (props: IQualityProps) => {
                     />
                 )}
             </HtmlTooltip>
-            {props.editMode && <Button onClick={() => props.removeQuality(props.qualityData)}>X</Button>}
+            {props.modFunctions.editMode && <Button onClick={() => props.modFunctions.removeQuality(props.qualityData)}>X</Button>}
         </>
     );
 };

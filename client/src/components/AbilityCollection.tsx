@@ -1,11 +1,11 @@
 import { Box, SxProps, Theme } from "@mui/material";
 import { Ability } from "./Ability";
 import { AbilityData } from "../models/characterSheet/AbilityData";
+import { IModFunctions } from "../models/IModFunctions";
 
 interface IAbilityCollection {
     abilities: AbilityData[];
-    editMode: boolean;
-    removeAbility(ability: AbilityData): void;
+    modFunctions: IModFunctions;
     showMod?: boolean;
     showSign?: boolean;
     sx?: SxProps<Theme>;
@@ -28,8 +28,7 @@ export const AbilityCollection = (props: IAbilityCollection) => {
                     <Ability
                         key={ability.name}
                         abilityData={ability}
-                        editMode={props.editMode}
-                        removeAbility={props.removeAbility}
+                        modFunctions={props.modFunctions}
                         showMod={props.showMod}
                         showSign={props.showSign}
                     ></Ability>

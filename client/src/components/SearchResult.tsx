@@ -1,6 +1,7 @@
 import { AbilityData } from "../models/characterSheet/AbilityData";
 import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { QualityData } from "../models/characterSheet/QualityData";
+import { IModFunctions } from "../models/IModFunctions";
 import { Section } from "../styles/styled-components/Section";
 import { Ability } from "./Ability";
 import { Quality } from "./Quality";
@@ -8,9 +9,7 @@ import { Quality } from "./Quality";
 interface ISearchResultProps {
     search: string;
     characterSheet: ICharacterSheet;
-    editMode: boolean;
-    removeAbility(quality: AbilityData): void;
-    removeQuality(quality: QualityData): void;
+    modFunctions: IModFunctions;
 }
 
 export const SearchResult = (props: ISearchResultProps) => {
@@ -31,9 +30,9 @@ export const SearchResult = (props: ISearchResultProps) => {
     const resultsToDisplay = new Map<string, (AbilityData | QualityData)[]>();
 
     searchResultAbilities.forEach(([, v]) => {
-        const displayList = resultsToDisplay.get(v.group) ?? [];
-        displayList.push(v);
-        resultsToDisplay.set(v.group, displayList);
+        //const displayList = resultsToDisplay.get(v.group) ?? [];
+        //displayList.push(v);
+        //resultsToDisplay.set(v.group, displayList);
     });
 
     return (
@@ -43,9 +42,9 @@ export const SearchResult = (props: ISearchResultProps) => {
                     <h2 style={{ margin: "0", paddingBottom: "10px" }}>{group}</h2>
                     {values.map((v) =>
                         v instanceof AbilityData ? (
-                            <Ability key={v.name} abilityData={v} editMode={props.editMode} removeAbility={props.removeAbility} />
+                            <Ability key={v.name} abilityData={v} modFunctions={props.modFunctions} />
                         ) : v instanceof AbilityData ? (
-                            <Quality key={v.name} qualityData={v} editMode={props.editMode} removeQuality={props.removeQuality} />
+                            <Quality key={v.name} qualityData={v} modFunctions={props.modFunctions} />
                         ) : (
                             <>ERROR</>
                         )

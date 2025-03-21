@@ -3,11 +3,11 @@ import { Box, Button, Tooltip, tooltipClasses, TooltipProps, Typography } from "
 import { styled } from "@mui/material/styles";
 import React from "react";
 import { defaultStyle } from "../helpers/stylingHelper";
+import { IModFunctions } from "../models/IModFunctions";
 
 interface IAbilityProps {
     abilityData: AbilityData;
-    editMode: boolean;
-    removeAbility(quality: AbilityData): void;
+    modFunctions: IModFunctions;
     showMod?: boolean;
     showSign?: boolean;
 }
@@ -67,7 +67,7 @@ export const Ability = (props: IAbilityProps) => {
                     </Button>
                 </HtmlTooltip>
             </Box>
-            {props.editMode && <Button onClick={() => props.removeAbility(props.abilityData)}>X</Button>}
+            {props.modFunctions.editMode && <Button onClick={() => props.modFunctions.removeAbility(props.abilityData)}>X</Button>}
         </>
     );
 };

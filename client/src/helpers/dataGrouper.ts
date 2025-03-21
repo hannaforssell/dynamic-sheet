@@ -7,21 +7,21 @@ import { TableData } from "../models/characterSheet/TableData";
 export const groupData = (sheetData: ICharacterSheet, group: DataGroupType): [AbilityData[], QualityData[], TableData[]] => {
     const abilities: AbilityData[] = [];
     sheetData.abilityData.forEach((a) => {
-        if (a.group === group) {
+        if (a.group & group) {
             abilities.push(a);
         }
     });
 
     const qualities: QualityData[] = [];
     sheetData.qualityData.forEach((q) => {
-        if (q.group === group) {
+        if (q.group & group) {
             qualities.push(q);
         }
     });
 
     const tables: TableData[] = [];
     sheetData.tableData.forEach((t) => {
-        if (t.group === group) {
+        if (t.group & group) {
             tables.push(t);
         }
     });

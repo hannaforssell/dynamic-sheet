@@ -48,7 +48,7 @@ export const defaultSheetPF: ICharacterSheet = {
         ["Cha", new AbilityData("Cha", DataGroupType.AbilityScores, 6)],
 
         ["Level", new AbilityData("Level", DataGroupType.Experience, 0)],
-        [DataGroupType.Experience, new AbilityData(DataGroupType.Experience, DataGroupType.Experience, 1)],
+        ["Experience", new AbilityData("Experience", DataGroupType.Experience, 1)],
 
         ["HP", new AbilityData("HP", DataGroupType.HitPoints, 0)],
         ["THP", new AbilityData("THP", DataGroupType.HitPoints, 1)],
@@ -63,8 +63,8 @@ export const defaultSheetPF: ICharacterSheet = {
         ["Ref", new AbilityData("Ref", DataGroupType.Saves)],
         ["Will", new AbilityData("Will", DataGroupType.Saves)],
 
-        ["CL", new AbilityData("CL", DataGroupType.AbilityScores)],
-        ["BuffCL", new AbilityData("BuffCL", DataGroupType.AbilityScores)],
+        ["CL", new AbilityData("CL", DataGroupType.CasterLevel)],
+        ["BuffCL", new AbilityData("BuffCL", DataGroupType.CasterLevel)],
 
         ["BaB", new AbilityData("BaB", DataGroupType.Offense)],
         ["MeleeToHit", new AbilityData("MeleeToHit", DataGroupType.Offense, 0, "MeleeToHit")],
@@ -223,4 +223,15 @@ export const defaultSheetPF: ICharacterSheet = {
         )
     ],
     imageLink: "https://i.pinimg.com/550x/fd/51/0d/fd510d5cea4970b1d1d36201be01075d.jpg"
+};
+
+export const emptySheet: ICharacterSheet = {
+    _id: null,
+    qualityData: new Map(),
+    abilityData: new Map(),
+    classSkills: new Set(),
+    itemData: new Map(),
+    tableData: new Map(),
+    effects: [],
+    imageLink: ""
 };

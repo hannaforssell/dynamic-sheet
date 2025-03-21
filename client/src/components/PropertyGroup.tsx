@@ -6,13 +6,12 @@ import { TableDisplay } from "./TableDisplay";
 import { TableData } from "../models/characterSheet/TableData";
 import { Box } from "@mui/material";
 import { DataGroupType } from "../models/characterSheet/DataGroupType";
+import { IModFunctions } from "../models/IModFunctions";
 
 interface IPropertyGroupProps {
     group: DataGroupType;
     data: [AbilityData[], QualityData[], TableData[]];
-    editMode: boolean;
-    removeAbility(quality: AbilityData): void;
-    removeQuality(quality: QualityData): void;
+    modFunctions: IModFunctions;
 }
 
 export const PropertyGroup = (props: IPropertyGroupProps) => {
@@ -29,12 +28,12 @@ export const PropertyGroup = (props: IPropertyGroupProps) => {
         >
             {abilities.map((ability) => (
                 <Box key={ability.name}>
-                    <Ability key={ability.name} abilityData={ability} editMode={props.editMode} removeAbility={props.removeAbility}></Ability>
+                    <Ability key={ability.name} abilityData={ability} modFunctions={props.modFunctions}></Ability>
                 </Box>
             ))}
             {qualities.map((quality) => (
                 <Box key={quality.name}>
-                    <Quality key={quality.name} qualityData={quality} editMode={props.editMode} removeQuality={props.removeQuality}></Quality>
+                    <Quality key={quality.name} qualityData={quality} modFunctions={props.modFunctions}></Quality>
                 </Box>
             ))}
             {tables.map((table) => (

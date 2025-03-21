@@ -5,12 +5,11 @@ import { TableDisplay } from "./TableDisplay";
 import { AbilityData } from "../models/characterSheet/AbilityData";
 import { QualityData } from "../models/characterSheet/QualityData";
 import { TableData } from "../models/characterSheet/TableData";
+import { IModFunctions } from "../models/IModFunctions";
 
 interface IExperienceInfo {
     data: [AbilityData[], QualityData[], TableData[]];
-    editMode: boolean;
-    removeAbility(quality: AbilityData): void;
-    removeQuality(quality: QualityData): void;
+    modFunctions: IModFunctions;
 }
 
 export const ExperienceInfo = (props: IExperienceInfo) => {
@@ -27,12 +26,12 @@ export const ExperienceInfo = (props: IExperienceInfo) => {
         >
             {abilities.map((ability) => (
                 <Box key={ability.name}>
-                    <Ability key={ability.name} abilityData={ability} editMode={props.editMode} removeAbility={props.removeAbility}></Ability>
+                    <Ability key={ability.name} abilityData={ability} modFunctions={props.modFunctions}></Ability>
                 </Box>
             ))}
             {qualities.map((quality) => (
                 <Box key={quality.name}>
-                    <Quality key={quality.name} qualityData={quality} editMode={props.editMode} removeQuality={props.removeQuality}></Quality>
+                    <Quality key={quality.name} qualityData={quality} modFunctions={props.modFunctions}></Quality>
                 </Box>
             ))}
             {tables.map((table) => (

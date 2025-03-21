@@ -4,12 +4,11 @@ import { QualityData } from "../models/characterSheet/QualityData";
 import { TableData } from "../models/characterSheet/TableData";
 import { AbilityCollection } from "./AbilityCollection";
 import { QualityCollection } from "./QualityCollection";
+import { IModFunctions } from "../models/IModFunctions";
 
 interface IMisc {
     data: [AbilityData[], QualityData[], TableData[]];
-    editMode: boolean;
-    removeAbility(quality: AbilityData): void;
-    removeQuality(quality: QualityData): void;
+    modFunctions: IModFunctions;
 }
 
 export const Misc = (props: IMisc) => {
@@ -17,8 +16,8 @@ export const Misc = (props: IMisc) => {
 
     return (
         <Box>
-            <AbilityCollection abilities={abilities} editMode={false} removeAbility={props.removeAbility}></AbilityCollection>
-            <QualityCollection qualities={qualities} editMode={false} removeQuality={props.removeQuality}></QualityCollection>
+            <AbilityCollection abilities={abilities} modFunctions={props.modFunctions}></AbilityCollection>
+            <QualityCollection qualities={qualities} modFunctions={props.modFunctions}></QualityCollection>
         </Box>
     );
 };

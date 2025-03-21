@@ -24,17 +24,31 @@ import * as backendService from "../services/backendService";
 import { CalculatorService } from "../services/calculatorService";
 import { DataGroupType } from "../models/characterSheet/DataGroupType";
 import { Saves } from "./Saves";
-import { defaultSheetPF } from "../helpers/sheetHelper";
+import { defaultSheetPF, emptySheet } from "../helpers/sheetHelper";
 import { AC } from "./AC";
+import { IModFunctions } from "../models/IModFunctions";
+import { AbilityCollection } from "./AbilityCollection";
 
 const calculatorService = new CalculatorService();
 
 export const CharacterSheet = () => {
     const [, setLoading] = useState(false);
-    const [sheetData, setSheetData] = useState<ICharacterSheet>();
+    const [sheetData, setSheetData] = useState<ICharacterSheet>(calculatorService.calculate(emptySheet));
     const [search, setSearch] = useState<string>("");
     const [tabIndex, setTabIndex] = useState<number>(0);
     const [editMode, setEditMode] = useState<boolean>(false);
+
+    const modFunctions: IModFunctions = {
+        editMode: editMode,
+        removeAbility: (ability: AbilityData) => {
+            sheetData.abilityData.delete(ability.name);
+            setSheetData({ ...sheetData });
+        },
+        removeQuality: (quality: QualityData) => {
+            sheetData.qualityData.delete(quality.name);
+            setSheetData({ ...sheetData });
+        }
+    };
 
     useEffect(() => {
         setLoading(true);
@@ -84,16 +98,6 @@ export const CharacterSheet = () => {
         }
     };
 
-    const removeAbility = (ability: AbilityData) => {
-        sheetData.abilityData.delete(ability.name);
-        setSheetData({ ...sheetData });
-    };
-
-    const removeQuality = (quality: QualityData) => {
-        sheetData.qualityData.delete(quality.name);
-        setSheetData({ ...sheetData });
-    };
-
     const calculate = () => {
         setSheetData(calculatorService.calculate(sheetData));
     };
@@ -101,7 +105,6 @@ export const CharacterSheet = () => {
     return (
         <>
             <HeaderMenu characterSheet={sheetData} setCharacterSheet={setSheetData} calculate={calculate} setEditView={() => setEditMode(!editMode)} />
-
             <TabContext value={tabIndex}>
                 <Tabs value={tabIndex} onChange={handleTabChange}>
                     <Tab label={"Basic"} value={0} sx={defaultStyle} />
@@ -126,31 +129,16 @@ export const CharacterSheet = () => {
                     }}
                 />
                 <TabPanel value={0}>
-                    <TopInfo
-                        data={groupData(sheetData, DataGroupType.TopInfo)}
-                        editMode={editMode}
-                        removeAbility={removeAbility}
-                        removeQuality={removeQuality}
-                    />
+                    <TopInfo data={groupData(sheetData, DataGroupType.TopInfo)} modFunctions={modFunctions} />
                     <Grid2 container sx={{ placeItems: "center", alignSelf: "center" }}>
                         <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
-                            <AbilityScores
-                                data={groupData(sheetData, DataGroupType.AbilityScores)}
-                                editMode={editMode}
-                                removeAbility={removeAbility}
-                                removeQuality={removeQuality}
-                            />
+                            <AbilityScores data={groupData(sheetData, DataGroupType.AbilityScores)} modFunctions={modFunctions} />
                         </Grid2>
                         <Grid2 size={5} sx={{ display: "flex", justifyContent: "center" }}>
                             <Portrait imageLink={sheetData.imageLink} />
                         </Grid2>
                         <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
-                            <ExperienceInfo
-                                data={groupData(sheetData, DataGroupType.Experience)}
-                                editMode={editMode}
-                                removeAbility={removeAbility}
-                                removeQuality={removeQuality}
-                            />
+                            <ExperienceInfo data={groupData(sheetData, DataGroupType.Experience)} modFunctions={modFunctions} />
                         </Grid2>
                     </Grid2>
                 </TabPanel>
@@ -159,46 +147,20 @@ export const CharacterSheet = () => {
                     <Grid2 container sx={{ placeItems: "center", alignSelf: "center" }}>
                         <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
                             <Box sx={{ gap: "20px", display: "flex", flexDirection: "column" }}>
-                                <Hitpoints
-                                    data={groupData(sheetData, DataGroupType.HitPoints)}
-                                    editMode={editMode}
-                                    removeAbility={removeAbility}
-                                    removeQuality={removeQuality}
-                                ></Hitpoints>
-                                <Saves
-                                    data={groupData(sheetData, DataGroupType.Saves)}
-                                    editMode={editMode}
-                                    removeAbility={removeAbility}
-                                    removeQuality={removeQuality}
-                                ></Saves>
-                                <AC
-                                    data={groupData(sheetData, DataGroupType.AC)}
-                                    editMode={editMode}
-                                    removeAbility={removeAbility}
-                                    removeQuality={removeQuality}
-                                ></AC>
+                                <Hitpoints data={groupData(sheetData, DataGroupType.HitPoints)} modFunctions={modFunctions}></Hitpoints>
+                                <Saves data={groupData(sheetData, DataGroupType.Saves)} modFunctions={modFunctions}></Saves>
+                                <AC data={groupData(sheetData, DataGroupType.AC)} modFunctions={modFunctions}></AC>
                             </Box>
                         </Grid2>
                         <Grid2 size={5} sx={{ display: "flex", justifyContent: "center" }}>
-                            <Defenses
-                                data={groupData(sheetData, DataGroupType.Defense)}
-                                editMode={editMode}
-                                removeAbility={removeAbility}
-                                removeQuality={removeQuality}
-                            ></Defenses>
+                            <Defenses data={groupData(sheetData, DataGroupType.Defense)} modFunctions={modFunctions}></Defenses>
                         </Grid2>
                         <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}></Grid2>
                     </Grid2>
                     <Box sx={{ display: "flex" }}></Box>
                 </TabPanel>
                 <TabPanel value={3}>
-                    <PropertyGroup
-                        group={DataGroupType.Skills}
-                        data={groupData(sheetData, DataGroupType.Skills)}
-                        editMode={false}
-                        removeAbility={removeAbility}
-                        removeQuality={removeQuality}
-                    />
+                    <PropertyGroup group={DataGroupType.Skills} data={groupData(sheetData, DataGroupType.Skills)} modFunctions={modFunctions} />
                     <label
                         style={{
                             textAlign: "left",
@@ -215,17 +177,11 @@ export const CharacterSheet = () => {
                         [...sheetData.itemData].map(([key, value]) => <Item key={key} item={value} editView={editMode} changeItem={changeProperty} />)}
                 </TabPanel>
                 <TabPanel value={5}>
-                    <Misc data={groupData(sheetData, DataGroupType.Misc)} editMode={editMode} removeAbility={removeAbility} removeQuality={removeQuality} />
+                    <Misc data={groupData(sheetData, DataGroupType.Misc)} modFunctions={modFunctions} />
                 </TabPanel>
                 {search && (
                     <TabPanel value={6}>
-                        <SearchResult
-                            search={search}
-                            characterSheet={sheetData}
-                            editMode={editMode}
-                            removeAbility={removeAbility}
-                            removeQuality={removeQuality}
-                        />
+                        <SearchResult search={search} characterSheet={sheetData} modFunctions={modFunctions} />
                     </TabPanel>
                 )}
             </TabContext>
