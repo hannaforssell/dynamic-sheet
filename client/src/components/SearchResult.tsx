@@ -29,11 +29,11 @@ export const SearchResult = (props: ISearchResultProps) => {
 
     const resultsToDisplay = new Map<string, (AbilityData | QualityData)[]>();
 
-    searchResultAbilities.forEach(([, v]) => {
-        //const displayList = resultsToDisplay.get(v.group) ?? [];
-        //displayList.push(v);
-        //resultsToDisplay.set(v.group, displayList);
-    });
+    // searchResultAbilities.forEach(([, v]) => {
+    //     const displayList = resultsToDisplay.get(v.group) ?? [];
+    //     displayList.push(v);
+    //     resultsToDisplay.set(v.group, displayList);
+    // });
 
     return (
         <>

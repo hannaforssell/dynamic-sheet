@@ -27,7 +27,8 @@ import { Saves } from "./Saves";
 import { defaultSheetPF, emptySheet } from "../helpers/sheetHelper";
 import { AC } from "./AC";
 import { IModFunctions } from "../models/IModFunctions";
-import { AbilityCollection } from "./AbilityCollection";
+import { OffenseTab } from "./tabs/OffenseTab";
+import { SpecialAbilities } from "./tabs/SpecialAbilitiesTab";
 
 const calculatorService = new CalculatorService();
 
@@ -111,8 +112,9 @@ export const CharacterSheet = () => {
                     <Tab label={"Offense"} value={1} sx={defaultStyle} />
                     <Tab label={"Defense"} value={2} sx={defaultStyle} />
                     <Tab label={"Skills"} value={3} sx={defaultStyle} />
-                    <Tab label={"Items"} value={4} sx={defaultStyle} />
-                    <Tab label={"Misc"} value={5} sx={defaultStyle} />
+                    <Tab label={"Special Abilities"} value={4} sx={defaultStyle} />
+                    <Tab label={"Items"} value={5} sx={defaultStyle} />
+                    <Tab label={"Misc"} value={6} sx={defaultStyle} />
                     {search && (
                         <Tab label={`Search result: ${search}`} value={5} autoFocus={false} onFocus={() => document.getElementById("searchBar")?.focus()} />
                     )}
@@ -142,7 +144,14 @@ export const CharacterSheet = () => {
                         </Grid2>
                     </Grid2>
                 </TabPanel>
-                <TabPanel value={1}></TabPanel>
+                <TabPanel value={1}>
+                    <OffenseTab
+                        toHitData={groupData(sheetData, DataGroupType.ToHit)}
+                        casterLevelData={groupData(sheetData, DataGroupType.CasterLevel)}
+                        mobilityData={groupData(sheetData, DataGroupType.Mobility)}
+                        modFunctions={modFunctions}
+                    ></OffenseTab>
+                </TabPanel>
                 <TabPanel value={2}>
                     <Grid2 container sx={{ placeItems: "center", alignSelf: "center" }}>
                         <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
@@ -173,14 +182,17 @@ export const CharacterSheet = () => {
                     </label>
                 </TabPanel>
                 <TabPanel value={4}>
+                    <SpecialAbilities specialAbilities={sheetData.specialAbilities} modFunctions={modFunctions}></SpecialAbilities>
+                </TabPanel>
+                <TabPanel value={5}>
                     {sheetData.itemData &&
                         [...sheetData.itemData].map(([key, value]) => <Item key={key} item={value} editView={editMode} changeItem={changeProperty} />)}
                 </TabPanel>
-                <TabPanel value={5}>
+                <TabPanel value={6}>
                     <Misc data={groupData(sheetData, DataGroupType.Misc)} modFunctions={modFunctions} />
                 </TabPanel>
                 {search && (
-                    <TabPanel value={6}>
+                    <TabPanel value={7}>
                         <SearchResult search={search} characterSheet={sheetData} modFunctions={modFunctions} />
                     </TabPanel>
                 )}

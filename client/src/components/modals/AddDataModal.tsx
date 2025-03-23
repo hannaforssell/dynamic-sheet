@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { IFormData } from "../models/IFormData";
-import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
-import { PropertyType } from "../models/PropertyType";
-import { DataGroupType } from "../models/characterSheet/DataGroupType";
+import { IFormData } from "../../models/IFormData";
+import { ICharacterSheet } from "../../models/characterSheet/ICharacterSheet";
+import { PropertyType } from "../../models/PropertyType";
+import { DataGroupType } from "../../models/characterSheet/DataGroupType";
 import { Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Modal, Select, SxProps, TextField, Theme } from "@mui/material";
-import { defaultStyle } from "../helpers/stylingHelper";
-import { AbilityData } from "../models/characterSheet/AbilityData";
+import { defaultStyle } from "../../helpers/stylingHelper";
+import { AbilityData } from "../../models/characterSheet/AbilityData";
 
 interface IAddDataModalData {
     characterSheet: ICharacterSheet;

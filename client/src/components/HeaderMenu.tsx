@@ -4,7 +4,7 @@ import { MenuModal } from "../styles/styled-components/MenuModal";
 import { MenuButton } from "../styles/styled-components/MenuButton";
 
 import * as backendService from "../services/backendService";
-import { AddDataModal } from "./AddDataModal";
+import { AddDataModal } from "./modals/AddDataModal";
 
 interface IHeaderMenuProps {
     characterSheet: ICharacterSheet;
