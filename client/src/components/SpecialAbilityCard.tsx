@@ -60,7 +60,11 @@ export const SpecialAbilityCard = (props: ISpecialAbilityCard) => {
                                     ({props.specialAbility.type})
                                 </Typography>
                             </Grid2>
-                            {showFull && <Typography variant="inherit">{props.specialAbility.calculatedText}</Typography>}
+                            {showFull && (
+                                <Typography variant="inherit">
+                                    <span dangerouslySetInnerHTML={{ __html: props.specialAbility.calculatedText }}></span>
+                                </Typography>
+                            )}
                         </CardContent>
                     </CardActionArea>
                     {showFull && (

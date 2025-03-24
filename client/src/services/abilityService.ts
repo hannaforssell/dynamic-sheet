@@ -2,26 +2,38 @@ import { AbilityData } from "../models/characterSheet/AbilityData";
 import { Parser } from "./parser";
 import { AbilityReference } from "../models/calculator/AbilityReference";
 import { AbilityDataMod } from "../models/characterSheet/AbilityDataMod";
+import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
+import { DataGroupType } from "../models/characterSheet/DataGroupType";
 
 export class AbilityService {
+    private bracketsToRemoveRegex = /\[(.*?)\]/g;
+    private referenceRegex = /\d+(#|@)\w+/g;
+    private removeReferenceRegex = /(#|@)\w+/g;
+    private doubleBracketsRegex = /{{.+?}}/g;
+
+    private calculated: Map<string, boolean> = new Map();
+
     private MAX_DEPTH = 100;
 
     constructor() {}
 
-    public calculate = (abilityData: Map<string, AbilityData>) => {
-        return this.calculateAbilities(abilityData);
+    public calculate = (characterSheet: ICharacterSheet) => {
+        this.calculated.clear();
+
+        this.calculateAbilities(characterSheet, characterSheet.abilityData);
+
+        const specialAbilitiesBatch = this.getSpecialAbilitiesBatch(characterSheet);
+        this.calculateAbilities(characterSheet, specialAbilitiesBatch);
+        this.applySpecialAbilities(characterSheet, specialAbilitiesBatch);
     };
 
-    public calculateAbilities = (abilityData: Map<string, AbilityData>) => {
-        let currentBatch: AbilityData[] = Array.from(abilityData, ([, value]) => value);
+    public calculateAbilities = (characterSheet: ICharacterSheet, startBatch: Map<string, AbilityData>) => {
+        let currentBatch = Array.from(startBatch, ([, value]) => value);
         let nextBatch: AbilityData[] = [];
-
-        const calculated: Map<string, AbilityData> = new Map();
 
         let currentDepth = 0;
         do {
             currentBatch.map((abilityData) => {
-                let newAbility: AbilityData;
                 try {
                     let modifiedInput = abilityData.abilityMods.reduce((acc, m) => {
                         if (!m.enabled) {
@@ -35,10 +47,10 @@ export class AbilityService {
 
                     const references = this.getReferences(modifiedInput);
 
-                    if (references.some((r) => !calculated.has(r.refName))) {
+                    if (references.some((r) => !this.calculated.has(r.refName))) {
                         nextBatch.push(abilityData);
                     } else {
-                        modifiedInput = this.replaceReferences(modifiedInput, abilityData.abilityMods, references, calculated);
+                        modifiedInput = this.replaceReferences(modifiedInput, abilityData.abilityMods, references, characterSheet.abilityData);
                         const displayInput = modifiedInput;
 
                         modifiedInput = this.handleSetOperation(modifiedInput);
@@ -52,19 +64,13 @@ export class AbilityService {
                             result = node.Eval();
                         }
 
-                        newAbility = {
-                            ...abilityData,
-                            calculatedSum: result,
-                            calculatedText: displayInput
-                        };
+                        abilityData.calculatedSum = result;
+                        abilityData.calculatedText = displayInput;
 
-                        calculated.set(newAbility.name, newAbility);
+                        this.calculated.set(abilityData.name, true);
                     }
                 } catch (error) {
                     console.log("error: ", error);
-
-                    newAbility = new AbilityData(abilityData.name, abilityData.group);
-                    calculated.set(newAbility.name, newAbility);
                 }
             });
 
@@ -76,19 +82,54 @@ export class AbilityService {
                 throw new Error("Max Depth reached" + nextBatch);
             }
         } while (currentBatch.length > 0);
+    };
 
-        return calculated;
+    public getSpecialAbilitiesBatch = (characterSheet: ICharacterSheet) => {
+        const retMap = new Map<string, AbilityData>();
+
+        characterSheet.specialAbilities.forEach((specialAbility) => {
+            const bracketTexts = specialAbility.originalText.match(this.doubleBracketsRegex);
+            if (bracketTexts) {
+                bracketTexts.forEach((bracketText) => {
+                    const inner = bracketText.slice(2, bracketText.length - 2);
+                    retMap.set(inner, new AbilityData(inner, DataGroupType.Misc, 0, undefined, [new AbilityDataMod(inner, "Untyped", "+", inner)]));
+                });
+            }
+        });
+
+        return retMap;
+    };
+
+    public applySpecialAbilities = (characterSheet: ICharacterSheet, specialAbilityData: Map<string, AbilityData>) => {
+        characterSheet.specialAbilities.forEach((specialAbility) => {
+            specialAbility.calculatedText = specialAbility.originalText;
+        });
+
+        characterSheet.specialAbilities.forEach((specialAbility) => {
+            specialAbility.calculatedText = specialAbility.originalText;
+
+            const bracketTexts = specialAbility.calculatedText.match(this.doubleBracketsRegex);
+            if (bracketTexts) {
+                bracketTexts.forEach((bracketText) => {
+                    const inner = bracketText.slice(2, bracketText.length - 2);
+                    const calculatedSum = specialAbilityData.get(inner)?.calculatedSum;
+                    if (calculatedSum) {
+                        const replacement = Math.floor(calculatedSum).toString();
+                        specialAbility.calculatedText = specialAbility.calculatedText.replace(bracketText, replacement);
+                    }
+                });
+            }
+        });
+
+        return characterSheet;
     };
 
     private removeBrackets = (calculationData: string) => {
-        const regexp = /\[(.*?)\]/g;
-        return calculationData.replaceAll(regexp, "");
+        return calculationData.replaceAll(this.bracketsToRemoveRegex, "");
     };
 
     private getReferences = (calculationData: string): AbilityReference[] => {
-        const regexp = /\d+(#|@)\w+/g;
-
-        const references = calculationData.match(regexp);
+        const references = calculationData.match(this.referenceRegex);
         if (!references) {
             return [];
         }
@@ -99,12 +140,12 @@ export class AbilityService {
     };
 
     private removeReferences = (calculatedData: string) => {
-        return calculatedData.replaceAll(/(#|@)\w+/g, "");
+        return calculatedData.replaceAll(this.removeReferenceRegex, "");
     };
 
-    private replaceReferences = (calculatedData: string, mods: AbilityDataMod[], references: AbilityReference[], calculated: Map<string, AbilityData>) => {
+    private replaceReferences = (calculatedData: string, mods: AbilityDataMod[], references: AbilityReference[], abilityData: Map<string, AbilityData>) => {
         references.forEach((ref) => {
-            const referenceAbility = calculated.get(ref.refName);
+            const referenceAbility = abilityData.get(ref.refName);
             if (!referenceAbility) {
                 return;
             }

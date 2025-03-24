@@ -1,18 +1,5 @@
 import React, { useState } from "react";
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    TextField,
-    Button,
-    MenuItem,
-    Select,
-    FormControl,
-    InputLabel,
-    Grid2,
-    Typography
-} from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import { ActionType } from "../../models/characterSheet/ActionType";
 import { Effect } from "../../models/characterSheet/Effect";
 import { SpecialAbility } from "../../models/characterSheet/SpecialAbility";
@@ -32,12 +19,6 @@ export const SpecialAbilityModal: React.FC<SpecialAbilityModalProps> = ({ open, 
 
     const handleChange = (field: keyof SpecialAbility, value: any) => {
         setEditedAbility((prev) => ({ ...prev, [field]: value }));
-    };
-
-    const handleEffectChange = (index: number, field: keyof Effect, value: any) => {
-        const updatedEffects = [...editedAbility.effects];
-        updatedEffects[index] = { ...updatedEffects[index], [field]: value };
-        setEditedAbility((prev) => ({ ...prev, effects: updatedEffects }));
     };
 
     return (

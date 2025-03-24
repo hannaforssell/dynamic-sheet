@@ -20,7 +20,7 @@ import { Hitpoints } from "./Hitpoints";
 import { Defenses } from "./Defenses";
 import { Misc } from "./Misc";
 
-import * as backendService from "../services/backendService";
+// import * as backendService from "../services/backendService";
 import { CalculatorService } from "../services/calculatorService";
 import { DataGroupType } from "../models/characterSheet/DataGroupType";
 import { Saves } from "./Saves";
