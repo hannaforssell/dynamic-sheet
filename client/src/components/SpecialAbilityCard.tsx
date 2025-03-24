@@ -8,9 +8,11 @@ import { Effect } from "../models/characterSheet/Effect";
 
 interface ISpecialAbilityCard {
     specialAbility: SpecialAbility;
+    duplicateSpecialAbility(specialAbility: SpecialAbility): void;
 }
 
 export const SpecialAbilityCard = (props: ISpecialAbilityCard) => {
+    const [stateFlip, setStateFlip] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalEffect, setModalEffect] = useState<Effect | null>(null);
     const [showFull, setShowFull] = useState(false);
@@ -21,6 +23,8 @@ export const SpecialAbilityCard = (props: ISpecialAbilityCard) => {
 
         if (e.ctrlKey) {
             setModalOpen(!modalOpen);
+        } else if (e.shiftKey) {
+            props.duplicateSpecialAbility(props.specialAbility);
         } else {
             setShowFull(!showFull);
         }
@@ -31,6 +35,9 @@ export const SpecialAbilityCard = (props: ISpecialAbilityCard) => {
 
         if (e.ctrlKey) {
             setModalEffect(effect);
+        } else if (e.shiftKey) {
+            props.specialAbility.effects.push({ ...effect });
+            setStateFlip(!stateFlip);
         } else {
             setShowFull(!showFull);
         }
@@ -53,7 +60,7 @@ export const SpecialAbilityCard = (props: ISpecialAbilityCard) => {
                                     ({props.specialAbility.type})
                                 </Typography>
                             </Grid2>
-                            {showFull && <Typography variant="inherit">{props.specialAbility.originalText}</Typography>}
+                            {showFull && <Typography variant="inherit">{props.specialAbility.calculatedText}</Typography>}
                         </CardContent>
                     </CardActionArea>
                     {showFull && (

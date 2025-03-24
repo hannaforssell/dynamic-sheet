@@ -104,7 +104,7 @@ export function AddQualityLine(qualityName: string, value: string) {
 export class EffectService {
     constructor() {}
 
-    public Apply = (characterSheet: ICharacterSheet) => {
+    public apply = (characterSheet: ICharacterSheet) => {
         characterSheet.abilityData.forEach((a) => {
             a.calculatedText = "";
             a.abilityMods = [];

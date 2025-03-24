@@ -53,7 +53,8 @@ export const defaultSheetPF: ICharacterSheet = {
         ["Cha", new AbilityData("Cha", DataGroupType.AbilityScores, 6)],
 
         ["Level", new AbilityData("Level", DataGroupType.Experience, 0)],
-        ["Experience", new AbilityData("Experience", DataGroupType.Experience, 1)],
+        ["WizardLevel", new AbilityData("Level", DataGroupType.Experience, 1)],
+        ["Experience", new AbilityData("Experience", DataGroupType.Experience, 2)],
 
         ["HP", new AbilityData("HP", DataGroupType.HitPoints, 0)],
         ["THP", new AbilityData("THP", DataGroupType.HitPoints, 1)],
@@ -154,7 +155,7 @@ export const defaultSheetPF: ICharacterSheet = {
             1,
             true,
             ActionType.Free,
-            "An arcanist has an innate pool of magical energy that she can draw upon to fuel her arcanist exploits and enhance her spells. The arcanist’s arcane reservoir can hold a maximum amount of magical energy equal to 3 + the wizard’s level. Each day, when preparing spells, the arcanist’s arcane reservoir fills with raw magical energy, gaining a number of points equal to 3 + 1/2 her wizards level. Any points she had from the previous day are lost. She can also regain these points through the consume spells class feature and some arcanist exploits. The arcane reservoir can never hold more points than the maximum amount noted above; points gained in excess of this total are lost.\n\nPoints from the arcanist reservoir are used to fuel many of the arcanist’s powers. In addition, the arcanist can expend 1 point from her arcane reservoir as a free action whenever she casts a wizard spell. If she does, she can choose to increase the caster level by 1 or increase the spell’s DC by 1. She can expend no more than 1 point from her reservoir on a given spell in this way.",
+            "An arcanist has an innate pool of magical energy that she can draw upon to fuel her arcanist exploits and enhance her spells. The arcanist’s arcane reservoir can hold a maximum amount of magical energy equal to {{3 + 0#WizardLevel}}. Each day, when preparing spells, the arcanist’s arcane reservoir fills with raw magical energy, gaining a number of points equal to  {{3 + 0#WizardLevel / 2}}. Any points she had from the previous day are lost. She can also regain these points through the consume spells class feature and some arcanist exploits. The arcane reservoir can never hold more points than the maximum amount noted above; points gained in excess of this total are lost.\n\nPoints from the arcanist reservoir are used to fuel many of the arcanist’s powers. In addition, the arcanist can expend 1 point from her arcane reservoir as a free action whenever she casts a wizard spell. If she does, she can choose to increase the caster level by 1 or increase the spell’s DC by 1. She can expend no more than 1 point from her reservoir on a given spell in this way.",
             [new Effect("Exploit", true, 1, EffectType.Class, "AddAbilityMod('BuffCL', '2', 'Untyped');")]
         )
     ],
@@ -200,7 +201,7 @@ export const defaultSheetPF: ICharacterSheet = {
             true,
             1,
             EffectType.Class,
-            "AddAbilityMod('BaB', '2', 'Untyped');\AddAbilityMod('Fort', '1', 'Untyped');\nAddAbilityMod('Ref', '1', 'Untyped');\nAddAbilityMod('Will', '4', 'Untyped');"
+            "AddAbilityMod('WizardLevel', '5', 'Untyped');\nAddAbilityMod('BaB', '2', 'Untyped');\nAddAbilityMod('Fort', '1', 'Untyped');\nAddAbilityMod('Ref', '1', 'Untyped');\nAddAbilityMod('Will', '4', 'Untyped');"
         ),
         new Effect("Incanter Effects", true, 1, EffectType.Class, "AddAbilityMod('SpeedLand', '15', 'Untyped', 'Sphere Specializations (Time - Fast(Su))');"),
         new Effect("Stargazer Effects", true, 1, EffectType.Class, ""),

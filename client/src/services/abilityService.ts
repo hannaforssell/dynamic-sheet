@@ -4,15 +4,21 @@ import { AbilityReference } from "../models/calculator/AbilityReference";
 import { AbilityDataMod } from "../models/characterSheet/AbilityDataMod";
 
 export class AbilityService {
+    private MAX_DEPTH = 100;
+
     constructor() {}
 
-    public calculate = (abilityData: Map<string, AbilityData>): Map<string, AbilityData> => {
-        const calculated: Map<string, AbilityData> = new Map();
+    public calculate = (abilityData: Map<string, AbilityData>) => {
+        return this.calculateAbilities(abilityData);
+    };
+
+    public calculateAbilities = (abilityData: Map<string, AbilityData>) => {
         let currentBatch: AbilityData[] = Array.from(abilityData, ([, value]) => value);
         let nextBatch: AbilityData[] = [];
-        const maxDepth = 100;
-        let currentDepth = 0;
 
+        const calculated: Map<string, AbilityData> = new Map();
+
+        let currentDepth = 0;
         do {
             currentBatch.map((abilityData) => {
                 let newAbility: AbilityData;
@@ -66,7 +72,7 @@ export class AbilityService {
             nextBatch = [];
             currentDepth++;
 
-            if (currentDepth > maxDepth) {
+            if (currentDepth > this.MAX_DEPTH) {
                 throw new Error("Max Depth reached" + nextBatch);
             }
         } while (currentBatch.length > 0);
