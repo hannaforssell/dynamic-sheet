@@ -6,6 +6,7 @@ export class QualityData {
     displayName: string;
     qualityMods: QualityDataMod[];
     calculatedText: string;
+    notes: string[];
 
     constructor(
         public name: string,
@@ -19,5 +20,6 @@ export class QualityData {
         this.calculatedText = "";
         this.sortOrder = sortOrder ?? 100;
         this.qualityMods = qualityMods ?? [];
+        this.notes = [];
     }
 }

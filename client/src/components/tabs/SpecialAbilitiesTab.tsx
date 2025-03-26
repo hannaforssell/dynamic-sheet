@@ -19,13 +19,15 @@ export const SpecialAbilities = (props: ISpecialAbilities) => {
 
     return (
         <Box>
-            {props.specialAbilities.map((specialAbility) => (
-                <SpecialAbilityCard
-                    key={specialAbility.name}
-                    specialAbility={specialAbility}
-                    duplicateSpecialAbility={duplicateSpecialAbility}
-                ></SpecialAbilityCard>
-            ))}
+            {props.specialAbilities
+                .sort((a, b) => (a.levelAquired ?? 0) - (b.levelAquired ?? 0))
+                .map((specialAbility) => (
+                    <SpecialAbilityCard
+                        key={specialAbility.name}
+                        specialAbility={specialAbility}
+                        duplicateSpecialAbility={duplicateSpecialAbility}
+                    ></SpecialAbilityCard>
+                ))}
         </Box>
     );
 };

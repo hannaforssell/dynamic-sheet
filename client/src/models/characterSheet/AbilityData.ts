@@ -7,6 +7,7 @@ export class AbilityData {
     abilityMods: AbilityDataMod[];
     calculatedText: string;
     calculatedSum: number | null;
+    notes: string[];
 
     constructor(
         public name: string,
@@ -20,5 +21,6 @@ export class AbilityData {
         this.calculatedSum = 0;
         this.sortOrder = sortOrder ?? 100;
         this.abilityMods = abilityMods ?? [];
+        this.notes = [];
     }
 }

@@ -1,8 +1,8 @@
 import { AbilityData } from "../models/characterSheet/AbilityData";
-import { Box, Button, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
+import { Box, Button, Divider, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React from "react";
-import { defaultStyle } from "../helpers/stylingHelper";
+import { abilityDisplaySum, defaultStyle } from "../helpers/stylingHelper";
 import { IModFunctions } from "../models/IModFunctions";
 
 interface IAbilityProps {
@@ -25,23 +25,14 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {
     [`& .${tooltipClasses.tooltip}`]: {
         backgroundColor: "#f5f5f9",
         color: "rgba(0, 0, 0, 0.87)",
-        maxWidth: 220,
+        maxWidth: 800,
         fontSize: theme.typography.pxToRem(12),
         border: "1px solid #dadde9"
     }
 }));
 
 export const Ability = (props: IAbilityProps) => {
-    let displaySum = "";
-    if (props.abilityData.calculatedSum === null) {
-        displaySum = "—";
-    } else {
-        if (props.abilityData.calculatedSum > 0 && props.showSign == true) {
-            displaySum = "+" + Math.floor(props.abilityData.calculatedSum);
-        } else {
-            displaySum = Math.floor(props.abilityData.calculatedSum).toString();
-        }
-    }
+    const displaySum = abilityDisplaySum(props.abilityData.calculatedSum, props.showSign);
 
     return (
         <>
@@ -58,6 +49,10 @@ export const Ability = (props: IAbilityProps) => {
                                 <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>
                                     {m.toString()}
                                 </p>
+                            ))}
+                            <Divider variant="fullWidth" sx={{ bgcolor: "black", margin: "8px" }} />
+                            {props.abilityData.notes.map((note) => (
+                                <p>{note}</p>
                             ))}
                         </React.Fragment>
                     }

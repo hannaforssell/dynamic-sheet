@@ -1,15 +1,29 @@
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, Grid2, Typography } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardActions, CardContent, Grid2, styled, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
 import { SpecialAbility } from "../models/characterSheet/SpecialAbility";
 import { useState } from "react";
 import { SpecialAbilityModal } from "./modals/SpecialAbilityModal";
 import { memCopy } from "../helpers/memCopy";
 import { EffectModal } from "./modals/EffectModal";
 import { Effect } from "../models/characterSheet/Effect";
+import { abilityDisplaySum, textToNode } from "../helpers/stylingHelper";
+import React from "react";
 
 interface ISpecialAbilityCard {
     specialAbility: SpecialAbility;
     duplicateSpecialAbility(specialAbility: SpecialAbility): void;
 }
+
+const doubleBracketsRegex = new RegExp(/{{.+?}}/g);
+
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {...props} classes={{ popper: className }} />)(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        backgroundColor: "#f5f5f9",
+        color: "rgba(0, 0, 0, 0.87)",
+        maxWidth: 220,
+        fontSize: theme.typography.pxToRem(12),
+        border: "1px solid #dadde9"
+    }
+}));
 
 export const SpecialAbilityCard = (props: ISpecialAbilityCard) => {
     const [stateFlip, setStateFlip] = useState(false);
@@ -49,20 +63,45 @@ export const SpecialAbilityCard = (props: ISpecialAbilityCard) => {
                 <Card variant="outlined">
                     <CardActionArea onClick={handleClick}>
                         <CardContent sx={{ whiteSpace: "pre-wrap" }}>
-                            <Grid2 container sx={{ justify: "space-between" }}>
-                                <Typography variant="h5" component="div" display="inline" align="left">
-                                    {props.specialAbility.name}
-                                </Typography>
-                                <Typography gutterBottom sx={{ color: "text.secondary" }} display="inline" marginLeft="auto">
-                                    {props.specialAbility.sourceText} - {props.specialAbility.levelAquired}
-                                </Typography>
-                                <Typography gutterBottom sx={{ color: "text.secondary" }} display="inline" align="right" marginLeft="auto">
-                                    ({props.specialAbility.type})
-                                </Typography>
+                            <Grid2 container sx={{ placeItems: "center", alignSelf: "center" }}>
+                                <Grid2 size={6}>
+                                    <Typography variant="subtitle1" component="div" display="inline" align="left">
+                                        {props.specialAbility.name}
+                                    </Typography>
+                                </Grid2>
+                                <Grid2 size={3} sx={{ display: "flex", justifyContent: "center" }}>
+                                    <Typography gutterBottom sx={{ color: "text.secondary" }} display="inline" align="right" marginLeft="auto">
+                                        {props.specialAbility.sourceText} - Lvl. {props.specialAbility.levelAquired}
+                                    </Typography>
+                                </Grid2>
+                                <Grid2 size={3} sx={{ display: "flex", justifyContent: "right" }}>
+                                    <Typography gutterBottom sx={{ color: "text.secondary" }} display="inline" align="right" marginLeft="auto">
+                                        ({props.specialAbility.type})
+                                    </Typography>
+                                </Grid2>
                             </Grid2>
                             {showFull && (
                                 <Typography variant="inherit">
-                                    <span dangerouslySetInnerHTML={{ __html: props.specialAbility.calculatedText }}></span>
+                                    {textToNode(props.specialAbility.originalText, doubleBracketsRegex, (match) => {
+                                        const ability = props.specialAbility.textModifiers.get(match);
+                                        if (!ability) {
+                                            return "";
+                                        }
+                                        return (
+                                            <HtmlTooltip
+                                                key={ability.name}
+                                                title={
+                                                    <React.Fragment>
+                                                        <Typography color="inherit">{ability.abilityMods[0].value}</Typography>
+                                                    </React.Fragment>
+                                                }
+                                            >
+                                                <span style={{ backgroundColor: "gray", borderRadius: "3px", padding: "0px 3px 0px 3px" }}>
+                                                    {abilityDisplaySum(ability.calculatedSum)}
+                                                </span>
+                                            </HtmlTooltip>
+                                        );
+                                    })}
                                 </Typography>
                             )}
                         </CardContent>
@@ -79,18 +118,16 @@ export const SpecialAbilityCard = (props: ISpecialAbilityCard) => {
                 {showFull &&
                     showEffects &&
                     props.specialAbility.effects.map((effect) => (
-                        <>
-                            <Card key={effect.name} variant="outlined" sx={{ margin: "0px 20px 0px 20px" }}>
-                                <CardActionArea onClick={(event) => handleEffectClick(event, effect)}>
-                                    <CardContent sx={{ whiteSpace: "pre-wrap" }}>
-                                        <Typography variant="h5" component="div" display="inline" align="left">
-                                            {effect.name}
-                                        </Typography>
-                                        <Typography variant="body2">{effect.exec}</Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </>
+                        <Card key={effect.name} variant="outlined" sx={{ margin: "0px 20px 0px 20px" }}>
+                            <CardActionArea onClick={(event) => handleEffectClick(event, effect)}>
+                                <CardContent sx={{ whiteSpace: "pre-wrap" }}>
+                                    <Typography variant="h5" component="div" display="inline" align="left">
+                                        {effect.name}
+                                    </Typography>
+                                    <Typography variant="body2">{effect.exec}</Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
                     ))}
             </Box>
             {modalEffect !== null && (

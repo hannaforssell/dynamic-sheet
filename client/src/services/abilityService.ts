@@ -102,20 +102,15 @@ export class AbilityService {
 
     public applySpecialAbilities = (characterSheet: ICharacterSheet, specialAbilityData: Map<string, AbilityData>) => {
         characterSheet.specialAbilities.forEach((specialAbility) => {
-            specialAbility.calculatedText = specialAbility.originalText;
-        });
+            specialAbility.textModifiers.clear();
 
-        characterSheet.specialAbilities.forEach((specialAbility) => {
-            specialAbility.calculatedText = specialAbility.originalText;
-
-            const bracketTexts = specialAbility.calculatedText.match(this.doubleBracketsRegex);
+            const bracketTexts = specialAbility.originalText.match(this.doubleBracketsRegex);
             if (bracketTexts) {
                 bracketTexts.forEach((bracketText) => {
                     const inner = bracketText.slice(2, bracketText.length - 2);
-                    const calculatedSum = specialAbilityData.get(inner)?.calculatedSum;
-                    if (calculatedSum) {
-                        const replacement = Math.floor(calculatedSum).toString();
-                        specialAbility.calculatedText = specialAbility.calculatedText.replace(bracketText, replacement);
+                    const ability = specialAbilityData.get(inner);
+                    if (ability) {
+                        specialAbility.textModifiers.set(bracketText, ability);
                     }
                 });
             }

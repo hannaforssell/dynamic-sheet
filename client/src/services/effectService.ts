@@ -89,7 +89,7 @@ export function SetQuality(qualityName: string, value: string) {
 
 export function AddQualityLine(qualityName: string, value: string) {
     if (!currSheet || !currEffect) {
-        console.log("Error adding ability mod.");
+        console.log("Error adding quality line.");
         return;
     }
 
@@ -101,6 +101,34 @@ export function AddQualityLine(qualityName: string, value: string) {
     quality.qualityMods.push(new QualityDataMod(currEffect.name, "ADD", value));
 }
 
+export function AddAbilityNote(attributeName: string, value: string) {
+    if (!currSheet || !currEffect) {
+        console.log("Error adding ability note.");
+        return;
+    }
+
+    const attribute = currSheet.abilityData.get(attributeName);
+    if (!attribute) {
+        return;
+    }
+
+    attribute.notes.push(`${value} [${currEffect.name}]`);
+}
+
+export function AddQualityNote(qualityName: string, value: string) {
+    if (!currSheet || !currEffect) {
+        console.log("Error adding quality note.");
+        return;
+    }
+
+    const quality = currSheet.qualityData.get(qualityName);
+    if (!quality) {
+        return;
+    }
+
+    quality.notes.push(`${value} [${currEffect.name}]`);
+}
+
 export class EffectService {
     constructor() {}
 
@@ -108,13 +136,17 @@ export class EffectService {
         characterSheet.abilityData.forEach((a) => {
             a.calculatedText = "";
             a.abilityMods = [];
+            a.notes = [];
         });
-        characterSheet.qualityData.forEach((a) => {
-            a.calculatedText = "";
-            a.qualityMods = [];
+        characterSheet.qualityData.forEach((q) => {
+            q.calculatedText = "";
+            q.qualityMods = [];
+            q.notes = [];
         });
 
-        const orderedEffects = characterSheet.effects.filter((e) => e.enabled).sort((a, b) => a.order - b.order);
+        const allEffects = characterSheet.effects.concat(characterSheet.specialAbilities.flatMap((sa) => sa.effects));
+
+        const orderedEffects = allEffects.filter((e) => e.enabled).sort((a, b) => a.order - b.order);
 
         currSheet = characterSheet;
 

@@ -1,4 +1,5 @@
 export enum ActionType {
+    None = "None",
     Free = "Free",
     Swift = "Swift",
     Move = "Move",

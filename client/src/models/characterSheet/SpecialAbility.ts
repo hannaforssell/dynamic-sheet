@@ -2,9 +2,10 @@ import { SpecialAbilitySource } from "./SpecialAbilitySource";
 import { ActionType } from "./ActionType";
 import { SpecialAbilityType } from "./SpecialAbilityType";
 import { Effect } from "./Effect";
+import { AbilityData } from "./AbilityData";
 
 export class SpecialAbility {
-    calculatedText: string;
+    textModifiers: Map<string, AbilityData>;
 
     constructor(
         public name: string,
@@ -17,6 +18,6 @@ export class SpecialAbility {
         public originalText: string,
         public effects: Effect[]
     ) {
-        this.calculatedText = "";
+        this.textModifiers = new Map<string, AbilityData>();
     }
 }
