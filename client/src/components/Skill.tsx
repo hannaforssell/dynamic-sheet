@@ -1,5 +1,5 @@
 import { AbilityData } from "../models/characterSheet/AbilityData";
-import { Ability } from "./Ability";
+import { Ability } from "./collections/Ability";
 
 interface SkillProps {
     abilityData: AbilityData;

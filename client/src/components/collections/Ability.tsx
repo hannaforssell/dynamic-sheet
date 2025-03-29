@@ -1,9 +1,11 @@
-import { AbilityData } from "../models/characterSheet/AbilityData";
+import { AbilityData } from "../../models/characterSheet/AbilityData";
 import { Box, Button, Divider, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React from "react";
-import { abilityDisplaySum, defaultStyle } from "../helpers/stylingHelper";
-import { IModFunctions } from "../models/IModFunctions";
+import React, { useState } from "react";
+import { abilityDisplaySum, defaultStyle } from "../../helpers/stylingHelper";
+import { IModFunctions } from "../../models/IModFunctions";
+import { AbilityModal } from "../modals/AbilityModal";
+import { memCopy } from "../../helpers/memCopy";
 
 interface IAbilityProps {
     abilityData: AbilityData;
@@ -32,6 +34,20 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {
 }));
 
 export const Ability = (props: IAbilityProps) => {
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.stopPropagation();
+
+        if (e.ctrlKey) {
+            setModalOpen(!modalOpen);
+        } else if (e.shiftKey) {
+            props.modFunctions.addAbility({ ...props.abilityData, name: "new " + props.abilityData.name, displayName: "new " + props.abilityData.name });
+        } else if (e.altKey) {
+            props.modFunctions.removeAbility(props.abilityData);
+        }
+    };
+
     const displaySum = abilityDisplaySum(props.abilityData.calculatedSum, props.showSign);
 
     return (
@@ -50,19 +66,34 @@ export const Ability = (props: IAbilityProps) => {
                                     {m.toString()}
                                 </p>
                             ))}
-                            <Divider variant="fullWidth" sx={{ bgcolor: "black", margin: "8px" }} />
-                            {props.abilityData.notes.map((note) => (
-                                <p>{note}</p>
+                            {props.abilityData.notes.length > 0 && <Divider variant="fullWidth" sx={{ bgcolor: "black", margin: "8px" }} />}
+                            {props.abilityData.notes.map((note, i) => (
+                                <p key={i}>{note}</p>
                             ))}
                         </React.Fragment>
                     }
                 >
-                    <Button sx={{ ...defaultStyle, padding: 0, paddingTop: "1px" }}>
+                    <Button onClick={handleClick} sx={{ ...defaultStyle, padding: 0, paddingTop: "1px" }}>
                         {props.showMod ? `${displaySum} ${getAbilityMod(props.abilityData.calculatedSum)}` : displaySum}
                     </Button>
                 </HtmlTooltip>
             </Box>
             {props.modFunctions.editMode && <Button onClick={() => props.modFunctions.removeAbility(props.abilityData)}>X</Button>}
+            {modalOpen && (
+                <AbilityModal
+                    abilityData={props.abilityData}
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    onSave={(a) => {
+                        if (a.name != props.abilityData.name) {
+                            props.modFunctions.replaceAbility(props.abilityData, a);
+                            return;
+                        }
+                        memCopy(props.abilityData, a);
+                        props.modFunctions.recalc();
+                    }}
+                ></AbilityModal>
+            )}
         </>
     );
 };

@@ -3,8 +3,8 @@ import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { QualityData } from "../models/characterSheet/QualityData";
 import { IModFunctions } from "../models/IModFunctions";
 import { Section } from "../styles/styled-components/Section";
-import { Ability } from "./Ability";
-import { Quality } from "./Quality";
+import { Ability } from "./collections/Ability";
+import { Quality } from "./collections/Quality";
 
 interface ISearchResultProps {
     search: string;

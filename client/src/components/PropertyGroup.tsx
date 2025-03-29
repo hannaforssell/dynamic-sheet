@@ -1,8 +1,8 @@
 import { AbilityData } from "../models/characterSheet/AbilityData";
 import { QualityData } from "../models/characterSheet/QualityData";
-import { Ability } from "./Ability";
-import { Quality } from "./Quality";
-import { TableDisplay } from "./TableDisplay";
+import { Ability } from "./collections/Ability";
+import { Quality } from "./collections/Quality";
+import { TableDisplay } from "./collections/TableDisplay";
 import { TableData } from "../models/characterSheet/TableData";
 import { Box } from "@mui/material";
 import { DataGroupType } from "../models/characterSheet/DataGroupType";
@@ -38,7 +38,7 @@ export const PropertyGroup = (props: IPropertyGroupProps) => {
             ))}
             {tables.map((table) => (
                 <Box key={table.name}>
-                    <TableDisplay key={table.name} tableData={table} />
+                    <TableDisplay key={table.name} tableData={table} modFunctions={props.modFunctions} />
                 </Box>
             ))}
         </Box>

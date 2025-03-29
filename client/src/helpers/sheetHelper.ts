@@ -15,13 +15,10 @@ export const defaultSheetPF: ICharacterSheet = {
     _id: null,
     qualityData: new Map([
         ["Name", new QualityData("Name", DataGroupType.TopInfo, "Ario 'Lightbringer' Takashi", 0)],
-        ["Player", new QualityData("Player", DataGroupType.TopInfo, "EvilKurt", 1)],
-        ["Campaign", new QualityData("Campaign", DataGroupType.TopInfo, "Delve into Mujinzawa", 2)],
-        ["Race", new QualityData("Race", DataGroupType.TopInfo, "", 3)],
-        ["Type", new QualityData("Type", DataGroupType.TopInfo, "", 4)],
-        ["Size", new QualityData("Size", DataGroupType.TopInfo, "", 5)],
-        ["Alignment", new QualityData("Alignment", DataGroupType.TopInfo, "Chatoic Good", 6)],
-        ["Deity", new QualityData("Deity", DataGroupType.TopInfo, "Pulura", 7)],
+        ["Race", new QualityData("Race", DataGroupType.TopInfo, "", 1)],
+        ["Type", new QualityData("Type", DataGroupType.TopInfo, "", 2)],
+        ["Size", new QualityData("Size", DataGroupType.TopInfo, "", 3)],
+        ["Alignment", new QualityData("Alignment", DataGroupType.TopInfo, "Chatoic Good", 4)],
 
         ["CurrHP", new QualityData("CurrHP", DataGroupType.HitPoints, "132", 2, "Current HP")],
 
@@ -39,6 +36,9 @@ export const defaultSheetPF: ICharacterSheet = {
                 "I can pick advanced talents from Spheres of Power\nRegional feats are forbidden but regional talents are not.\nTelepathy is an automatic ability relating to Magic Jar\nI'm allowed to do some downtime casting during character creation.\nSpells such as Arcane Concordance affects sphere powers"
             )
         ],
+        ["Player", new QualityData("Player", DataGroupType.Misc, "EvilKurt")],
+        ["Campaign", new QualityData("Campaign", DataGroupType.Misc, "Delve into Mujinzawa")],
+        ["Deity", new QualityData("Deity", DataGroupType.Misc, "Pulura")],
         ["Gender", new QualityData("Gender", DataGroupType.Misc, "")],
         ["Height", new QualityData("Height", DataGroupType.Misc, "")],
         ["Weight", new QualityData("Weight", DataGroupType.Misc, "")],
@@ -55,10 +55,10 @@ export const defaultSheetPF: ICharacterSheet = {
         ["Level", new AbilityData("Level", DataGroupType.Experience, 0)],
 
         ["Experience", new AbilityData("Experience", DataGroupType.Experience, 1)],
-        ["WizardLevel", new AbilityData("WizardLevel", DataGroupType.Experience, 2)],
-        ["StargazerLevel", new AbilityData("StargazerLevel", DataGroupType.Experience, 3)],
-        ["LoremasterLevel", new AbilityData("LoremasterLevel", DataGroupType.Experience, 4)],
-        ["IncanterLevel", new AbilityData("IncanterLevel", DataGroupType.Experience, 5)],
+        ["WizardLevel", new AbilityData("WizardLevel", DataGroupType.Experience, 2, "Wizard lvl")],
+        ["StargazerLevel", new AbilityData("StargazerLevel", DataGroupType.Experience, 3, "Stargazer lvl")],
+        ["LoremasterLevel", new AbilityData("LoremasterLevel", DataGroupType.Experience, 4, "Loremaster lvl")],
+        ["IncanterLevel", new AbilityData("IncanterLevel", DataGroupType.Experience, 5, "Incanter lvl")],
 
         ["HP", new AbilityData("HP", DataGroupType.HitPoints, 0)],
         ["THP", new AbilityData("THP", DataGroupType.HitPoints, 1)],
@@ -78,6 +78,7 @@ export const defaultSheetPF: ICharacterSheet = {
 
         ["CL", new AbilityData("CL", DataGroupType.CasterLevel, 0)],
         ["BuffCL", new AbilityData("BuffCL", DataGroupType.CasterLevel, 1)],
+        ["ExtraBuffCL", new AbilityData("ExtraBuffCL", DataGroupType.CasterLevel, 2)],
 
         ["BaB", new AbilityData("BaB", DataGroupType.ToHit)],
         ["MeleeToHit", new AbilityData("MeleeToHit", DataGroupType.ToHit, 0, "MeleeToHit")],
@@ -99,15 +100,15 @@ export const defaultSheetPF: ICharacterSheet = {
         ["Heal", new AbilityData("Heal", DataGroupType.Skills)],
         ["Iaijutsu Focus", new AbilityData("Iaijutsu Focus", DataGroupType.Skills)],
         ["Intimidate", new AbilityData("Intimidate", DataGroupType.Skills)],
-        ["Knowledge(Arcana)", new AbilityData("Knowledge(Arcana)", DataGroupType.Skills, 0)],
-        ["Knowledge(Dungeoneering)", new AbilityData("Knowledge(Dungeoneering)", DataGroupType.Skills)],
-        ["Knowledge(Geography)", new AbilityData("Knowledge(Geography)", DataGroupType.Skills)],
-        ["Knowledge(History)", new AbilityData("Knowledge(History)", DataGroupType.Skills)],
-        ["Knowledge(Local)", new AbilityData("Knowledge(Local)", DataGroupType.Skills)],
-        ["Knowledge(Nature)", new AbilityData("Knowledge(Nature)", DataGroupType.Skills)],
-        ["Knowledge(Nobility)", new AbilityData("Knowledge(Nobility)", DataGroupType.Skills)],
-        ["Knowledge(The Planes)", new AbilityData("Knowledge(The Planes)", DataGroupType.Skills)],
-        ["Knowledge(Religion)", new AbilityData("Knowledge(Religion)", DataGroupType.Skills)],
+        ["Knowledge(Arcana)", new AbilityData("Knowledge (Arcana)", DataGroupType.Skills)],
+        ["Knowledge(Dungeoneering)", new AbilityData("Knowledge (Dungeoneering)", DataGroupType.Skills)],
+        ["Knowledge(Geography)", new AbilityData("Knowledge (Geography)", DataGroupType.Skills)],
+        ["Knowledge(History)", new AbilityData("Knowledge (History)", DataGroupType.Skills)],
+        ["Knowledge(Local)", new AbilityData("Knowledge (Local - Region)", DataGroupType.Skills)],
+        ["Knowledge(Nature)", new AbilityData("Knowledge (Nature)", DataGroupType.Skills)],
+        ["Knowledge(Nobility)", new AbilityData("Knowledge (Nobility)", DataGroupType.Skills)],
+        ["Knowledge(The Planes)", new AbilityData("Knowledge (The Planes)", DataGroupType.Skills)],
+        ["Knowledge(Religion)", new AbilityData("Knowledge (Religion)", DataGroupType.Skills)],
         ["Linguistics", new AbilityData("Linguistics", DataGroupType.Skills)],
         ["LucidDreaming", new AbilityData("LucidDreaming", DataGroupType.Skills, 100, "Lucid Dreaming")],
         ["Perception", new AbilityData("Perception", DataGroupType.Skills)],
@@ -151,6 +152,48 @@ export const defaultSheetPF: ICharacterSheet = {
         ]
     ]),
     specialAbilities: [
+        new SpecialAbility("Base Effects", SpecialAbilitySource.Other, "—", SpecialAbilityType.Natural, null, false, null, "Basic rolls and formulas", [
+            new Effect(
+                "Rolls",
+                true,
+                -1,
+                EffectType.Base,
+                "SetAbility('Str', '7');\nSetAbility('Dex', '7');\nSetAbility('Con', '7');\nSetAbility('Int', '18');\nSetAbility('Wis', '18');\nSetAbility('Cha', '15');\n\nAddAbilityMod('Str', '-6');\nAddAbilityMod('Dex', '-6');\nAddAbilityMod('Con', '-6');\nAddAbilityMod('Int', '+3');\nAddAbilityMod('Wis', '+3');\nAddAbilityMod('Cha', '+3');\n\nAddAbilityMod('HP', '6*0#Level', 'Rolls');"
+            ),
+            new Effect(
+                "Formulas",
+                true,
+                -1,
+                EffectType.Base,
+                "AddAbilityMod('HP', '0@Con*0#Level', 'Base');\n\nAddAbilityMod('AC', '10', 'Base');\nAddAbilityMod('TouchAC', '10', 'Base');\nAddAbilityMod('FlatFootedAC', '10', 'Base');\nAddAbilityMod('AC', '0@Dex', 'Untyped');\nAddAbilityMod('TouchAC', '0@Dex', 'Untyped');\n\nAddAbilityMod('Fort', '0@Con', 'Untyped');\nAddAbilityMod('Ref', '0@Dex', 'Untyped');\nAddAbilityMod('Will', '0@Wis', 'Untyped');\n\nAddAbilityMod('Initiative', '0@Dex', 'Untyped');"
+            ),
+            new Effect(
+                "Level",
+                true,
+                0,
+                EffectType.Base,
+                "AddAbilityMod('Level', '11');\nAddAbilityMod('WizardLevel', '5', 'Untyped');\nAddAbilityMod('StargazerLevel', '5', 'Untyped');\nAddAbilityMod('LoremasterLevel', '1', 'Untyped');\nAddAbilityMod('IncanterLevel', '11', 'Untyped');\nAddAbilityMod('Int', '4');\n\nAddAbilityMod('Experience', '1000', 'Session 1');"
+            )
+        ]),
+        new SpecialAbility(
+            "Race: Yueyinren",
+            SpecialAbilitySource.Racial,
+            "—",
+            SpecialAbilityType.Natural,
+            null,
+            false,
+            null,
+            "+2 Dexterity, +2 Intelligence, +2 Charisma, -2 Strength, -2 Constitution*: Yueyinren are nimble, both in body and mind, but their form is frail. This racial trait replaces normal elf ability score modifiers.\nElf Blood: Yueyinren count as elves for any effect related to race.\nMedium: Yueyinren are Medium creatures and have no bonuses or penalties due to their size.\nNormal Speed: Yueyinren have a base speed of 30 feet.\nDarkvision*: Yueyinren can see in the dark up to 120 feet. This racial trait, in addition to light blindness (see below), replaces the low-light vision racial trait.\nElven Immunities: Yueyinren are immune to magic sleep effects and get a +2 racial saving throw bonus against enchantment spells and effects.\nKeen Senses: Yueyinren receive a +2 racial bonus on Perception skill checks.\nStability*: Yueyinren receive a +4 racial bonus to their Combat Maneuver Defense when resisting a bull rush or trip attempt while standing on the ground. This racial trait replaces the elven magic racial trait.\nLight Blindness*: Abrupt exposure to bright light blinds Yueyinren for 1 round; on subsequent rounds, they are dazzled as long as they remain in the affected area. This racial trait, in addition to darkvision (see above), replaces the low-light vision racial trait.\nWeapon Familiarity*: Yueyinren are proicient with longbows (including composite longbows), short bows (including composite short bows), and crescent moon blades, and treat any weapon with the word “elven” or “yueran” in its name as a martial weapon. This racial trait replaces normal elf weapon proficiencies.\nLanguages*: Yueyinren begin play speaking Common and Mu. Yueyinren with high Intelligence Scores can choose from the following: Bakemono, Lung, Nihon, Sangool, and Sylvan. This racial trait replaces normal elf languages.\nRacial Levels: A yueyinren can take levels in yueren paragon to further develop her racial qualities.",
+            [
+                new Effect(
+                    "Yueyinren Racial",
+                    true,
+                    -1,
+                    EffectType.Racial,
+                    "SetQuality('Race', 'Yueyinren');\nSetQuality('Type', 'Humanoid');\nSetQuality('Size', 'Medium');\nSetQuality('Gender', 'Male');\nSetQuality('Height', '6 ft.');\nSetQuality('Weight', '103 lbs');\n\nAddAbilityMod('Dex', '2', 'Racial');\nAddAbilityMod('Con', '-2', 'Racial');\nAddAbilityMod('Int', '2', 'Racial');\nSetAbility('SpeedLand', '30');"
+                )
+            ]
+        ),
         new SpecialAbility(
             "Arcane Reservoir",
             SpecialAbilitySource.Class,
@@ -302,41 +345,12 @@ export const defaultSheetPF: ICharacterSheet = {
     ],
     effects: [
         new Effect(
-            "Rolls",
+            "Caster Level",
             true,
-            -1,
-            EffectType.Base,
-            "SetAbility('Str', '7');\nSetAbility('Dex', '7');\nSetAbility('Con', '7');\nSetAbility('Int', '18');\nSetAbility('Wis', '18');\nSetAbility('Cha', '15');\n\nAddAbilityMod('HP', '6*0#Level', 'Rolls');"
+            1,
+            EffectType.Class,
+            "SetAbility('CL', '11');\nAddAbilityMod('BuffCL', '0#CL', 'Untyped');\nAddAbilityMod('ExtraBuffCL', '0#BuffCL', 'Untyped');"
         ),
-        new Effect(
-            "Formulas",
-            true,
-            -1,
-            EffectType.Base,
-            "AddAbilityMod('HP', '0@Con*0#Level', 'Base');\n\nAddAbilityMod('AC', '10', 'Base');\nAddAbilityMod('TouchAC', '10', 'Base');\nAddAbilityMod('FlatFootedAC', '10', 'Base');\nAddAbilityMod('AC', '0@Dex', 'Untyped');\nAddAbilityMod('TouchAC', '0@Dex', 'Untyped');\n\nAddAbilityMod('Fort', '0@Con', 'Untyped');\nAddAbilityMod('Ref', '0@Dex', 'Untyped');\nAddAbilityMod('Will', '0@Wis', 'Untyped');\n\nAddAbilityMod('Initiative', '0@Dex', 'Untyped');"
-        ),
-        new Effect(
-            "Level",
-            true,
-            0,
-            EffectType.Base,
-            "AddAbilityMod('Level', '11');\nAddAbilityMod('WizardLevel', '5', 'Untyped');\nAddAbilityMod('StargazerLevel', '5', 'Untyped');\nAddAbilityMod('LoremasterLevel', '1', 'Untyped');\nAddAbilityMod('IncanterLevel', '11', 'Untyped');\nAddAbilityMod('Int', '4');\n\nAddAbilityMod('Experience', '1000', 'Session 1');"
-        ),
-        new Effect(
-            "Age",
-            true,
-            0,
-            EffectType.Base,
-            "AddAbilityMod('Str', '-6');\nAddAbilityMod('Dex', '-6');\nAddAbilityMod('Con', '-6');\nAddAbilityMod('Int', '+3');\nAddAbilityMod('Wis', '+3');\nAddAbilityMod('Cha', '+3');\n"
-        ),
-        new Effect(
-            "Yueren Racial",
-            true,
-            -1,
-            EffectType.Racial,
-            "SetQuality('Race', 'Yueyinren');\nSetQuality('Type', 'Humanoid');\nSetQuality('Size', 'Medium');\nSetQuality('Gender', 'Male');\nSetQuality('Height', '6 ft.');\nSetQuality('Weight', '103 lbs');\n\nAddAbilityMod('Dex', '2', 'Racial');\nAddAbilityMod('Con', '-2', 'Racial');\nAddAbilityMod('Int', '2', 'Racial');\nSetAbility('SpeedLand', '30');"
-        ),
-        new Effect("Caster Level", true, 1, EffectType.Class, "SetAbility('CL', '11');\nAddAbilityMod('BuffCL', '0#CL', 'Untyped');"),
         new Effect(
             "S-Class Wizard // Incanter Base",
             true,
@@ -385,7 +399,7 @@ export const defaultSheetPF: ICharacterSheet = {
             "AddAbilityMod('AC', '(0#BuffCL/5)', 'Shield');\nAddAbilityMod('FlatFootedAC', '(0#BuffCL/5)', 'Shield');"
         ),
         new Effect("Blur", true, 2, EffectType.Spell, "AddQualityLine('MissChance', '20% (True Seeing)');"),
-        new Effect("Army Across Time", true, 3, EffectType.Spell, "MultAbilityMod('BuffCL', '1.5')"),
+        new Effect("Army Across Time", true, 3, EffectType.Spell, "MultAbilityMod('ExtraBuffCL', '1.5')"),
         new Effect("Protection from Arrows, Commual", true, 2, EffectType.Spell, "AddQualityLine('DR', '10/Magic (vs Ranged Weapons)');"),
         new Effect("Maximized Greater False Life", true, 2, EffectType.Spell, "SetAbility('THP', '40');"),
         new Effect(

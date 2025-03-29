@@ -1,7 +1,7 @@
 import { Box, SxProps, Theme } from "@mui/material";
-import { QualityData } from "../models/characterSheet/QualityData";
+import { QualityData } from "../../models/characterSheet/QualityData";
 import { Quality } from "./Quality";
-import { IModFunctions } from "../models/IModFunctions";
+import { IModFunctions } from "../../models/IModFunctions";
 
 interface IQualityCollection {
     qualities: QualityData[];

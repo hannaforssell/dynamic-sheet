@@ -70,9 +70,15 @@ export class AbilityService {
                         this.calculated.set(abilityData.name, true);
                     }
                 } catch (error) {
-                    console.log("error: ", error);
+                    console.error(error);
                 }
             });
+
+            if (nextBatch.length != 0 && currentBatch.length == nextBatch.length) {
+                console.error(`No change in batch size after ${currentDepth} iterations`);
+                console.error(nextBatch);
+                return;
+            }
 
             currentBatch = nextBatch;
             nextBatch = [];

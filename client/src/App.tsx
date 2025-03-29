@@ -3,6 +3,9 @@ import "./App.css";
 import { CharacterSheet } from "./components/CharacterSheet";
 
 const darkTheme = createTheme({
+    typography: {
+        fontFamily: "Roboto Mono, serif"
+    },
     palette: {
         mode: "dark"
     }

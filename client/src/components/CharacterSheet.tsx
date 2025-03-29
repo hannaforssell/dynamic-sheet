@@ -10,17 +10,12 @@ import { ItemData } from "../models/characterSheet/ItemData";
 import { EffectsFooter } from "./EffectsFooter";
 import { TabContext, TabPanel } from "@mui/lab";
 import { Box, Grid2, Tab, Tabs } from "@mui/material";
-import { AbilityScores } from "./AbilityScores";
-import { TopInfo } from "./TopInfo";
-import { ExperienceInfo } from "./ExperienceInfo";
-import { Portrait } from "./Portrait";
 import { defaultStyle } from "../helpers/stylingHelper";
 import { groupData } from "../helpers/dataGrouper";
 import { Hitpoints } from "./Hitpoints";
 import { Defenses } from "./Defenses";
 import { Misc } from "./Misc";
-
-// import * as backendService from "../services/backendService";
+import * as backendService from "../services/backendService";
 import { CalculatorService } from "../services/calculatorService";
 import { DataGroupType } from "../models/characterSheet/DataGroupType";
 import { Saves } from "./Saves";
@@ -29,8 +24,11 @@ import { AC } from "./AC";
 import { IModFunctions } from "../models/IModFunctions";
 import { OffenseTab } from "./tabs/OffenseTab";
 import { SpecialAbilities } from "./tabs/SpecialAbilitiesTab";
+import { BasicTab } from "./tabs/BasicTab";
 
 const calculatorService = new CalculatorService();
+
+const USE_DB = false;
 
 export const CharacterSheet = () => {
     const [, setLoading] = useState(false);
@@ -41,31 +39,56 @@ export const CharacterSheet = () => {
 
     const modFunctions: IModFunctions = {
         editMode: editMode,
+        addAbility: (ability: AbilityData) => {
+            sheetData.abilityData.set(ability.name, ability);
+            setSheetData(calculatorService.calculate(sheetData));
+        },
         removeAbility: (ability: AbilityData) => {
             sheetData.abilityData.delete(ability.name);
-            setSheetData({ ...sheetData });
+            setSheetData(calculatorService.calculate(sheetData));
+        },
+        replaceAbility: (oldAbility: AbilityData, newAbility: AbilityData) => {
+            console.log(newAbility.name);
+            sheetData.abilityData.delete(oldAbility.name);
+            sheetData.abilityData.set(newAbility.name, newAbility);
+            setSheetData(calculatorService.calculate(sheetData));
+        },
+        addQuality: (quality: QualityData) => {
+            sheetData.qualityData.set(quality.name, quality);
+            setSheetData(calculatorService.calculate(sheetData));
         },
         removeQuality: (quality: QualityData) => {
             sheetData.qualityData.delete(quality.name);
-            setSheetData({ ...sheetData });
+            setSheetData(calculatorService.calculate(sheetData));
+        },
+        replaceQuality: (oldQuality: QualityData, newQuality: QualityData) => {
+            sheetData.qualityData.delete(oldQuality.name);
+            sheetData.qualityData.set(newQuality.name, newQuality);
+            setSheetData(calculatorService.calculate(sheetData));
+        },
+        recalc() {
+            setSheetData(calculatorService.calculate(sheetData));
         }
     };
 
     useEffect(() => {
-        setLoading(true);
-        setSheetData(calculatorService.calculate(defaultSheetPF));
+        if (!USE_DB) {
+            setSheetData(calculatorService.calculate(defaultSheetPF));
+            return;
+        }
 
-        // backendService
-        //     .getCharacterSheet("67da834627222e5c0fd047de")
-        //     .then((x) => {
-        //         if (x) {
-        //             setSheetData(calculatorService.calculate(x));
-        //         }
-        //     })
-        //     .catch((e) => alert(`Getting data failed: ${e.message}`))
-        //     .finally(() => {
-        //         setLoading(false);
-        //     });
+        setLoading(true);
+        backendService
+            .getCharacterSheet("67da834627222e5c0fd047de")
+            .then((x) => {
+                if (x) {
+                    setSheetData(calculatorService.calculate(x));
+                }
+            })
+            .catch((e) => alert(`Getting data failed: ${e.message}`))
+            .finally(() => {
+                setLoading(false);
+            });
     }, []);
 
     if (!sheetData) {
@@ -131,18 +154,13 @@ export const CharacterSheet = () => {
                     }}
                 />
                 <TabPanel value={0}>
-                    <TopInfo data={groupData(sheetData, DataGroupType.TopInfo)} modFunctions={modFunctions} />
-                    <Grid2 container sx={{ placeItems: "center", alignSelf: "center" }}>
-                        <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
-                            <AbilityScores data={groupData(sheetData, DataGroupType.AbilityScores)} modFunctions={modFunctions} />
-                        </Grid2>
-                        <Grid2 size={5} sx={{ display: "flex", justifyContent: "center" }}>
-                            <Portrait imageLink={sheetData.imageLink} />
-                        </Grid2>
-                        <Grid2 size={3.5} sx={{ display: "flex", justifyContent: "center" }}>
-                            <ExperienceInfo data={groupData(sheetData, DataGroupType.Experience)} modFunctions={modFunctions} />
-                        </Grid2>
-                    </Grid2>
+                    <BasicTab
+                        topInfoData={groupData(sheetData, DataGroupType.TopInfo)}
+                        abilityScoreData={groupData(sheetData, DataGroupType.AbilityScores)}
+                        experienceData={groupData(sheetData, DataGroupType.Experience)}
+                        imageLink={sheetData.imageLink}
+                        modFunctions={modFunctions}
+                    ></BasicTab>
                 </TabPanel>
                 <TabPanel value={1}>
                     <OffenseTab

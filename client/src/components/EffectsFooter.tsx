@@ -18,7 +18,7 @@ interface IEffectsFooterProps {
 
 export const EffectsFooter = (props: IEffectsFooterProps) => {
     const [tabIndex, setTabIndex] = useState(0);
-    const [drawerOpen, setDrawerOpen] = useState(true);
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
     const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
         setTabIndex(newValue);

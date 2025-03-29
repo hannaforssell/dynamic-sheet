@@ -16,14 +16,14 @@ import {
 import { Effect } from "../../models/characterSheet/Effect";
 import { EffectType } from "../../models/characterSheet/EffectType";
 
-interface EffectModalProps {
+interface IEffectModal {
     open: boolean;
     effect: Effect;
     onClose: () => void;
     onSave: (updatedEffect: Effect, originalEffect: Effect) => void;
 }
 
-export const EffectModal = (props: EffectModalProps) => {
+export const EffectModal = (props: IEffectModal) => {
     const [editedEffect, setEditedEffect] = useState<Effect>({ ...props.effect });
 
     const handleChange = (field: keyof Effect, value: any) => {
@@ -70,7 +70,8 @@ export const EffectModal = (props: EffectModalProps) => {
                     fullWidth
                     label="Execution Script"
                     multiline
-                    rows={3}
+                    rows={19}
+                    maxRows={19}
                     value={editedEffect.exec}
                     onChange={(e) => handleChange("exec", e.target.value)}
                     margin="dense"

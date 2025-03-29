@@ -2,7 +2,7 @@ import { AbilityData } from "../models/characterSheet/AbilityData";
 import { QualityData } from "../models/characterSheet/QualityData";
 import { TableData } from "../models/characterSheet/TableData";
 import { IModFunctions } from "../models/IModFunctions";
-import { AbilityCollection } from "./AbilityCollection";
+import { AbilityCollection } from "./collections/AbilityCollection";
 
 interface ISaves {
     data: [AbilityData[], QualityData[], TableData[]];

@@ -1,9 +1,11 @@
-import { QualityData } from "../models/characterSheet/QualityData";
+import { QualityData } from "../../models/characterSheet/QualityData";
 import { Button, styled, SxProps, TextField, Theme, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
 import { useState } from "react";
-import { defaultStyle } from "../helpers/stylingHelper";
-import { QualityService } from "../services/qualityService";
-import { IModFunctions } from "../models/IModFunctions";
+import { defaultStyle } from "../../helpers/stylingHelper";
+import { QualityService } from "../../services/qualityService";
+import { IModFunctions } from "../../models/IModFunctions";
+import { QualityModal } from "../modals/QualityModal";
+import { memCopy } from "../../helpers/memCopy";
 
 interface IQualityProps {
     qualityData: QualityData;
@@ -58,6 +60,7 @@ const multiLineStyle: SxProps<Theme> = {
 };
 
 export const Quality = (props: IQualityProps) => {
+    const [modalOpen, setModalOpen] = useState(false);
     const [displayText, setDisplayText] = useState(props.qualityData.calculatedText);
 
     const onFocus = () => {
@@ -68,6 +71,18 @@ export const Quality = (props: IQualityProps) => {
         props.qualityData.originalText = e.target.value;
         qualityService.recalculate(props.qualityData);
         setDisplayText(props.qualityData.calculatedText);
+    };
+
+    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        e.stopPropagation();
+
+        if (e.ctrlKey) {
+            setModalOpen(!modalOpen);
+        } else if (e.shiftKey) {
+            props.modFunctions.addQuality({ ...props.qualityData, name: "new " + props.qualityData.name, displayName: "new " + props.qualityData.name });
+        } else if (e.altKey) {
+            props.modFunctions.removeQuality(props.qualityData);
+        }
     };
 
     const isMultiline = props.qualityData.calculatedText.includes("\n");
@@ -100,6 +115,7 @@ export const Quality = (props: IQualityProps) => {
                         sx={multiLineStyle}
                         slotProps={{ formHelperText: { sx: defaultStyle }, htmlInput: { style: { padding: 0, margin: -5 } } }}
                         fullWidth={true}
+                        onClick={handleClick}
                     />
                 ) : (
                     <TextField
@@ -113,10 +129,26 @@ export const Quality = (props: IQualityProps) => {
                         disabled={false}
                         sx={singleLineStyle}
                         slotProps={{ formHelperText: { sx: defaultStyle } }}
+                        onClick={handleClick}
                     />
                 )}
             </HtmlTooltip>
             {props.modFunctions.editMode && <Button onClick={() => props.modFunctions.removeQuality(props.qualityData)}>X</Button>}
+            {modalOpen && (
+                <QualityModal
+                    qualityData={props.qualityData}
+                    open={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    onSave={(a) => {
+                        if (a.name != props.qualityData.name) {
+                            props.modFunctions.replaceQuality(props.qualityData, a);
+                            return;
+                        }
+                        memCopy(props.qualityData, a);
+                        props.modFunctions.recalc();
+                    }}
+                ></QualityModal>
+            )}
         </>
     );
 };

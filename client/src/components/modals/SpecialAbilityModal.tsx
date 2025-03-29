@@ -89,6 +89,7 @@ export const SpecialAbilityModal: React.FC<SpecialAbilityModalProps> = ({ open, 
                     value={editedAbility.originalText}
                     onChange={(e) => handleChange("originalText", e.target.value)}
                     margin="dense"
+                    rows={12}
                     maxRows={12}
                 />
             </DialogContent>

@@ -25,13 +25,15 @@ export const Portrait = (props: IPortrait) => {
                     <img className="corner-decoration corner-left-bottom" src="./images/portrait-corner.png"></img>
 
                     <Box>
-                        <img
-                            src={props.imageLink}
-                            loading="lazy"
-                            style={{
-                                maxWidth: "100%"
-                            }}
-                        />
+                        {props.imageLink && (
+                            <img
+                                src={props.imageLink}
+                                loading="lazy"
+                                style={{
+                                    maxWidth: "100%"
+                                }}
+                            />
+                        )}
                     </Box>
                 </div>
             </div>

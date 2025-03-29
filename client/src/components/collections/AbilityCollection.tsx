@@ -1,7 +1,7 @@
 import { Box, SxProps, Theme } from "@mui/material";
 import { Ability } from "./Ability";
-import { AbilityData } from "../models/characterSheet/AbilityData";
-import { IModFunctions } from "../models/IModFunctions";
+import { AbilityData } from "../../models/characterSheet/AbilityData";
+import { IModFunctions } from "../../models/IModFunctions";
 
 interface IAbilityCollection {
     abilities: AbilityData[];

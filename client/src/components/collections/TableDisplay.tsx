@@ -1,15 +1,17 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { TableData } from "../models/characterSheet/TableData";
-import { defaultStyle } from "../helpers/stylingHelper";
+import { TableData } from "../../models/characterSheet/TableData";
+import { defaultStyle } from "../../helpers/stylingHelper";
+import { IModFunctions } from "../../models/IModFunctions";
 
 interface ITableDisplayProps {
     tableData: TableData;
+    modFunctions: IModFunctions;
 }
 
 export const TableDisplay = (props: ITableDisplayProps) => {
     return (
         <TableContainer>
-            <Table sx={{ ":root": { color: "red" } }} aria-label="simple table">
+            <Table aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         {props.tableData.headers.map((header, i) => (

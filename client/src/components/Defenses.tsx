@@ -2,8 +2,8 @@ import { Box } from "@mui/material";
 import { AbilityData } from "../models/characterSheet/AbilityData";
 import { QualityData } from "../models/characterSheet/QualityData";
 import { TableData } from "../models/characterSheet/TableData";
-import { AbilityCollection } from "./AbilityCollection";
-import { QualityCollection } from "./QualityCollection";
+import { AbilityCollection } from "./collections/AbilityCollection";
+import { QualityCollection } from "./collections/QualityCollection";
 import { IModFunctions } from "../models/IModFunctions";
 
 interface IDefenses {
