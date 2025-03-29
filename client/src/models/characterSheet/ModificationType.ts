@@ -1,4 +1,4 @@
-export enum SpecialAbilityType {
+export enum ModificationType {
     Natural = "Na",
     Extraordinary = "Ex",
     SpellLike = "Sp",

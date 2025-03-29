@@ -4,7 +4,6 @@ import { ICharacterSheet } from "../../models/characterSheet/ICharacterSheet";
 import { PropertyType } from "../../models/PropertyType";
 import { DataGroupType } from "../../models/characterSheet/DataGroupType";
 import { Box, Button, FormControl, FormGroup, InputLabel, MenuItem, Modal, Select, SxProps, TextField, Theme } from "@mui/material";
-import { defaultStyle } from "../../helpers/stylingHelper";
 import { AbilityData } from "../../models/characterSheet/AbilityData";
 
 interface IAddDataModalData {
@@ -36,7 +35,6 @@ const boxStyle: SxProps<Theme> = {
 };
 
 const inputFieldStyle: SxProps<Theme> = {
-    ...defaultStyle,
     width: 300,
     input: {
         color: "rgba(255, 255, 255, 0.87)",
@@ -47,7 +45,6 @@ const inputFieldStyle: SxProps<Theme> = {
 };
 
 const menuItemStyle: SxProps<Theme> = {
-    ...defaultStyle,
     backgroundColor: "#242424"
 };
 
@@ -94,7 +91,6 @@ export const AddDataModal = (props: IAddDataModalData) => {
                                 }}
                                 sx={inputFieldStyle}
                                 slotProps={{
-                                    formHelperText: { sx: defaultStyle },
                                     htmlInput: { sx: inputFieldStyle }
                                 }}
                             />

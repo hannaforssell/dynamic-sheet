@@ -10,7 +10,6 @@ import { ItemData } from "../models/characterSheet/ItemData";
 import { EffectsFooter } from "./EffectsFooter";
 import { TabContext, TabPanel } from "@mui/lab";
 import { Box, Grid2, Tab, Tabs } from "@mui/material";
-import { defaultStyle } from "../helpers/stylingHelper";
 import { groupData } from "../helpers/dataGrouper";
 import { Hitpoints } from "./Hitpoints";
 import { Defenses } from "./Defenses";
@@ -23,7 +22,7 @@ import { defaultSheetPF, emptySheet } from "../helpers/sheetHelper";
 import { AC } from "./AC";
 import { IModFunctions } from "../models/IModFunctions";
 import { OffenseTab } from "./tabs/OffenseTab";
-import { SpecialAbilities } from "./tabs/SpecialAbilitiesTab";
+import { ModificationsTab } from "./tabs/ModificationsTab";
 import { BasicTab } from "./tabs/BasicTab";
 
 const calculatorService = new CalculatorService();
@@ -131,15 +130,16 @@ export const CharacterSheet = () => {
             <HeaderMenu characterSheet={sheetData} setCharacterSheet={setSheetData} calculate={calculate} setEditView={() => setEditMode(!editMode)} />
             <TabContext value={tabIndex}>
                 <Tabs value={tabIndex} onChange={handleTabChange}>
-                    <Tab label={"Basic"} value={0} sx={defaultStyle} />
-                    <Tab label={"Offense"} value={1} sx={defaultStyle} />
-                    <Tab label={"Defense"} value={2} sx={defaultStyle} />
-                    <Tab label={"Skills"} value={3} sx={defaultStyle} />
-                    <Tab label={"Special Abilities"} value={4} sx={defaultStyle} />
-                    <Tab label={"Items"} value={5} sx={defaultStyle} />
-                    <Tab label={"Misc"} value={6} sx={defaultStyle} />
+                    <Tab label={"Basic"} value={0} />
+                    <Tab label={"Offense"} value={1} />
+                    <Tab label={"Defense"} value={2} />
+                    <Tab label={"Skills"} value={3} />
+                    <Tab label={"Special Abilities"} value={4} />
+                    <Tab label={"Feats"} value={5} />
+                    <Tab label={"Items"} value={6} />
+                    <Tab label={"Misc"} value={7} />
                     {search && (
-                        <Tab label={`Search result: ${search}`} value={5} autoFocus={false} onFocus={() => document.getElementById("searchBar")?.focus()} />
+                        <Tab label={`Search result: ${search}`} value={8} autoFocus={false} onFocus={() => document.getElementById("searchBar")?.focus()} />
                     )}
                 </Tabs>
                 <input
@@ -200,17 +200,18 @@ export const CharacterSheet = () => {
                     </label>
                 </TabPanel>
                 <TabPanel value={4}>
-                    <SpecialAbilities specialAbilities={sheetData.specialAbilities} modFunctions={modFunctions}></SpecialAbilities>
+                    <ModificationsTab modifications={sheetData.specialAbilities} modFunctions={modFunctions}></ModificationsTab>
                 </TabPanel>
-                <TabPanel value={5}>
+                <TabPanel value={5}></TabPanel>
+                <TabPanel value={6}>
                     {sheetData.itemData &&
                         [...sheetData.itemData].map(([key, value]) => <Item key={key} item={value} editView={editMode} changeItem={changeProperty} />)}
                 </TabPanel>
-                <TabPanel value={6}>
+                <TabPanel value={7}>
                     <Misc data={groupData(sheetData, DataGroupType.Misc)} modFunctions={modFunctions} />
                 </TabPanel>
                 {search && (
-                    <TabPanel value={7}>
+                    <TabPanel value={8}>
                         <SearchResult search={search} characterSheet={sheetData} modFunctions={modFunctions} />
                     </TabPanel>
                 )}

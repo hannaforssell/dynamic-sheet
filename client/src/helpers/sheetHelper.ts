@@ -6,9 +6,9 @@ import { EffectType } from "../models/characterSheet/EffectType";
 import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { ItemData } from "../models/characterSheet/ItemData";
 import { QualityData } from "../models/characterSheet/QualityData";
-import { SpecialAbility } from "../models/characterSheet/SpecialAbility";
-import { SpecialAbilitySource } from "../models/characterSheet/SpecialAbilitySource";
-import { SpecialAbilityType } from "../models/characterSheet/SpecialAbilityType";
+import { Modification } from "../models/characterSheet/Modification";
+import { ModificationSource } from "../models/characterSheet/ModificationSource";
+import { ModificationType } from "../models/characterSheet/ModificationType";
 import { TableData } from "../models/characterSheet/TableData";
 
 export const defaultSheetPF: ICharacterSheet = {
@@ -152,7 +152,7 @@ export const defaultSheetPF: ICharacterSheet = {
         ]
     ]),
     specialAbilities: [
-        new SpecialAbility("Base Effects", SpecialAbilitySource.Other, "—", SpecialAbilityType.Natural, null, false, null, "Basic rolls and formulas", [
+        new Modification("Base Effects", ModificationSource.Other, "—", ModificationType.Natural, null, false, null, "Basic rolls and formulas", [
             new Effect(
                 "Rolls",
                 true,
@@ -175,11 +175,11 @@ export const defaultSheetPF: ICharacterSheet = {
                 "AddAbilityMod('Level', '11');\nAddAbilityMod('WizardLevel', '5', 'Untyped');\nAddAbilityMod('StargazerLevel', '5', 'Untyped');\nAddAbilityMod('LoremasterLevel', '1', 'Untyped');\nAddAbilityMod('IncanterLevel', '11', 'Untyped');\nAddAbilityMod('Int', '4');\n\nAddAbilityMod('Experience', '1000', 'Session 1');"
             )
         ]),
-        new SpecialAbility(
+        new Modification(
             "Race: Yueyinren",
-            SpecialAbilitySource.Racial,
+            ModificationSource.Racial,
             "—",
-            SpecialAbilityType.Natural,
+            ModificationType.Natural,
             null,
             false,
             null,
@@ -194,88 +194,88 @@ export const defaultSheetPF: ICharacterSheet = {
                 )
             ]
         ),
-        new SpecialAbility(
+        new Modification(
             "Arcane Reservoir",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "S-Wizard (Exploiter Wizard) 1",
-            SpecialAbilityType.Supernatural,
+            ModificationType.Supernatural,
             1,
             true,
             ActionType.Free,
             "An arcanist has an innate pool of magical energy that she can draw upon to fuel her arcanist exploits and enhance her spells. The arcanist’s arcane reservoir can hold a maximum amount of magical energy equal to {{3 + 0#WizardLevel}}. Each day, when preparing spells, the arcanist’s arcane reservoir fills with raw magical energy, gaining a number of points equal to {{3 + 0#WizardLevel / 2}}. Any points she had from the previous day are lost. She can also regain these points through the consume spells class feature and some arcanist exploits. The arcane reservoir can never hold more points than the maximum amount noted above; points gained in excess of this total are lost.\n\nPoints from the arcanist reservoir are used to fuel many of the arcanist’s powers. In addition, the arcanist can expend 1 point from her arcane reservoir as a free action whenever she casts a wizard spell. If she does, she can choose to increase the caster level by 1 or increase the spell’s DC by 1. She can expend no more than 1 point from her reservoir on a given spell in this way.",
             [new Effect("Exploit", true, 1, EffectType.Class, "AddAbilityMod('BuffCL', '2', 'Untyped');")]
         ),
-        new SpecialAbility(
+        new Modification(
             "Exploiter Exploit - Potent Magic",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "S-Wizard (Exploiter Wizard) 1",
-            SpecialAbilityType.Supernatural,
+            ModificationType.Supernatural,
             1,
             false,
             null,
             "By bending and sometimes even breaking the rules of magic, the wizard learns to exploit gaps and exceptions in the laws of magic. Some of these exploits allow her to break down various forms of magic, adding their essence to her arcane reservoir. At 1st level and every 4 levels thereafter, the wizard learns a new arcane exploit selected from the following list. A wizard exploit cannot be selected more than once. Once a wizard exploit has been selected, it cannot be changed. Most arcanist exploits require the wizard to expend points from her arcane reservoir to function. Unless otherwise noted, the saving throw DC for an arcanist exploit is equal to {{10 +(0#WizardLevel / 2) +0@Cha}}.\n\nWhenever the arcanist expends 1 point from her arcane reservoir to increase the caster level of a spell, the caster level increases by 2 instead of 1. Whenever she expends 1 point from her arcane reservoir to increase the spell’s DC, it increases by 2 instead of 1.",
             []
         ),
-        new SpecialAbility(
+        new Modification(
             "Exploiter Exploit - Dimensional Slide",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "S-Wizard (Exploiter Wizard) 5",
-            SpecialAbilityType.Supernatural,
+            ModificationType.Supernatural,
             5,
             true,
             ActionType.Move,
             "By bending and sometimes even breaking the rules of magic, the wizard learns to exploit gaps and exceptions in the laws of magic. Some of these exploits allow her to break down various forms of magic, adding their essence to her arcane reservoir. At 1st level and every 4 levels thereafter, the wizard learns a new arcane exploit selected from the following list. A wizard exploit cannot be selected more than once. Once a wizard exploit has been selected, it cannot be changed. Most arcanist exploits require the wizard to expend points from her arcane reservoir to function. Unless otherwise noted, the saving throw DC for an arcanist exploit is equal to {{10 +(0#WizardLevel / 2) +0@Cha}}.\n\nThe arcanist can expend 1 point from her arcane reservoir to create a dimensional crack that she can step through to reach another location. This ability is used as part of a move action or withdraw action, allowing her to move up to {{10 * 0#WizardLevel}} feet to any location she can see. This counts as 5 feet of movement. She can only use this ability once per round. She does not provoke attacks of opportunity when moving in this way, but any other movement she attempts as part of her move action provokes as normal.",
             []
         ),
-        new SpecialAbility(
+        new Modification(
             "Guiding Light",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "Stargazer 1",
-            SpecialAbilityType.Supernatural,
+            ModificationType.Supernatural,
             6,
             false,
             null,
             "The stargazer gains a familiar, treating his stargazer level as his wizard level. {{0#WizardLevel}}",
             []
         ),
-        new SpecialAbility(
+        new Modification(
             "Mystery Magic",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "Stargazer 1",
-            SpecialAbilityType.Extraordinary,
+            ModificationType.Extraordinary,
             6,
             false,
             null,
             "His stargazer levels count as (and stack with) witch levels when determining the effects of hexes. In addition, the stargazer adds all hexes available to a shaman with the heavens spirit to the witch list.",
             []
         ),
-        new SpecialAbility(
+        new Modification(
             "Mystery Magic - Coven Hex",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "Stargazer 1",
-            SpecialAbilityType.Extraordinary,
+            ModificationType.Extraordinary,
             6,
             true,
             ActionType.Standard,
             "The witch counts as a hag for the purpose of joining a hag’s coven. The coven must contain at least one hag. In addition, whenever the witch with this hex is within 30 feet of another witch with this hex, she can use the aid another action to grant a +1 bonus to the other witch’s caster level for 1 round. This bonus applies to the witch’s spells and all of her hexes.",
             []
         ),
-        new SpecialAbility(
+        new Modification(
             "Mystery Magic - Stars subdomain",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "Stargazer 3",
-            SpecialAbilityType.Extraordinary,
+            ModificationType.Extraordinary,
             8,
             false,
             null,
             "At 3rd level, the stargazer gains the Stars subdomain in addition to any domains he already has. His stargazer levels count as (and stack with) cleric levels when determining which domain abilities he gains and their effects. If he isn’t a cleric, the subdomain’s spells are added to his class spell list (if necessary) and to his spells known, spellbook, familiar, or similar source. Spells added this way may be cast only once per day, unless using the stars are right ability. He can use the stars are right ability regardless of his spellcasting class.\n\nDomain Spells: 1st—feather fall, 2nd—levitate, 3rd—fly, 4th—planar binding (lesser), 5th—overland flight, 6th—planar binding, 7th—reverse gravity, 8th—planar binding (greater), 9th—interplanetary teleport.",
             []
         ),
-        new SpecialAbility(
+        new Modification(
             "Mystery Magic - Stars subdomain - Guarded Mind",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "Stargazer 3",
-            SpecialAbilityType.Extraordinary,
+            ModificationType.Extraordinary,
             8,
             false,
             null,
@@ -290,22 +290,22 @@ export const defaultSheetPF: ICharacterSheet = {
                 )
             ]
         ),
-        new SpecialAbility(
+        new Modification(
             "Mystery Magic - Stars subdomain - Coat of Many Stars",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "Stargazer 5",
-            SpecialAbilityType.Supernatural,
+            ModificationType.Supernatural,
             10,
             true,
             ActionType.Standard,
             "A stargazer gains certain abilities from the heavens oracle mystery as he gains levels as well. At 5th level, the stargazer gains the coat of many stars oracle revelation.\n\nCoat of Many Stars (Su): You conjure a coat of starry radiance that grants you a +4 armor bonus. At 7th level, and every four levels thereafter, this bonus increases by +2. At 13th level, this armor grants you DR 5/slashing. You can use this coat for {{0#StargazerLevel}} hour per day. The duration does not need to be consecutive; it can instead be spent in 1-hour increments.",
             []
         ),
-        new SpecialAbility(
+        new Modification(
             "Sidereal Arcana - The Stargazer",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "Stargazer 2",
-            SpecialAbilityType.Supernatural,
+            ModificationType.Supernatural,
             7,
             false,
             null,
@@ -320,22 +320,22 @@ export const defaultSheetPF: ICharacterSheet = {
                 )
             ]
         ),
-        new SpecialAbility(
+        new Modification(
             "Sidereal Arcana - The Lantern Bearer",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "Stargazer 4",
-            SpecialAbilityType.Supernatural,
+            ModificationType.Supernatural,
             9,
             false,
             null,
             "The stargazer’s ability to conjure light increases. The radius of any light source he creates via magic increases by 10 feet, and its spell level is considered to be 2 higher.",
             []
         ),
-        new SpecialAbility(
+        new Modification(
             "Secret - Applicable Knowledge",
-            SpecialAbilitySource.Class,
+            ModificationSource.Class,
             "Loremaster 1",
-            SpecialAbilityType.Natural,
+            ModificationType.Natural,
             11,
             false,
             null,
@@ -343,6 +343,7 @@ export const defaultSheetPF: ICharacterSheet = {
             []
         )
     ],
+    feats: [],
     effects: [
         new Effect(
             "Caster Level",
@@ -441,6 +442,7 @@ export const emptySheet: ICharacterSheet = {
     itemData: new Map(),
     tableData: new Map(),
     specialAbilities: [],
+    feats: [],
     effects: [],
     imageLink: ""
 };

@@ -1,31 +1,29 @@
 import { Box, Collapse, IconButton, List, ListItem, ListItemText, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
-import { SpecialAbility } from "../models/characterSheet/SpecialAbility";
+import { Modification } from "../models/characterSheet/Modification";
 import { useState } from "react";
-import { SpecialAbilityModal } from "./modals/SpecialAbilityModal";
+import { ModificationModal } from "./modals/ModificationModal";
 import { memCopy } from "../helpers/memCopy";
 import { EffectModal } from "./modals/EffectModal";
 import { Effect } from "../models/characterSheet/Effect";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
 import Sugar from "sugar";
 import { abilityDisplaySum, textToNode } from "../helpers/stylingHelper";
 import React from "react";
 import { IModFunctions } from "../models/IModFunctions";
 
-interface ISpecialAbilityRow {
-    specialAbility: SpecialAbility;
+interface IModificationRow {
+    modification: Modification;
     open: boolean;
     toggleOpen(): void;
-    duplicateSpecialAbility(specialAbility: SpecialAbility): void;
-    deleteSpecialAbility(specialAbility: SpecialAbility): void;
+    duplicateModification(modification: Modification): void;
+    deleteModification(modification: Modification): void;
     modFunctions: IModFunctions;
 }
 
 const doubleBracketsRegex = new RegExp(/{{.+?}}/g);
 
-export const SpecialAbilityRow = (props: ISpecialAbilityRow) => {
+export const ModificationRow = (props: IModificationRow) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalEffect, setModalEffect] = useState<Effect | null>(null);
 
@@ -37,9 +35,9 @@ export const SpecialAbilityRow = (props: ISpecialAbilityRow) => {
         if (e.ctrlKey) {
             setModalOpen(!modalOpen);
         } else if (e.shiftKey) {
-            props.duplicateSpecialAbility(props.specialAbility);
+            props.duplicateModification(props.modification);
         } else if (e.altKey) {
-            props.deleteSpecialAbility(props.specialAbility);
+            props.deleteModification(props.modification);
         }
     };
 
@@ -49,11 +47,11 @@ export const SpecialAbilityRow = (props: ISpecialAbilityRow) => {
         if (e.ctrlKey) {
             setModalEffect(effect);
         } else if (e.shiftKey) {
-            props.specialAbility.effects.push({ ...effect });
+            props.modification.effects.push({ ...effect });
             props.modFunctions.recalc();
             setBitFlip(!bitFlip);
         } else if (e.altKey) {
-            Sugar.Array.remove(props.specialAbility.effects, (e) => effect === e);
+            Sugar.Array.remove(props.modification.effects, (e) => effect === e);
             props.modFunctions.recalc();
             setBitFlip(!bitFlip);
         }
@@ -74,16 +72,16 @@ export const SpecialAbilityRow = (props: ISpecialAbilityRow) => {
                     </IconButton>
                 </TableCell>
                 <TableCell sx={{ border: "unset" }} component="th" scope="row">
-                    {props.specialAbility.name}
+                    {props.modification.name}
                 </TableCell>
                 <TableCell sx={{ border: "unset" }} align="right">
-                    {props.specialAbility.sourceText}
+                    {props.modification.sourceText}
                 </TableCell>
                 <TableCell sx={{ border: "unset" }} align="right">
-                    Lvl {props.specialAbility.levelAquired}
+                    Lvl {props.modification.levelAquired}
                 </TableCell>
                 <TableCell sx={{ border: "unset" }} align="right">
-                    {props.specialAbility.type}
+                    {props.modification.type}
                 </TableCell>
             </TableRow>
             <TableRow
@@ -96,8 +94,8 @@ export const SpecialAbilityRow = (props: ISpecialAbilityRow) => {
                 <TableCell onClick={(e) => handleClick(e)} style={{ fontSize: 12, paddingBottom: 0, paddingTop: 0, whiteSpace: "pre-wrap" }} colSpan={6}>
                     <Collapse in={props.open} timeout="auto">
                         <Box sx={{ marginLeft: 5, maxWidth: "60vw", marginBottom: 2 }}>
-                            {textToNode(props.specialAbility.originalText, doubleBracketsRegex, (match) => {
-                                const ability = props.specialAbility.textModifiers.get(match);
+                            {textToNode(props.modification.originalText, doubleBracketsRegex, (match) => {
+                                const ability = props.modification.textModifiers.get(match);
                                 if (!ability) {
                                     return "";
                                 }
@@ -116,19 +114,13 @@ export const SpecialAbilityRow = (props: ISpecialAbilityRow) => {
                                     </Tooltip>
                                 );
                             })}
-                            {props.specialAbility.effects.length > 0 && (
+                            {props.modification.effects.length > 0 && (
                                 <List dense sx={{ paddingBottom: 0 }}>
-                                    {props.specialAbility.effects.map((effect, i) => (
+                                    {props.modification.effects.map((effect, i) => (
                                         <ListItem key={i} onClick={(event) => handleEffectClick(event, effect)}>
-                                            {effect.enabled ? (
-                                                <CheckIcon fontSize="small" sx={{ paddingRight: 1 }} />
-                                            ) : (
-                                                <CloseIcon fontSize="small" sx={{ paddingRight: 1 }} />
-                                            )}
-
                                             <ListItemText
-                                                primary={effect.name}
-                                                secondary={effect.exec}
+                                                primary={effect.enabled ? <>{effect.name}</> : <s>{effect.name}</s>}
+                                                secondary={effect.enabled ? <>{effect.exec}</> : <s>{effect.exec}</s>}
                                                 slotProps={{ primary: { fontSize: 12 }, secondary: { marginLeft: 2, fontSize: 10 } }}
                                             />
                                         </ListItem>
@@ -141,12 +133,12 @@ export const SpecialAbilityRow = (props: ISpecialAbilityRow) => {
             </TableRow>
 
             {modalOpen && (
-                <SpecialAbilityModal
+                <ModificationModal
                     open={modalOpen}
-                    ability={props.specialAbility}
+                    ability={props.modification}
                     onClose={() => setModalOpen(false)}
                     onSave={(updated) => {
-                        memCopy(props.specialAbility, updated);
+                        memCopy(props.modification, updated);
                         props.modFunctions.recalc();
                     }}
                 />

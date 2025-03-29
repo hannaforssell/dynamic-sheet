@@ -2,22 +2,22 @@ import React, { useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import { ActionType } from "../../models/characterSheet/ActionType";
 import { Effect } from "../../models/characterSheet/Effect";
-import { SpecialAbility } from "../../models/characterSheet/SpecialAbility";
-import { SpecialAbilitySource } from "../../models/characterSheet/SpecialAbilitySource";
-import { SpecialAbilityType } from "../../models/characterSheet/SpecialAbilityType";
+import { Modification } from "../../models/characterSheet/Modification";
+import { ModificationSource } from "../../models/characterSheet/ModificationSource";
+import { ModificationType } from "../../models/characterSheet/ModificationType";
 import { EffectType } from "../../models/characterSheet/EffectType";
 
-interface SpecialAbilityModalProps {
+interface ModificationModalProps {
     open: boolean;
-    ability: SpecialAbility;
+    ability: Modification;
     onClose: () => void;
-    onSave: (updatedAbility: SpecialAbility) => void;
+    onSave: (updatedAbility: Modification) => void;
 }
 
-export const SpecialAbilityModal: React.FC<SpecialAbilityModalProps> = ({ open, ability, onClose, onSave }) => {
-    const [editedAbility, setEditedAbility] = useState<SpecialAbility>({ ...ability });
+export const ModificationModal: React.FC<ModificationModalProps> = ({ open, ability, onClose, onSave }) => {
+    const [editedAbility, setEditedAbility] = useState<Modification>({ ...ability });
 
-    const handleChange = (field: keyof SpecialAbility, value: any) => {
+    const handleChange = (field: keyof Modification, value: any) => {
         setEditedAbility((prev) => ({ ...prev, [field]: value }));
     };
 
@@ -30,7 +30,7 @@ export const SpecialAbilityModal: React.FC<SpecialAbilityModalProps> = ({ open, 
                 <FormControl fullWidth margin="dense">
                     <InputLabel>Source</InputLabel>
                     <Select value={editedAbility.source} onChange={(e) => handleChange("source", e.target.value)} label="Source">
-                        {Object.values(SpecialAbilitySource).map((source) => (
+                        {Object.values(ModificationSource).map((source) => (
                             <MenuItem key={source} value={source}>
                                 {source}
                             </MenuItem>
@@ -49,7 +49,7 @@ export const SpecialAbilityModal: React.FC<SpecialAbilityModalProps> = ({ open, 
                 <FormControl fullWidth margin="dense">
                     <InputLabel>Type</InputLabel>
                     <Select value={editedAbility.type} onChange={(e) => handleChange("type", e.target.value)} label="Type">
-                        {Object.values(SpecialAbilityType).map((type) => (
+                        {Object.values(ModificationType).map((type) => (
                             <MenuItem key={type} value={type}>
                                 {type}
                             </MenuItem>
@@ -90,7 +90,6 @@ export const SpecialAbilityModal: React.FC<SpecialAbilityModalProps> = ({ open, 
                     onChange={(e) => handleChange("originalText", e.target.value)}
                     margin="dense"
                     rows={12}
-                    maxRows={12}
                 />
             </DialogContent>
 

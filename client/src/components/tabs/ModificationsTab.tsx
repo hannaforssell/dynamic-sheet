@@ -13,23 +13,23 @@ import {
     TableContainer
 } from "@mui/material";
 import { IModFunctions } from "../../models/IModFunctions";
-import { SpecialAbility } from "../../models/characterSheet/SpecialAbility";
+import { Modification } from "../../models/characterSheet/Modification";
 import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
 import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
 import { useState } from "react";
 
 import Sugar from "sugar";
-import { SpecialAbilityRow } from "../SpecialAbilityRow";
+import { ModificationRow } from "../ModificationRow";
 
-interface ISpecialAbilities {
-    specialAbilities: SpecialAbility[];
+interface IModifications {
+    modifications: Modification[];
     modFunctions: IModFunctions;
 }
 
-export const SpecialAbilities = (props: ISpecialAbilities) => {
+export const ModificationsTab = (props: IModifications) => {
     const [filterEffects, setFilterEffects] = useState(false);
 
-    let filtered = props.specialAbilities;
+    let filtered = props.modifications;
     if (filterEffects) {
         filtered = filtered.filter((sA) => sA.effects.length > 0);
     }
@@ -45,10 +45,10 @@ export const SpecialAbilities = (props: ISpecialAbilities) => {
         setBitFlip(!bitFlip);
     };
 
-    const duplicateSpecialAbility = (specialAbility: SpecialAbility) => {
-        props.specialAbilities.push({
-            ...specialAbility,
-            effects: specialAbility.effects.map((e) => {
+    const duplicateModification = (modification: Modification) => {
+        props.modifications.push({
+            ...modification,
+            effects: modification.effects.map((e) => {
                 return { ...e };
             })
         });
@@ -57,8 +57,8 @@ export const SpecialAbilities = (props: ISpecialAbilities) => {
         setAll(false);
     };
 
-    const deleteSpecialAbility = (specialAbility: SpecialAbility) => {
-        Sugar.Array.remove(props.specialAbilities, (sa) => sa === specialAbility);
+    const deleteModification = (modification: Modification) => {
+        Sugar.Array.remove(props.modifications, (sa) => sa === modification);
         props.modFunctions.recalc();
         setStateFlip(!stateFlip);
         setAll(false);
@@ -103,17 +103,17 @@ export const SpecialAbilities = (props: ISpecialAbilities) => {
                 <TableContainer component={Paper} sx={{ maxHeight: "80vh" }}>
                     <Table aria-label="collapsible table" size="small">
                         <TableBody>
-                            {sorted.map((specialAbility, i) => (
-                                <SpecialAbilityRow
+                            {sorted.map((modification, i) => (
+                                <ModificationRow
                                     key={i}
-                                    specialAbility={specialAbility}
+                                    modification={modification}
                                     open={open[i]}
                                     toggleOpen={() => {
                                         open[i] = !open[i];
                                         setBitFlip(!bitFlip);
                                     }}
-                                    duplicateSpecialAbility={duplicateSpecialAbility}
-                                    deleteSpecialAbility={deleteSpecialAbility}
+                                    duplicateModification={duplicateModification}
+                                    deleteModification={deleteModification}
                                     modFunctions={props.modFunctions}
                                 />
                             ))}

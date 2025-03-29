@@ -144,7 +144,9 @@ export class EffectService {
             q.notes = [];
         });
 
-        const allEffects = characterSheet.effects.concat(characterSheet.specialAbilities.flatMap((sa) => sa.effects));
+        const allEffects = characterSheet.effects
+            .concat(characterSheet.specialAbilities.flatMap((sa) => sa.effects))
+            .concat(characterSheet.feats.flatMap((sa) => sa.effects));
 
         const orderedEffects = allEffects.filter((e) => e.enabled).sort((a, b) => a.order - b.order);
 

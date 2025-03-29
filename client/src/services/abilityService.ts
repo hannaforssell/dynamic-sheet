@@ -22,9 +22,9 @@ export class AbilityService {
 
         this.calculateAbilities(characterSheet, characterSheet.abilityData);
 
-        const specialAbilitiesBatch = this.getSpecialAbilitiesBatch(characterSheet);
-        this.calculateAbilities(characterSheet, specialAbilitiesBatch);
-        this.applySpecialAbilities(characterSheet, specialAbilitiesBatch);
+        const modificationsBatch = this.getModificationsBatch(characterSheet);
+        this.calculateAbilities(characterSheet, modificationsBatch);
+        this.applyModifications(characterSheet, modificationsBatch);
     };
 
     public calculateAbilities = (characterSheet: ICharacterSheet, startBatch: Map<string, AbilityData>) => {
@@ -90,11 +90,21 @@ export class AbilityService {
         } while (currentBatch.length > 0);
     };
 
-    public getSpecialAbilitiesBatch = (characterSheet: ICharacterSheet) => {
+    public getModificationsBatch = (characterSheet: ICharacterSheet) => {
         const retMap = new Map<string, AbilityData>();
 
-        characterSheet.specialAbilities.forEach((specialAbility) => {
-            const bracketTexts = specialAbility.originalText.match(this.doubleBracketsRegex);
+        characterSheet.specialAbilities.forEach((modification) => {
+            const bracketTexts = modification.originalText.match(this.doubleBracketsRegex);
+            if (bracketTexts) {
+                bracketTexts.forEach((bracketText) => {
+                    const inner = bracketText.slice(2, bracketText.length - 2);
+                    retMap.set(inner, new AbilityData(inner, DataGroupType.Misc, 0, undefined, [new AbilityDataMod(inner, "Untyped", "+", inner)]));
+                });
+            }
+        });
+
+        characterSheet.feats.forEach((modification) => {
+            const bracketTexts = modification.originalText.match(this.doubleBracketsRegex);
             if (bracketTexts) {
                 bracketTexts.forEach((bracketText) => {
                     const inner = bracketText.slice(2, bracketText.length - 2);
@@ -106,17 +116,32 @@ export class AbilityService {
         return retMap;
     };
 
-    public applySpecialAbilities = (characterSheet: ICharacterSheet, specialAbilityData: Map<string, AbilityData>) => {
-        characterSheet.specialAbilities.forEach((specialAbility) => {
-            specialAbility.textModifiers.clear();
+    public applyModifications = (characterSheet: ICharacterSheet, modificationData: Map<string, AbilityData>) => {
+        characterSheet.specialAbilities.forEach((modification) => {
+            modification.textModifiers.clear();
 
-            const bracketTexts = specialAbility.originalText.match(this.doubleBracketsRegex);
+            const bracketTexts = modification.originalText.match(this.doubleBracketsRegex);
             if (bracketTexts) {
                 bracketTexts.forEach((bracketText) => {
                     const inner = bracketText.slice(2, bracketText.length - 2);
-                    const ability = specialAbilityData.get(inner);
+                    const ability = modificationData.get(inner);
                     if (ability) {
-                        specialAbility.textModifiers.set(bracketText, ability);
+                        modification.textModifiers.set(bracketText, ability);
+                    }
+                });
+            }
+        });
+
+        characterSheet.feats.forEach((modification) => {
+            modification.textModifiers.clear();
+
+            const bracketTexts = modification.originalText.match(this.doubleBracketsRegex);
+            if (bracketTexts) {
+                bracketTexts.forEach((bracketText) => {
+                    const inner = bracketText.slice(2, bracketText.length - 2);
+                    const ability = modificationData.get(inner);
+                    if (ability) {
+                        modification.textModifiers.set(bracketText, ability);
                     }
                 });
             }

@@ -71,7 +71,6 @@ export const EffectModal = (props: IEffectModal) => {
                     label="Execution Script"
                     multiline
                     rows={19}
-                    maxRows={19}
                     value={editedEffect.exec}
                     onChange={(e) => handleChange("exec", e.target.value)}
                     margin="dense"

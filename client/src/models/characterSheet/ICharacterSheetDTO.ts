@@ -2,7 +2,7 @@ import { AbilityData } from "./AbilityData";
 import { Effect } from "./Effect";
 import { ItemData } from "./ItemData";
 import { QualityData } from "./QualityData";
-import { SpecialAbility } from "./SpecialAbility";
+import { Modification } from "./Modification";
 import { TableData } from "./TableData";
 
 export interface ICharacterSheetDTO {
@@ -12,7 +12,7 @@ export interface ICharacterSheetDTO {
     classSkills: string[];
     itemData: [string, ItemData][];
     tableData: [string, TableData][];
-    specialAbilities: SpecialAbility[];
+    modifications: Modification[];
     effects: Effect[];
     imageLink: string;
 }

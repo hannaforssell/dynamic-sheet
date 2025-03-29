@@ -1,17 +1,17 @@
-import { SpecialAbilitySource } from "./SpecialAbilitySource";
+import { ModificationSource } from "./ModificationSource";
 import { ActionType } from "./ActionType";
-import { SpecialAbilityType } from "./SpecialAbilityType";
+import { ModificationType } from "./ModificationType";
 import { Effect } from "./Effect";
 import { AbilityData } from "./AbilityData";
 
-export class SpecialAbility {
+export class Modification {
     textModifiers: Map<string, AbilityData>;
 
     constructor(
         public name: string,
-        public source: SpecialAbilitySource,
+        public source: ModificationSource,
         public sourceText: string,
-        public type: SpecialAbilityType,
+        public type: ModificationType,
         public levelAquired: number | null,
         public active: boolean,
         public activationCost: ActionType | null,
