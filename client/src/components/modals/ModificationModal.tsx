@@ -96,18 +96,14 @@ export const ModificationModal: React.FC<ModificationModalProps> = ({ open, abil
             <DialogActions>
                 <Button
                     onClick={() => {
-                        editedAbility.effects.push(new Effect("New Effect", true, 100, EffectType.Base, ""));
+                        editedAbility.effects.push(new Effect("New Effect", true, 0, EffectType.Base, ""));
                     }}
                     color="primary"
-                    variant="contained"
                     sx={{ alignSelft: "left" }}
                 >
                     Add Effect
                 </Button>
                 <div style={{ flex: "1 0 0" }} />
-                <Button onClick={onClose} color="secondary">
-                    Cancel
-                </Button>
                 <Button
                     onClick={() => {
                         onClose();
@@ -117,6 +113,9 @@ export const ModificationModal: React.FC<ModificationModalProps> = ({ open, abil
                     variant="contained"
                 >
                     Save
+                </Button>
+                <Button onClick={onClose} color="secondary">
+                    Cancel
                 </Button>
             </DialogActions>
         </Dialog>

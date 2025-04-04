@@ -96,11 +96,8 @@ export const AddDataModal = (props: IAddDataModalData) => {
                             />
                         </FormControl>
                         <FormControl fullWidth>
-                            <InputLabel sx={defaultStyle} id="data-group-type-select-label">
-                                Group
-                            </InputLabel>
+                            <InputLabel id="data-group-type-select-label">Group</InputLabel>
                             <Select
-                                sx={defaultStyle}
                                 labelId="data-group-type-select-label"
                                 value={formData.group ?? ""}
                                 label="Group"
@@ -121,11 +118,8 @@ export const AddDataModal = (props: IAddDataModalData) => {
                             </Select>
                         </FormControl>
                         <FormControl fullWidth>
-                            <InputLabel sx={defaultStyle} id="property-types-select-label">
-                                Type
-                            </InputLabel>
+                            <InputLabel id="property-types-select-label">Type</InputLabel>
                             <Select
-                                sx={defaultStyle}
                                 labelId="property-types-select-label"
                                 label="Type"
                                 value={formData.propertyType ?? ""}
@@ -146,15 +140,10 @@ export const AddDataModal = (props: IAddDataModalData) => {
                             </Select>
                         </FormControl>
                         <Box>
-                            <Button sx={defaultStyle} onClick={onSubmit}>
-                                Submit
-                            </Button>
-                            <Button sx={defaultStyle} onClick={() => props.setOpen(false)}>
-                                Cancel
-                            </Button>
+                            <Button onClick={onSubmit}>Submit</Button>
+                            <Button onClick={() => props.setOpen(false)}>Cancel</Button>
                         </Box>
                     </FormGroup>
-                    {/* <InputLabel sx={defaultStyle} id="select-label">Group</InputLabel> */}
                 </Box>
             </>
         </Modal>

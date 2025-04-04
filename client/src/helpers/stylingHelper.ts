@@ -1,10 +1,3 @@
-import { Theme, SxProps } from "@mui/material";
-
-export const defaultStyle: SxProps<Theme> = {
-    color: "rgba(255, 255, 255, 0.87)",
-    fontFamily: "Roboto Mono, serif"
-};
-
 export const textToNode = (text: string, regex: RegExp, func: (match: string) => React.ReactNode): React.ReactNode[] => {
     const textArray = text.split(regex);
     const matches = text.match(regex);

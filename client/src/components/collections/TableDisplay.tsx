@@ -1,6 +1,5 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { TableData } from "../../models/characterSheet/TableData";
-import { defaultStyle } from "../../helpers/stylingHelper";
 import { IModFunctions } from "../../models/IModFunctions";
 
 interface ITableDisplayProps {
@@ -15,7 +14,7 @@ export const TableDisplay = (props: ITableDisplayProps) => {
                 <TableHead>
                     <TableRow>
                         {props.tableData.headers.map((header, i) => (
-                            <TableCell key={i} sx={{ ...defaultStyle, border: 0 }}>
+                            <TableCell key={i} sx={{ border: 0 }}>
                                 {header}
                             </TableCell>
                         ))}
@@ -38,7 +37,6 @@ export const TableDisplay = (props: ITableDisplayProps) => {
                                     component="th"
                                     scope="row"
                                     sx={{
-                                        ...defaultStyle,
                                         fontSize: 12,
                                         padding: 0.5,
                                         textAlign: "center",

@@ -12,5 +12,6 @@ export enum DataGroupType {
     Items = 1 << 10,
     Misc = 1 << 11,
     CasterLevel = 1 << 12,
-    Mobility = 1 << 13
+    Mobility = 1 << 13,
+    SpellSlots = 1 << 14
 }

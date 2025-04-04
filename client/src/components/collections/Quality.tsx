@@ -1,7 +1,6 @@
 import { QualityData } from "../../models/characterSheet/QualityData";
 import { Button, styled, SxProps, TextField, Theme, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
 import { useState } from "react";
-import { defaultStyle } from "../../helpers/stylingHelper";
 import { QualityService } from "../../services/qualityService";
 import { IModFunctions } from "../../models/IModFunctions";
 import { QualityModal } from "../modals/QualityModal";
@@ -25,7 +24,6 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {
 }));
 
 const singleLineStyle: SxProps<Theme> = {
-    ...defaultStyle,
     width: 300,
     input: {
         color: "rgba(255, 255, 255, 0.87)",
@@ -44,7 +42,6 @@ const singleLineStyle: SxProps<Theme> = {
 };
 
 const multiLineStyle: SxProps<Theme> = {
-    ...defaultStyle,
     input: {
         color: "rgba(255, 255, 255, 0.87)",
         "&:Mui-TextField": { brandBorderColor: "rgba(255, 255, 255, 0.87)" }
@@ -113,7 +110,7 @@ export const Quality = (props: IQualityProps) => {
                         onFocus={onFocus}
                         onBlur={onBlur}
                         sx={multiLineStyle}
-                        slotProps={{ formHelperText: { sx: defaultStyle }, htmlInput: { style: { padding: 0, margin: -5 } } }}
+                        slotProps={{ htmlInput: { style: { padding: 0, margin: -5 } } }}
                         fullWidth={true}
                         onClick={handleClick}
                     />
@@ -128,7 +125,6 @@ export const Quality = (props: IQualityProps) => {
                         onBlur={onBlur}
                         disabled={false}
                         sx={singleLineStyle}
-                        slotProps={{ formHelperText: { sx: defaultStyle } }}
                         onClick={handleClick}
                     />
                 )}

@@ -22,8 +22,11 @@ import { defaultSheetPF, emptySheet } from "../helpers/sheetHelper";
 import { AC } from "./AC";
 import { IModFunctions } from "../models/IModFunctions";
 import { OffenseTab } from "./tabs/OffenseTab";
-import { ModificationsTab } from "./tabs/ModificationsTab";
 import { BasicTab } from "./tabs/BasicTab";
+import { SpecialAbilitiesTab } from "./tabs/SpecialAbilitiesTab";
+import { FeatTab } from "./tabs/FeatTab";
+import { SpellTab } from "./tabs/SpellTab";
+import { EffectTab } from "./tabs/EffectTab";
 
 const calculatorService = new CalculatorService();
 
@@ -129,17 +132,19 @@ export const CharacterSheet = () => {
         <>
             <HeaderMenu characterSheet={sheetData} setCharacterSheet={setSheetData} calculate={calculate} setEditView={() => setEditMode(!editMode)} />
             <TabContext value={tabIndex}>
-                <Tabs value={tabIndex} onChange={handleTabChange}>
+                <Tabs value={tabIndex} onChange={handleTabChange} sx={{ height: "5vh" }}>
                     <Tab label={"Basic"} value={0} />
                     <Tab label={"Offense"} value={1} />
                     <Tab label={"Defense"} value={2} />
                     <Tab label={"Skills"} value={3} />
                     <Tab label={"Special Abilities"} value={4} />
                     <Tab label={"Feats"} value={5} />
-                    <Tab label={"Items"} value={6} />
-                    <Tab label={"Misc"} value={7} />
+                    <Tab label={"Spells"} value={6} />
+                    <Tab label={"Items"} value={7} />
+                    <Tab label={"Effects"} value={8} />
+                    <Tab label={"Misc"} value={9} />
                     {search && (
-                        <Tab label={`Search result: ${search}`} value={8} autoFocus={false} onFocus={() => document.getElementById("searchBar")?.focus()} />
+                        <Tab label={`Search result: ${search}`} value={10} autoFocus={false} onFocus={() => document.getElementById("searchBar")?.focus()} />
                     )}
                 </Tabs>
                 <input
@@ -200,18 +205,32 @@ export const CharacterSheet = () => {
                     </label>
                 </TabPanel>
                 <TabPanel value={4}>
-                    <ModificationsTab modifications={sheetData.specialAbilities} modFunctions={modFunctions}></ModificationsTab>
+                    <SpecialAbilitiesTab modifications={sheetData.specialAbilities} modFunctions={modFunctions}></SpecialAbilitiesTab>
                 </TabPanel>
-                <TabPanel value={5}></TabPanel>
+                <TabPanel value={5}>
+                    <FeatTab modifications={sheetData.feats} modFunctions={modFunctions}></FeatTab>
+                </TabPanel>
                 <TabPanel value={6}>
+                    <SpellTab
+                        spellsKnown={sheetData.spellsKnown}
+                        spellSlotsData={groupData(sheetData, DataGroupType.SpellSlots)}
+                        casterLevelData={groupData(sheetData, DataGroupType.CasterLevel)}
+                        spellsPrepared={sheetData.spellsPrepared}
+                        modFunctions={modFunctions}
+                    ></SpellTab>
+                </TabPanel>
+                <TabPanel value={7}>
                     {sheetData.itemData &&
                         [...sheetData.itemData].map(([key, value]) => <Item key={key} item={value} editView={editMode} changeItem={changeProperty} />)}
                 </TabPanel>
-                <TabPanel value={7}>
+                <TabPanel value={8}>
+                    <EffectTab modFunctions={modFunctions}></EffectTab>
+                </TabPanel>
+                <TabPanel value={9}>
                     <Misc data={groupData(sheetData, DataGroupType.Misc)} modFunctions={modFunctions} />
                 </TabPanel>
                 {search && (
-                    <TabPanel value={8}>
+                    <TabPanel value={10}>
                         <SearchResult search={search} characterSheet={sheetData} modFunctions={modFunctions} />
                     </TabPanel>
                 )}

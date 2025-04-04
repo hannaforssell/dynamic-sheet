@@ -1,17 +1,18 @@
 import { AbilityData } from "../../models/characterSheet/AbilityData";
-import { Box, Button, Divider, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { Box, Button, ButtonPropsColorOverrides, Divider, Tooltip, tooltipClasses, TooltipProps, Typography } from "@mui/material";
+import { styled, SxProps, Theme } from "@mui/material/styles";
 import React, { useState } from "react";
 import { abilityDisplaySum } from "../../helpers/stylingHelper";
 import { IModFunctions } from "../../models/IModFunctions";
 import { AbilityModal } from "../modals/AbilityModal";
 import { memCopy } from "../../helpers/memCopy";
 
-interface IAbilityProps {
+interface IAbilitySmall {
     abilityData: AbilityData;
     modFunctions: IModFunctions;
     showMod?: boolean;
     showSign?: boolean;
+    color?: "inherit" | "primary" | "secondary" | "success" | "error" | "info" | "warning";
 }
 
 const getAbilityMod = (score: number | null) => {
@@ -33,7 +34,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => <Tooltip {
     }
 }));
 
-export const Ability = (props: IAbilityProps) => {
+export const AbilitySmall = (props: IAbilitySmall) => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -52,33 +53,29 @@ export const Ability = (props: IAbilityProps) => {
 
     return (
         <>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography>{props.abilityData.displayName}: </Typography>
-                <HtmlTooltip
-                    title={
-                        <React.Fragment>
-                            <Typography color="inherit">
-                                {" "}
-                                {props.abilityData.name}: {displaySum}
-                            </Typography>
-                            {props.abilityData.abilityMods.map((m, i) => (
-                                <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>
-                                    {m.toString()}
-                                </p>
-                            ))}
-                            {props.abilityData.notes.length > 0 && <Divider variant="fullWidth" sx={{ bgcolor: "black", margin: "8px" }} />}
-                            {props.abilityData.notes.map((note, i) => (
-                                <p key={i}>{note}</p>
-                            ))}
-                        </React.Fragment>
-                    }
-                >
-                    <Button onClick={handleClick} sx={{ color: "rgba(255, 255, 255, 0.87)", padding: 0, paddingTop: "1px" }}>
-                        {props.showMod ? `${displaySum} ${getAbilityMod(props.abilityData.calculatedSum)}` : displaySum}
-                    </Button>
-                </HtmlTooltip>
-            </Box>
-            {props.modFunctions.editMode && <Button onClick={() => props.modFunctions.removeAbility(props.abilityData)}>X</Button>}
+            <HtmlTooltip
+                title={
+                    <React.Fragment>
+                        <Typography color="inherit">
+                            {" "}
+                            {props.abilityData.name}: {displaySum}
+                        </Typography>
+                        {props.abilityData.abilityMods.map((m, i) => (
+                            <p key={i} style={m.enabled ? {} : { textDecoration: "line-through" }}>
+                                {m.toString()}
+                            </p>
+                        ))}
+                        {props.abilityData.notes.length > 0 && <Divider variant="fullWidth" sx={{ bgcolor: "black", margin: "8px" }} />}
+                        {props.abilityData.notes.map((note, i) => (
+                            <p key={i}>{note}</p>
+                        ))}
+                    </React.Fragment>
+                }
+            >
+                <Button onClick={handleClick} sx={{ padding: 0 }} color={props.color}>
+                    {props.showMod ? `${displaySum} ${getAbilityMod(props.abilityData.calculatedSum)}` : displaySum}
+                </Button>
+            </HtmlTooltip>
             {modalOpen && (
                 <AbilityModal
                     abilityData={props.abilityData}

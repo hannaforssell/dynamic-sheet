@@ -4,6 +4,8 @@ import { ItemData } from "./ItemData";
 import { QualityData } from "./QualityData";
 import { Modification } from "./Modification";
 import { TableData } from "./TableData";
+import { KnownSpell } from "./KnownSpell";
+import { PreparedSpell } from "./PreparedSpell";
 
 export interface ICharacterSheetDTO {
     _id: string | null;
@@ -12,7 +14,10 @@ export interface ICharacterSheetDTO {
     classSkills: string[];
     itemData: [string, ItemData][];
     tableData: [string, TableData][];
-    modifications: Modification[];
+    specialAbilities: Modification[];
+    feats: Modification[];
+    spellsKnown: KnownSpell[];
+    spellsPrepared: PreparedSpell[];
     effects: Effect[];
     imageLink: string;
 }

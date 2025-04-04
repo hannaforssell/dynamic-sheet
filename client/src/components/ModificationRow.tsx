@@ -1,9 +1,8 @@
 import { Box, Collapse, IconButton, List, ListItem, ListItemText, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
 import { Modification } from "../models/characterSheet/Modification";
 import { useState } from "react";
-import { ModificationModal } from "./modals/ModificationModal";
 import { memCopy } from "../helpers/memCopy";
-import { EffectModal } from "./modals/EffectModal";
+import { EffectDialog } from "./modals/EffectDialog";
 import { Effect } from "../models/characterSheet/Effect";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -11,6 +10,7 @@ import Sugar from "sugar";
 import { abilityDisplaySum, textToNode } from "../helpers/stylingHelper";
 import React from "react";
 import { IModFunctions } from "../models/IModFunctions";
+import { ModificationModal } from "./modals/ModificationModal";
 
 interface IModificationRow {
     modification: Modification;
@@ -78,7 +78,7 @@ export const ModificationRow = (props: IModificationRow) => {
                     {props.modification.sourceText}
                 </TableCell>
                 <TableCell sx={{ border: "unset" }} align="right">
-                    Lvl {props.modification.levelAquired}
+                    {props.modification.levelAquired && <>Lvl {props.modification.levelAquired}</>}
                 </TableCell>
                 <TableCell sx={{ border: "unset" }} align="right">
                     {props.modification.type}
@@ -145,7 +145,7 @@ export const ModificationRow = (props: IModificationRow) => {
             )}
 
             {modalEffect !== null && (
-                <EffectModal
+                <EffectDialog
                     open={modalEffect !== null}
                     effect={modalEffect}
                     onClose={() => setModalEffect(null)}

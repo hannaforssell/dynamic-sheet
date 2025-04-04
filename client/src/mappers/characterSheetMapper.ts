@@ -4,6 +4,7 @@ import { ICharacterSheetDTO } from "../models/characterSheet/ICharacterSheetDTO"
 export function MapToDTO(characterSheet: ICharacterSheet): ICharacterSheetDTO {
     return {
         ...characterSheet,
+        _id: null,
         qualityData: Array.from(characterSheet.qualityData),
         abilityData: Array.from(characterSheet.abilityData),
         itemData: Array.from(characterSheet.itemData),
@@ -15,6 +16,7 @@ export function MapToDTO(characterSheet: ICharacterSheet): ICharacterSheetDTO {
 export function MapFromDTO(dto: ICharacterSheetDTO): ICharacterSheet {
     return {
         ...dto,
+        _id: null,
         qualityData: new Map(dto.qualityData),
         abilityData: new Map(dto.abilityData),
         itemData: new Map(dto.itemData),

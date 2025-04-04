@@ -12,33 +12,34 @@ import {
     TableBody,
     TableContainer
 } from "@mui/material";
-import { IModFunctions } from "../../models/IModFunctions";
-import { Modification } from "../../models/characterSheet/Modification";
+import { IModFunctions } from "../models/IModFunctions";
+import { Modification } from "../models/characterSheet/Modification";
 import UnfoldMoreIcon from "@mui/icons-material/UnfoldMore";
 import UnfoldLessIcon from "@mui/icons-material/UnfoldLess";
 import { useState } from "react";
 
 import Sugar from "sugar";
-import { ModificationRow } from "../ModificationRow";
+import { ModificationRow } from "./ModificationRow";
 
-interface IModifications {
+interface IModificationCollection {
     modifications: Modification[];
     modFunctions: IModFunctions;
 }
 
-export const ModificationsTab = (props: IModifications) => {
+export const ModificationCollection = (props: IModificationCollection) => {
     const [filterEffects, setFilterEffects] = useState(false);
+    const [bitFlip, setBitFlip] = useState(false);
 
     let filtered = props.modifications;
     if (filterEffects) {
         filtered = filtered.filter((sA) => sA.effects.length > 0);
     }
 
-    const sorted = filtered.sort((a, b) => (a.levelAquired ?? 0) - (b.levelAquired ?? 0) || a.name.localeCompare(b.name));
+    const sorted = filtered.sort(
+        (a, b) => a.sourceText.localeCompare(b.sourceText) || (a.levelAquired ?? 0) - (b.levelAquired ?? 0) || a.name.localeCompare(b.name)
+    );
 
-    const [bitFlip, setBitFlip] = useState(false);
     const [open] = useState(new Array(sorted.length).fill(false));
-    const [stateFlip, setStateFlip] = useState(false);
 
     const setAll = (state: boolean) => {
         open.fill(state);
@@ -53,14 +54,14 @@ export const ModificationsTab = (props: IModifications) => {
             })
         });
         props.modFunctions.recalc();
-        setStateFlip(!stateFlip);
+        setBitFlip(!bitFlip);
         setAll(false);
     };
 
     const deleteModification = (modification: Modification) => {
         Sugar.Array.remove(props.modifications, (sa) => sa === modification);
         props.modFunctions.recalc();
-        setStateFlip(!stateFlip);
+        setBitFlip(!bitFlip);
         setAll(false);
     };
 

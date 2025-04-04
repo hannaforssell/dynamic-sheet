@@ -16,14 +16,14 @@ import {
 import { Effect } from "../../models/characterSheet/Effect";
 import { EffectType } from "../../models/characterSheet/EffectType";
 
-interface IEffectModal {
+interface IEffectDialog {
     open: boolean;
     effect: Effect;
     onClose: () => void;
     onSave: (updatedEffect: Effect, originalEffect: Effect) => void;
 }
 
-export const EffectModal = (props: IEffectModal) => {
+export const EffectDialog = (props: IEffectDialog) => {
     const [editedEffect, setEditedEffect] = useState<Effect>({ ...props.effect });
 
     const handleChange = (field: keyof Effect, value: any) => {
@@ -79,9 +79,6 @@ export const EffectModal = (props: IEffectModal) => {
 
             {/* Actions */}
             <DialogActions>
-                <Button onClick={props.onClose} color="secondary">
-                    Cancel
-                </Button>
                 <Button
                     onClick={() => {
                         props.onClose();
@@ -91,6 +88,9 @@ export const EffectModal = (props: IEffectModal) => {
                     variant="contained"
                 >
                     Save
+                </Button>
+                <Button onClick={props.onClose} color="secondary">
+                    Cancel
                 </Button>
             </DialogActions>
         </Dialog>

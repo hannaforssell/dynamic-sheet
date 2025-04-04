@@ -10,6 +10,9 @@ import { Modification } from "../models/characterSheet/Modification";
 import { ModificationSource } from "../models/characterSheet/ModificationSource";
 import { ModificationType } from "../models/characterSheet/ModificationType";
 import { TableData } from "../models/characterSheet/TableData";
+import { KnownSpell } from "../models/characterSheet/KnownSpell";
+import { SpellSchool } from "../models/characterSheet/SpellSchool";
+import { PreparedSpell } from "../models/characterSheet/PreparedSpell";
 
 export const defaultSheetPF: ICharacterSheet = {
     _id: null,
@@ -76,9 +79,21 @@ export const defaultSheetPF: ICharacterSheet = {
         ["Ref", new AbilityData("Ref", DataGroupType.Saves)],
         ["Will", new AbilityData("Will", DataGroupType.Saves)],
 
-        ["CL", new AbilityData("CL", DataGroupType.CasterLevel, 0)],
-        ["BuffCL", new AbilityData("BuffCL", DataGroupType.CasterLevel, 1)],
-        ["ExtraBuffCL", new AbilityData("ExtraBuffCL", DataGroupType.CasterLevel, 2)],
+        ["CL", new AbilityData("CL", DataGroupType.CasterLevel, 1)],
+        ["BuffCL", new AbilityData("BuffCL", DataGroupType.CasterLevel, 2)],
+        ["ExtraBuffCL", new AbilityData("ExtraBuffCL", DataGroupType.CasterLevel, 3)],
+        ["vsSR", new AbilityData("vsSR", DataGroupType.CasterLevel, 4)],
+
+        ["Lvl0Spells", new AbilityData("Lvl0Spells", DataGroupType.SpellSlots)],
+        ["Lvl1Spells", new AbilityData("Lvl1Spells", DataGroupType.SpellSlots)],
+        ["Lvl2Spells", new AbilityData("Lvl2Spells", DataGroupType.SpellSlots)],
+        ["Lvl3Spells", new AbilityData("Lvl3Spells", DataGroupType.SpellSlots)],
+        ["Lvl4Spells", new AbilityData("Lvl4Spells", DataGroupType.SpellSlots)],
+        ["Lvl5Spells", new AbilityData("Lvl5Spells", DataGroupType.SpellSlots)],
+        ["Lvl6Spells", new AbilityData("Lvl6Spells", DataGroupType.SpellSlots)],
+        ["Lvl7Spells", new AbilityData("Lvl7Spells", DataGroupType.SpellSlots)],
+        ["Lvl8Spells", new AbilityData("Lvl8Spells", DataGroupType.SpellSlots)],
+        ["Lvl9Spells", new AbilityData("Lvl9Spells", DataGroupType.SpellSlots)],
 
         ["BaB", new AbilityData("BaB", DataGroupType.ToHit)],
         ["MeleeToHit", new AbilityData("MeleeToHit", DataGroupType.ToHit, 0, "MeleeToHit")],
@@ -100,15 +115,15 @@ export const defaultSheetPF: ICharacterSheet = {
         ["Heal", new AbilityData("Heal", DataGroupType.Skills)],
         ["Iaijutsu Focus", new AbilityData("Iaijutsu Focus", DataGroupType.Skills)],
         ["Intimidate", new AbilityData("Intimidate", DataGroupType.Skills)],
-        ["Knowledge(Arcana)", new AbilityData("Knowledge (Arcana)", DataGroupType.Skills)],
-        ["Knowledge(Dungeoneering)", new AbilityData("Knowledge (Dungeoneering)", DataGroupType.Skills)],
-        ["Knowledge(Geography)", new AbilityData("Knowledge (Geography)", DataGroupType.Skills)],
-        ["Knowledge(History)", new AbilityData("Knowledge (History)", DataGroupType.Skills)],
-        ["Knowledge(Local)", new AbilityData("Knowledge (Local - Region)", DataGroupType.Skills)],
-        ["Knowledge(Nature)", new AbilityData("Knowledge (Nature)", DataGroupType.Skills)],
-        ["Knowledge(Nobility)", new AbilityData("Knowledge (Nobility)", DataGroupType.Skills)],
-        ["Knowledge(The Planes)", new AbilityData("Knowledge (The Planes)", DataGroupType.Skills)],
-        ["Knowledge(Religion)", new AbilityData("Knowledge (Religion)", DataGroupType.Skills)],
+        ["Knowledge(Arcana)", new AbilityData("Knowledge(Arcana)", DataGroupType.Skills, 100, "Knowledge (Arcana)")],
+        ["Knowledge(Dungeoneering)", new AbilityData("Knowledge(Dungeoneering)", DataGroupType.Skills, 100, "Knowledge (Dungeoneering)")],
+        ["Knowledge(Geography)", new AbilityData("Knowledge(Geography)", DataGroupType.Skills, 100, "Knowledge (Geography)")],
+        ["Knowledge(History)", new AbilityData("Knowledge(History)", DataGroupType.Skills, 100, "Knowledge (History)")],
+        ["Knowledge(Local-Region)", new AbilityData("Knowledge(Local-Region)", DataGroupType.Skills, 100, "Knowledge (Local - Region)")],
+        ["Knowledge(Nature)", new AbilityData("Knowledge(Nature)", DataGroupType.Skills, 100, "Knowledge (Nature)")],
+        ["Knowledge(Nobility)", new AbilityData("Knowledge(Nobility)", DataGroupType.Skills, 100, "Knowledge (Nobility)")],
+        ["Knowledge(ThePlanes)", new AbilityData("Knowledge(ThePlanes)", DataGroupType.Skills, 100, "Knowledge (The Planes)")],
+        ["Knowledge(Religion)", new AbilityData("Knowledge(Religion)", DataGroupType.Skills, 100, "Knowledge (Religion)")],
         ["Linguistics", new AbilityData("Linguistics", DataGroupType.Skills)],
         ["LucidDreaming", new AbilityData("LucidDreaming", DataGroupType.Skills, 100, "Lucid Dreaming")],
         ["Perception", new AbilityData("Perception", DataGroupType.Skills)],
@@ -158,7 +173,7 @@ export const defaultSheetPF: ICharacterSheet = {
                 true,
                 -1,
                 EffectType.Base,
-                "SetAbility('Str', '7');\nSetAbility('Dex', '7');\nSetAbility('Con', '7');\nSetAbility('Int', '18');\nSetAbility('Wis', '18');\nSetAbility('Cha', '15');\n\nAddAbilityMod('Str', '-6');\nAddAbilityMod('Dex', '-6');\nAddAbilityMod('Con', '-6');\nAddAbilityMod('Int', '+3');\nAddAbilityMod('Wis', '+3');\nAddAbilityMod('Cha', '+3');\n\nAddAbilityMod('HP', '6*0#Level', 'Rolls');"
+                "SetAbility('Str', '7');\nSetAbility('Dex', '7');\nSetAbility('Con', '7');\nSetAbility('Int', '18');\nSetAbility('Wis', '18');\nSetAbility('Cha', '15');\n\nAddAbilityMod('Str', '-6');\nAddAbilityMod('Dex', '-6');\nAddAbilityMod('Con', '-6');\nAddAbilityMod('Int', '+3');\nAddAbilityMod('Wis', '+3');\nAddAbilityMod('Cha', '+3');\n\nAddAbilityMod('HP', '6*0#Level', 'Rolls');\n\nSetAbility('Lvl0Spells', '6');\nSetAbility('Lvl1Spells', '4');\nSetAbility('Lvl2Spells', '4');\nSetAbility('Lvl3Spells', '4');\nSetAbility('Lvl4Spells', '3');\nSetAbility('Lvl5Spells', '2');\nSetAbility('Lvl6Spells', '1');\nSetAbility('Lvl7Spells', '—');\nSetAbility('Lvl8Spells', '—');\nSetAbility('Lvl9Spells', '—');\n\nAddAbilityMod('Lvl1Spells', '0.75 + ((0@Int) / 4)');\nAddAbilityMod('Lvl2Spells', '0.5 + ((0@Int) / 4)');\nAddAbilityMod('Lvl3Spells', '0.25 + ((0@Int) / 4)');\nAddAbilityMod('Lvl4Spells', '0 + ((0@Int) / 4)');\nAddAbilityMod('Lvl5Spells', '-0.25 + ((0@Int) / 4)');\nAddAbilityMod('Lvl6Spells', '-0.5 + ((0@Int) / 4)');\nAddAbilityMod('Lvl7Spells', '-0.75 + ((0@Int) / 4)');\nAddAbilityMod('Lvl8Spells', '-1 + ((0@Int) / 4)');\nAddAbilityMod('Lvl9Spells', '-1.25 + ((0@Int) / 4)');"
             ),
             new Effect(
                 "Formulas",
@@ -343,7 +358,296 @@ export const defaultSheetPF: ICharacterSheet = {
             []
         )
     ],
-    feats: [],
+    feats: [
+        new Modification(
+            "Skill Focus - Knowledge (The Planes)",
+            ModificationSource.Other,
+            "Occupation (Scholar)",
+            ModificationType.Extraordinary,
+            null,
+            false,
+            null,
+            "Choose a skill. You are particularly adept at that skill.\n\nBenefit: You get a +3 bonus on all checks involving the chosen skill. If you have 10 or more ranks in that skill, this bonus increases to +6.\n\nSpecial: You can gain this feat multiple times. Its effects do not stack. Each time you take the feat, it applies to a new skill.",
+            [new Effect("Skill Focus - Knowledge (The Planes)", true, 1, EffectType.Feat, "AddAbilityMod('Knowledge(ThePlanes)', '3', 'Untyped');")]
+        ),
+        new Modification(
+            "Spell Penetration",
+            ModificationSource.Other,
+            "Campaign Bonus",
+            ModificationType.Extraordinary,
+            null,
+            false,
+            null,
+            "Your spells break through spell resistance more easily than most.\n\nBenefit: You get a +2 bonus on caster level checks (1d20 + caster level) made to overcome a creature’s spell resistance.",
+            [new Effect("Spell Penetration", true, 1, EffectType.Feat, "AddAbilityMod('vsSR', '2', 'Untyped');")]
+        ),
+        new Modification(
+            "Heighten Spell",
+            ModificationSource.Other,
+            "Campaign Bonus",
+            ModificationType.Extraordinary,
+            null,
+            false,
+            null,
+            "You can cast spells as if they were a higher level.\n\nBenefit: A heightened spell has a higher spell level than normal (up to a maximum of 9th level). Unlike other metamagic feats, Heighten Spell actually increases the effective level of the spell that it modifies. All effects dependent on spell level (such as saving throw DCs and ability to penetrate a lesser globe of invulnerability) are calculated according to the heightened level.\n\nLevel Increase: The heightened spell is as difficult to prepare and cast as a spell of its effective level.",
+            []
+        ),
+        new Modification(
+            "Fleeting Spell",
+            ModificationSource.Other,
+            "Drawback Bonus",
+            ModificationType.Extraordinary,
+            null,
+            false,
+            null,
+            "Your spells vanish with unusual speed.\n\nBenefit(s): A fleeting spell’s duration becomes dismissible, if it is not already. You can dismiss your own fleeting spell as a swift action. When you dismiss a fleeting spell, its lingering aura cannot be detected by magic unless the caster succeeds at a caster level check against a DC {{11 + 0#CL}}. The DC of dispel checks to counter a fleeting spell is reduced by 2, and once active, dispel magic removes a fleeting spell without a caster level check. A fleeting spell has half its normal duration (with an extended fleeting spell, these duration adjustments cancel out). Only spells with a duration of at least 2 rounds can be made fleeting, and instantaneous or permanent spells cannot be fleeting spells.\n\nNormal: It is a standard action to dismiss a dismissible spell, and only spells whose Duration entry is marked with a D are dismissible.\n\nLevel Increase: +0 (a fleeting spell does not use up a higher-level spell slot than the spell’s actual level.",
+            []
+        ),
+        new Modification(
+            "False Focus",
+            ModificationSource.Other,
+            "1st",
+            ModificationType.Extraordinary,
+            1,
+            false,
+            null,
+            "You can use a divine focus to cast arcane spells.\n\nPrerequisite: Knowledge (religion) 1 rank, ability to cast arcane spells.\n\nBenefit: By using a divine focus as part of casting, you can cast any spell with a material component costing the value of that divine focus (maximum 100 gp) or less without needing that component. For example, if you use a silver holy symbol worth 25 gp, you do not have to provide material components for an arcane spell if its components are worth 25 gp or less. The casting of the spell still provokes attacks of opportunity as normal. If the spell requires a material component that costs more than the value of the divine focus, you must have the material component on hand to cast the spell, as normal.\n\nNormal: A divine focus has no effect when used as a component in arcane spells.",
+            []
+        ),
+        new Modification(
+            "Greater Spell Penetration",
+            ModificationSource.Other,
+            "2nd",
+            ModificationType.Extraordinary,
+            3,
+            false,
+            null,
+            "Your spells break through spell resistance much more easily than most.\n\nPrerequisite: Spell Penetration.\n\nBenefit: You get a +2 bonus on caster level checks (1d20 + caster level) made to overcome a creature’s spell resistance. This bonus stacks with the one from Spell Penetration.",
+            [new Effect("Greater Spell Penetration", true, 1, EffectType.Feat, "AddAbilityMod('vsSR', '2', 'Untyped');")]
+        ),
+        new Modification(
+            "Experimental Spellcaster",
+            ModificationSource.Other,
+            "3rd",
+            ModificationType.Extraordinary,
+            5,
+            false,
+            null,
+            "Despite casting spells, you dabble in the art of wordcasting.\n\nPrerequisites: Ability to cast spells.\n\nBenefit: Select one class that grants you the ability to cast spells. You can now use the slots from that class to cast a limited number of words of power spells. Add all of the target words to your spell list and your spellbook, familiar, or list of spells known. In addition, add the boost meta word and one effect word of any level you can cast in the chosen class.\n\nSpecial: You can take this feat multiple times. Each additional time you select this feat, add two effect or meta words to your spellbook, familiar, or list of spells known.",
+            []
+        ),
+        new Modification(
+            "Cherry Blossom Spell",
+            ModificationSource.Other,
+            "4th",
+            ModificationType.Extraordinary,
+            7,
+            false,
+            null,
+            "You can infuse your spells with the ability to cripple your targets with old age or regress them to the folly of youth.\n\nBenefit(s): When a living creature takes damage from the affected spell, that creature also takes 2 points of damage to Strength, Dexterity, and Constitution or 2 points of damage to Intelligence, Wisdom, and Charisma (your choice). If the spell does not normally allow a save, the target can attempt a Fortitude save to negate the effect. Ageless or immortal creatures are immune to this effect. This is a magical aging effect, but it does not alter the creature’s true age—it merely simulates the effects of old age on the flesh or the reversion to a more infantile mental age. A cherry blossom spell uses up a slot 3 levels higher than the spell’s actual level. Spells that don’t deal damage don’t benefit from this feat.",
+            []
+        ),
+        new Modification(
+            "Fast Study",
+            ModificationSource.Other,
+            "5th",
+            ModificationType.Extraordinary,
+            9,
+            false,
+            null,
+            "Prerequisite: You must be at least a 5th-level wizard to select this discovery.\n\nBenefit: Normally, a wizard spends 1 hour preparing all of his spells for the day, or proportionately less if he only prepares some spells, with a minimum of 15 minutes of preparation. Thanks to mental discipline and clever mnemonics, you can prepare all of your spells in only 15 minutes, and your minimum preparation time is only 1 minute. ",
+            []
+        ),
+        new Modification(
+            "Emergency Attunement",
+            ModificationSource.Other,
+            "6th",
+            ModificationType.Extraordinary,
+            11,
+            false,
+            null,
+            "You can adapt your defenses to any situation.\n\nPrerequisites: Spellcraft 7 ranks.\n\nBenefit: As a standard action, you can alter one of your ongoing abjuration or transmutation spells. It must be currently affecting you and must grant a choice of options when cast. You change its benefit to a different one from the same list. In order to accomplish this, you must make a successful Spellcraft check (DC equal to 10 + the level of the spell to be altered). The duration of the spell is reduced to half of the spell’s remaining duration. For example, a 7th-level wizard could change her resist energy ( fire) spell with 50 minutes of its duration remaining into resist energy (cold), but the new duration would be 25 minutes. This ability does not change the benefit for any other creatures targeted by the original spell.",
+            []
+        ),
+        new Modification(
+            "Quickened Spell",
+            ModificationSource.Other,
+            "Incanter Bonus",
+            ModificationType.Extraordinary,
+            4,
+            false,
+            null,
+            "You can cast spells in a fraction of the normal time.\n\nBenefit: Casting a quickened spell is a swift action. You can perform another action, even casting another spell, in the same round as you cast a quickened spell. A spell whose casting time is more than 1 full-round action cannot be quickened. [FAQ]\n\nLevel Increase: +4 (a quickened spell uses up a spell slot four levels higher than the spell’s actual level.)\n\nCasting a quickened spell doesn’t provoke an attack of opportunity.\n\nSpecial: You can apply the effects of this feat to a spell cast spontaneously, so long as it has a casting time that is not more than 1 full-round action, without increasing the spell’s casting time.",
+            []
+        ),
+        new Modification(
+            "Improved Familiar - Lyrakien",
+            ModificationSource.Other,
+            "Incanter Bonus",
+            ModificationType.Extraordinary,
+            8,
+            false,
+            null,
+            "Prerequisites: Ability to acquire a new familiar, compatible alignment, sufficiently high level (see below).\n\nBenefit: When choosing a familiar, the creatures listed here are also available to you. You may choose a familiar with an alignment up to one step away on each alignment axis (lawful through chaotic, good through evil).\n\nImproved familiars otherwise use the rules for regular familiars, with two exceptions: if the creature’s type is something other than animal, its type does not change; and improved familiars do not gain the ability to speak with other creatures of their kind (although many of them already have the ability to communicate).",
+            []
+        ),
+        new Modification(
+            "Scribe Scroll",
+            ModificationSource.Other,
+            "Wizard Bonus",
+            ModificationType.Extraordinary,
+            1,
+            false,
+            null,
+            "You can create magic scrolls.\n\nPrerequisite: Caster level 1st.\n\nBenefit: You can create a scroll of any spell that you know. Scribing a scroll takes 2 hours if its base price is 250 gp or less, otherwise scribing a scroll takes 1 day for each 1,000 gp in its base price. To scribe a scroll, you must use up raw materials costing half of this base price.\n\nSee magic item creation rules for more information.",
+            []
+        ),
+        new Modification(
+            "Dazing Spell",
+            ModificationSource.Other,
+            "Wizard Bonus",
+            ModificationType.Extraordinary,
+            5,
+            false,
+            null,
+            "You can daze creatures with the power of your spells.\n\nBenefit: You can modify a spell to daze a creature damaged by the spell. When a creature takes damage from this spell, they become dazed for a number of rounds equal to the original level of the spell. If the spell allows a saving throw, a successful save negates the daze effect. If the spell does not allow a save, the target can make a Will save to negate the daze effect. If the spell effect also causes the creature to become dazed, the duration of this metamagic effect is added to the duration of the spell.\n\nLevel Increase: +3 (a dazing spell uses up a spell slot three levels higher than the spell’s actual level.\n\nSpells that do not inflict damage do not benefit from this feat.",
+            []
+        ),
+        new Modification(
+            "Secret of the Magical Discipline",
+            ModificationSource.Other,
+            "Loremaster Secret",
+            ModificationType.Extraordinary,
+            11,
+            false,
+            null,
+            "Your study and devotion to magic allows you to access spells beyond your ken.\n\nPrerequisite(s): Secret class feature.\n\nBenefit(s): Once per day, you can cast any spell as if it were one of your prepared spells or spells known. This action expends either a spell slot or a prepared spell of the same spell level. Casting a spell this way always has a minimum casting time of 1 full round.\n\nSpecial: You can gain this feat multiple times. Each time you take the feat, you can use this ability one additional time per day.",
+            []
+        ),
+        new Modification(
+            "Alertness",
+            ModificationSource.Other,
+            "Familiar Bonus",
+            ModificationType.Extraordinary,
+            11,
+            false,
+            null,
+            "You often notice things that others might miss.\n\nBenefit: You get a +2 bonus on Perception and Sense Motive skill checks. If you have 10 or more ranks in one of these skills, the bonus increases to +4 for that skill.",
+            [new Effect("Alertness", true, 1, EffectType.Feat, "AddAbilityMod('Perception', '2', 'Untyped');\nAddAbilityMod('SenseMotive', '2', 'Untyped');")]
+        )
+    ],
+    spellsKnown: [
+        new KnownSpell(
+            "Magic Missile",
+            "https://www.d20pfsrd.com/magic/all-spells/m/magic-missile/",
+            SpellSchool.Evocation,
+            1,
+            "1 standard action",
+            "V, S",
+            "medium (100 ft. + 10 ft./level)",
+            "up to five creatures, no two of which can be more than 15 ft. apart",
+            "instantaneous",
+            "none",
+            "yes",
+            "A missile of magical energy darts forth from your fingertip and strikes its target, dealing 1d4+1 points of force damage.\n\nThe missile strikes unerringly, even if the target is in melee combat, so long as it has less than total cover or total concealment.\n\nFor every two caster levels beyond 1st, you gain an additional missile, to a maximum of five missiles at 9th level or higher.\n\nYou must designate targets before you check for spell resistance or roll damage.",
+            []
+        ),
+        new KnownSpell(
+            "Ablative Barrier",
+            "https://www.d20pfsrd.com/magic/all-spells/a/ablative-barrier/",
+            SpellSchool.Conjuration,
+            2,
+            "1 standard action",
+            "V, S, M (a piece of metal cut from a shield)",
+            "touch",
+            "",
+            "1 hour/level or until discharged",
+            "Will negates (harmless)",
+            "no",
+            "Invisible layers of solid force surround and protect the target, granting that target a +2 armor bonus to AC. Additionally, the first 5 points of lethal damage the target takes from each attack are converted into nonlethal damage. Against attacks that already deal nonlethal damage, the target gains DR 5/—. Once this spell has converted 5 points of damage to nonlethal damage per caster level (maximum 50 points), the spell is discharged.\n\nAdd half your tier to the spell’s armor bonus. Add half your tier to the amount of lethal damage from each attack that is converted to non-lethal damage and to the DR against non-lethal damage.\n\nAdd half your tier to your caster level when determining how much damage the spell converts before it’s discharged.\n\nPathfinder Roleplaying Game Ultimate Combat © 2011, Paizo Publishing, LLC; Authors: Jason Bulmahn, Tim Hitchcock, Colin McComb, Rob McCreary, Jason Nelson, Stephen Radney-MacFarland, Sean K Reynolds, Owen K.C. Stephens, and Russ Taylor",
+            []
+        ),
+        new KnownSpell(
+            "Paragon Surge",
+            "https://www.d20pfsrd.com/magic/all-spells/p/paragon-surge/",
+            SpellSchool.Transmutation,
+            3,
+            "1 standard action",
+            "V, S",
+            "personal (half-elf only)",
+            "you",
+            "1 minute/level",
+            "",
+            "",
+            "You surge with ancestral power, temporarily embodying all the strengths of both elvenkind and humankind simultaneously, and transforming into a paragon of both races, something greater than elf or human alone.\n\nUnlike with most polymorph effects, your basic form does not change, so you keep all extraordinary and supernatural abilities of your half-elven form as well as all of your gear.\n\nFor the duration of the spell, you receive a +2 enhancement bonus to Dexterity and Intelligence and are treated as if you possessed any one feat for which you meet the prerequisites, chosen when you cast this spell.",
+            []
+        ),
+        new KnownSpell(
+            "Dimension Door",
+            "https://www.d20pfsrd.com/magic/all-spells/d/dimension-door/",
+            SpellSchool.Conjuration,
+            3,
+            "1 standard action",
+            "V",
+            "long (400 ft. + 40 ft./level)",
+            "you and touched objects or other touched willing creatures",
+            "instantaneous",
+            "none and Will negates (object)",
+            "no and yes (object)",
+            "You instantly transfer yourself from your current location to any other spot within range.\n\nYou always arrive at exactly the spot desired – whether by simply visualizing the area or by stating direction.\n\nAfter using this spell, you can’t take any other actions until your next turn.\n\nYou can bring along objects as long as their weight doesn’t exceed your maximum load.\n\nYou may also bring one additional willing Medium or smaller creature (carrying gear or objects up to its maximum load) or its equivalent per three caster levels.\n\nA Large creature counts as two Medium creatures, a Huge creature counts as two Large creatures, and so forth.\n\nAll creatures to be transported must be in contact with one another, and at least one of those creatures must be in contact with you.\n\n\nIf you arrive in a place that is already occupied by a solid body, you and each creature traveling with you take 1d6 points of damage and are shunted to a random open space on a suitable surface within 100 feet of the intended location.\n\nIf there is no free space within 100 feet, you and each creature traveling with you take an additional 2d6 points of damage and are shunted to a free space within 1,000 feet.\n\nIf there is no free space within 1,000 feet, you and each creature traveling with you take an additional 4d6 points of damage and the spell simply fails.\n\nThe duration of this spell changes to 1 round per 2 caster levels, and it creates a temporary, invisible, one-way portal in your square to your destination.\n\nYou immediately pass through the portal and arrive at the destination, but you can’t take any other creatures with you.\n\nWhen casting the spell, you can designate a number of creatures equal to your caster level.\n\nThese creatures can see and use the portal, passing through it to arrive at the destination (this isn’t an action).\n\nA creature that passes through the portal can’t take any other actions until its next turn.",
+            []
+        ),
+        new KnownSpell(
+            "Greater False Life",
+            "https://www.d20pfsrd.com/magic/all-spells/f/false-life/",
+            SpellSchool.Necromancy,
+            4,
+            "1 standard action",
+            "V, S, M (a drop of blood)",
+            "personal",
+            "you",
+            "1 hour/level or until discharged; see text",
+            "",
+            "",
+            "You harness the power of unlife to grant yourself a limited ability to avoid death. While this spell is in effect, you gain temporary hit points equal to 1d10 + 1 per caster level (maximum +10).\n\nThe temporary hit points gained increase to 2d10 + 1 point per caster level (maximum +20). As an immediate action, you can dismiss the remaining duration of the spell to prevent 1 point of Strength, Dexterity, or Constitution damage per 10 temporary hit points remaining from the spell. This takes effect after the attack hits you and the damage is rolled, but before you take the damage. For example, if you have 22 temporary hit points from mythic false life and a wyvern stings you for 3 points of Constitution damage, you can dismiss the spell to prevent 2 points of Constitution damage from that attack.",
+            []
+        ),
+        new KnownSpell(
+            "Lesser Spellcasting Contract",
+            "https://www.d20pfsrd.com/magic/all-spells/s/spellcasting-contract/",
+            SpellSchool.Evocation,
+            5,
+            "10 minutes",
+            "V, S, F (a written contract)",
+            "touch",
+            "creature touched; see text",
+            "permanent until discharged (D)",
+            "Will negates (harmless)",
+            "yes (harmless)",
+            "This spell functions exactly like imbue with spell ability, except that you can imbue the target with any spell you have prepared (instead of just abjuration, divination, or conjuration [healing] spells) and the target may have more than one use of the imbued spells, depending upon the arrangements made when it is cast.\n\nCasting this spell requires a contract between you and the target, explaining what spells are to be imbued and the circumstances that cause the contract to expire. The contract may be as simple as allowing the target one casting of each of the imbued spells (as per imbue with spell ability), or may continue for multiple days or even indefinitely, with the target regaining use of the imbued spells when you next prepare your own spells. You may include any proviso you see fit, such as requiring the target to pray to Asmodeus each morning, or restricting the target to only casting the imbued spells on himself. If the target does not agree to all the conditions in the contract, this spell fails when cast. The contract (and this spell) automatically expires if you or the target dies. While the contract remains in effect, you gain a profane bonus to your Armor Class, saving throws, and checks equal to the highest-level spell you have imbued.\n\nOnce you cast this spell, you cannot prepare a new 5th-level spell to replace it until the contract expires. If the number of 5th-level spells you can cast decreases, and that number drops below your current number of active lesser spellcasting contract spells, the more recently cast imbued spells are dispelled.\n\nUnlike imbue with spell ability, how the target uses the spell has no reflection on your alignment or relationship with Asmodeus; the Prince of Darkness accepts that allowing another access to his magic for good may benefit his plans in the long run. Note that unlike imbue with spell ability, you cannot dismiss this spell; you must abide by the contract’s termination clause (though the contract may include a proviso for at-will nullification by either or both parties). This spell cannot be combined with imbue with spell ability or similar spells to give a target more spells than the limit.\n\nExample: You cast this spell on your 5 HD fighter cohort after negotiating an appropriate contract, imbuing him with the ability to cast cure moderate wounds, magic weapon, and shield of faith once per day for 1 month. If he casts any of these spells, he recovers them when you prepare your spells. Until the contract ends, your 5th-level spell slot used to cast this spell remains expended and cannot be filled with a new spell. Because you imbued your cohort with a 2nd-level spell, you gain a +2 profane bonus to attacks, saves, and checks while the contract remains in effect.",
+            []
+        )
+    ],
+    spellsPrepared: [
+        new PreparedSpell(
+            "Maximized Greater False Life",
+            "https://www.d20pfsrd.com/magic/all-spells/f/false-life/",
+            SpellSchool.Necromancy,
+            4,
+            "1 standard action",
+            "V, S, M (a drop of blood)",
+            "personal",
+            "you",
+            "1 hour/level or until discharged; see text",
+            "",
+            "",
+            "You harness the power of unlife to grant yourself a limited ability to avoid death. While this spell is in effect, you gain temporary hit points equal to 1d10 + 1 per caster level (maximum +10).\n\nThe temporary hit points gained increase to 2d10 + 1 point per caster level (maximum +20). As an immediate action, you can dismiss the remaining duration of the spell to prevent 1 point of Strength, Dexterity, or Constitution damage per 10 temporary hit points remaining from the spell. This takes effect after the attack hits you and the damage is rolled, but before you take the damage. For example, if you have 22 temporary hit points from mythic false life and a wyvern stings you for 3 points of Constitution damage, you can dismiss the spell to prevent 2 points of Constitution damage from that attack.",
+            [new Effect("Maximized Greater False Life", true, 2, EffectType.Spell, "SetAbility('THP', '40');")],
+            true,
+            true,
+            true
+        )
+    ],
     effects: [
         new Effect(
             "Caster Level",
@@ -402,7 +706,6 @@ export const defaultSheetPF: ICharacterSheet = {
         new Effect("Blur", true, 2, EffectType.Spell, "AddQualityLine('MissChance', '20% (True Seeing)');"),
         new Effect("Army Across Time", true, 3, EffectType.Spell, "MultAbilityMod('ExtraBuffCL', '1.5')"),
         new Effect("Protection from Arrows, Commual", true, 2, EffectType.Spell, "AddQualityLine('DR', '10/Magic (vs Ranged Weapons)');"),
-        new Effect("Maximized Greater False Life", true, 2, EffectType.Spell, "SetAbility('THP', '40');"),
         new Effect(
             "Lesser Spellcasting Contract",
             true,
@@ -443,6 +746,8 @@ export const emptySheet: ICharacterSheet = {
     tableData: new Map(),
     specialAbilities: [],
     feats: [],
+    spellsKnown: [],
+    spellsPrepared: [],
     effects: [],
     imageLink: ""
 };
