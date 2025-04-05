@@ -9,7 +9,7 @@ import { Item } from "./Item";
 import { ItemData } from "../models/characterSheet/ItemData";
 import { EffectsFooter } from "./EffectsFooter";
 import { TabContext, TabPanel } from "@mui/lab";
-import { Box, Grid2, Tab, Tabs } from "@mui/material";
+import { Box, Button, Grid2, IconButton, Snackbar, SnackbarCloseReason, Tab, Tabs } from "@mui/material";
 import { groupData } from "../helpers/dataGrouper";
 import { Hitpoints } from "./Hitpoints";
 import { Defenses } from "./Defenses";
@@ -18,7 +18,7 @@ import * as backendService from "../services/backendService";
 import { CalculatorService } from "../services/calculatorService";
 import { DataGroupType } from "../models/characterSheet/DataGroupType";
 import { Saves } from "./Saves";
-import { defaultSheetPF, emptySheet } from "../helpers/sheetHelper";
+import { defaultSheetPF, emptySheet, populateMissingProps } from "../helpers/sheetHelper";
 import { AC } from "./AC";
 import { IModFunctions } from "../models/IModFunctions";
 import { OffenseTab } from "./tabs/OffenseTab";
@@ -27,10 +27,9 @@ import { SpecialAbilitiesTab } from "./tabs/SpecialAbilitiesTab";
 import { FeatTab } from "./tabs/FeatTab";
 import { SpellTab } from "./tabs/SpellTab";
 import { EffectTab } from "./tabs/EffectTab";
+import React from "react";
 
 const calculatorService = new CalculatorService();
-
-const USE_DB = false;
 
 export const CharacterSheet = () => {
     const [, setLoading] = useState(false);
@@ -74,16 +73,12 @@ export const CharacterSheet = () => {
     };
 
     useEffect(() => {
-        if (!USE_DB) {
-            setSheetData(calculatorService.calculate(defaultSheetPF));
-            return;
-        }
-
         setLoading(true);
         backendService
-            .getCharacterSheet("67da834627222e5c0fd047de")
+            .getCharacterSheet("67f10e1ad7969562630de25a")
             .then((x) => {
                 if (x) {
+                    populateMissingProps(x, defaultSheetPF);
                     setSheetData(calculatorService.calculate(x));
                 }
             })
@@ -224,7 +219,7 @@ export const CharacterSheet = () => {
                         [...sheetData.itemData].map(([key, value]) => <Item key={key} item={value} editView={editMode} changeItem={changeProperty} />)}
                 </TabPanel>
                 <TabPanel value={8}>
-                    <EffectTab modFunctions={modFunctions}></EffectTab>
+                    <EffectTab permanentSpells={sheetData.permanentSpells} modFunctions={modFunctions}></EffectTab>
                 </TabPanel>
                 <TabPanel value={9}>
                     <Misc data={groupData(sheetData, DataGroupType.Misc)} modFunctions={modFunctions} />

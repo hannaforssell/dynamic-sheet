@@ -1,4 +1,3 @@
-
 export enum EffectType {
     Base = "Base",
     Racial = "Racial",

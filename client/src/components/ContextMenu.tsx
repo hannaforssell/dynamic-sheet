@@ -24,6 +24,7 @@ export const ContextMenu = (props: IContextMenu) => {
             anchorPosition={props.position !== null ? { top: props.position.y - 6, left: props.position.x - 2 } : undefined}
         >
             {props.jsxMenuItems?.map((mI) => mI)}
+            {(props.jsxMenuItems?.length ?? 0) > 0 && <Divider />}
             {Array.from(props.menuItems).map(([name, func], i) =>
                 func ? (
                     <MenuItem

@@ -13,6 +13,7 @@ import { TableData } from "../models/characterSheet/TableData";
 import { KnownSpell } from "../models/characterSheet/KnownSpell";
 import { SpellSchool } from "../models/characterSheet/SpellSchool";
 import { PreparedSpell } from "../models/characterSheet/PreparedSpell";
+import { PermanentSpell } from "../models/characterSheet/PermanentSpell";
 
 export const defaultSheetPF: ICharacterSheet = {
     _id: null,
@@ -648,6 +649,24 @@ export const defaultSheetPF: ICharacterSheet = {
             true
         )
     ],
+    permanentSpells: [
+        new PermanentSpell(
+            "Siphon Magic - Air Walk",
+            "https://www.d20pfsrd.com/magic/all-spells/a/air-walk/",
+            SpellSchool.Transmutation,
+            5,
+            "1 standard action",
+            "V, S, DF",
+            "touch",
+            "creature (Gargantuan or smaller) touched",
+            "constant",
+            "none",
+            "yes (harmless)",
+            "The subject can tread on air as if walking on solid ground. Moving upward is similar to walking up a hill. The maximum upward or downward angle possible is 45 degrees, at a rate equal to half the air walker’s normal speed.\n\nA strong wind (21+ miles per hour) can push the subject along or hold it back. At the end of a creature’s turn each round, the wind blows the air walker 5 feet for each 5 miles per hour of wind speed. The creature may be subject to additional penalties in exceptionally strong or turbulent winds, such as loss of control over movement or physical damage from being buffeted about.\n\nShould the spell duration expire while the subject is still aloft, the magic fails slowly. The subject floats downward 60 feet per round for 1d6 rounds. If it reaches the ground in that amount of time, it lands safely. If not, it falls the rest of the distance, taking 1d6 points of damage per 10 feet of fall. Since dispelling a spell effectively ends it, the subject also descends in this way if the air walk spell is dispelled, but not if it is negated by an antimagic field.\n\nYou can cast air walk on a specially trained mount so it can be ridden through the air. You can train a mount to move with the aid of air walk (counts as a trick; see Handle Animal skill) with 1 week of work and a DC 25 Handle Animal check.",
+            [new Effect("Siphon Magic - Air Walk", true, 2, EffectType.Spell, "SetAbility('SpeedFly', '30');")],
+            12
+        )
+    ],
     effects: [
         new Effect(
             "Caster Level",
@@ -748,6 +767,39 @@ export const emptySheet: ICharacterSheet = {
     feats: [],
     spellsKnown: [],
     spellsPrepared: [],
+    permanentSpells: [],
     effects: [],
     imageLink: ""
+};
+
+export const populateMissingProps = <T>(toPopulate: T, from: T) => {
+    let key: keyof T;
+
+    for (key in toPopulate) {
+        if (toPopulate[key] instanceof Map) {
+            copyMap(toPopulate[key] as Map<any, any>, from[key] as Map<any, any>, key);
+        } else if (toPopulate[key] instanceof Array) {
+            copyArray(toPopulate[key] as any[], from[key] as any[], key);
+        } else if (toPopulate[key] instanceof Object) {
+            console.log(key);
+        }
+    }
+};
+
+const copyMap = <K, V>(toPopulate: Map<K, V>, from: Map<K, V>, mapName: string) => {
+    from.forEach((value, key) => {
+        if (!toPopulate.has(key)) {
+            console.log("Map Adding " + key + " to " + mapName);
+            toPopulate.set(key, value);
+        }
+    });
+};
+
+const copyArray = <T extends { name: string }>(toPopulate: T[], from: T[], mapName: string) => {
+    from.forEach((value) => {
+        if (!toPopulate.some((v) => v.name === value.name)) {
+            console.log("Array Adding " + value.name + " to " + mapName);
+            toPopulate.push(value);
+        }
+    });
 };

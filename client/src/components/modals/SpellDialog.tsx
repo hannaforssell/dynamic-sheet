@@ -24,9 +24,10 @@ import { EffectType } from "../../models/characterSheet/EffectType";
 import { WebService } from "../../services/webService";
 import { MapFromPFSRD } from "../../mappers/spellMapper";
 import { PreparedSpell } from "../../models/characterSheet/PreparedSpell";
+import { ISpell } from "../../models/characterSheet/ISpell";
 
 interface ISpellDialog {
-    spell: KnownSpell | PreparedSpell;
+    spell: ISpell;
     open: boolean;
     onClose: () => void;
     onSave: (updatedSpell: KnownSpell, originalSpell: KnownSpell) => void;

@@ -47,3 +47,55 @@ test("can parse decimal points", () => {
     //assert
     expect(node.Eval()).toBe(15.9);
 });
+
+test("can parse MAX function", () => {
+    //arrange
+    const input = "MAX(5, 3)";
+    const parser = new Parser(input);
+
+    //act
+    const node = parser.ParseExpression();
+    const evaluation = node.Eval();
+
+    //assert
+    expect(evaluation).toBe(5);
+});
+
+test("can parse MAX function inside MAX function", () => {
+    //arrange
+    const input = "MAX(MAX(5, 3), 10)";
+    const parser = new Parser(input);
+
+    //act
+    const node = parser.ParseExpression();
+    const evaluation = node.Eval();
+
+    //assert
+    expect(evaluation).toBe(10);
+});
+
+test("can parse functions with trailing calculations", () => {
+    //arrange
+    const input = "MAX(5, 3)+5*10";
+    const parser = new Parser(input);
+
+    //act
+    const node = parser.ParseExpression();
+    const evaluation = node.Eval();
+
+    //assert
+    expect(evaluation).toBe(55);
+});
+
+test("can parse complex functions with leading calculations", () => {
+    //arrange
+    const input = "5*10+MAX(MAX(5, 3), 10)";
+    const parser = new Parser(input);
+
+    //act
+    const node = parser.ParseExpression();
+    const evaluation = node.Eval();
+
+    //assert
+    expect(evaluation).toBe(60);
+});

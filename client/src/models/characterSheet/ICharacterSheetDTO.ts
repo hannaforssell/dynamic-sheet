@@ -6,6 +6,7 @@ import { Modification } from "./Modification";
 import { TableData } from "./TableData";
 import { KnownSpell } from "./KnownSpell";
 import { PreparedSpell } from "./PreparedSpell";
+import { PermanentSpell } from "./PermanentSpell";
 
 export interface ICharacterSheetDTO {
     _id: string | null;
@@ -18,6 +19,7 @@ export interface ICharacterSheetDTO {
     feats: Modification[];
     spellsKnown: KnownSpell[];
     spellsPrepared: PreparedSpell[];
+    permanentSpells: PermanentSpell[];
     effects: Effect[];
     imageLink: string;
 }

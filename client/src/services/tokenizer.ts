@@ -100,22 +100,24 @@ export class Tokenizer {
             return;
         }
 
-        // // Identifier - starts with letter or underscore
-        // if (char.IsLetter(_currentChar) || _currentChar == '_')
-        // {
-        //     var sb = new StringBuilder();
+        if (/\w/.test(this.currentChar)) {
+            let sb: string = "";
 
-        //     // Accept letter, digit or underscore
-        //     while (char.IsLetterOrDigit(_currentChar) || _currentChar == '_')
-        //     {
-        //         sb.Append(_currentChar);
-        //         NextChar();
-        //     }
+            while (/\w/.test(this.currentChar)) {
+                sb = sb + this.currentChar;
+                this.NextChar();
+            }
 
-        //     // Setup token
-        //     _identifier = sb.ToString();
-        //     _currentToken = Token.Identifier;
-        //     return;
-        // }
+            switch (sb) {
+                case "MAX":
+                    this.currentToken = Token.MaxFunction;
+                    break;
+
+                default:
+                    throw new Error("Unkown function: " + sb);
+            }
+
+            return;
+        }
     };
 }

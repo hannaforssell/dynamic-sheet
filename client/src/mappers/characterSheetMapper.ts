@@ -1,6 +1,18 @@
 import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { ICharacterSheetDTO } from "../models/characterSheet/ICharacterSheetDTO";
 
+// export function convertMaps(obj: Object): Object {
+//     let overrides: any = {};
+
+//     for (const [key, value] of Object.entries(obj)) {
+//         if (value instanceof Map) {
+//             overrides[key] = Array.from(value);
+//         }
+//     }
+
+//     return { ...obj, ...overrides };
+// }
+
 export function MapToDTO(characterSheet: ICharacterSheet): ICharacterSheetDTO {
     return {
         ...characterSheet,

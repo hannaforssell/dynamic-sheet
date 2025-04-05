@@ -9,5 +9,6 @@ export enum Token {
     Comma,
     Identifier,
     Number,
+    MaxFunction,
     NaN
 }

@@ -20,10 +20,46 @@ export class Parser {
         const expr = this.ParseAddSubtract();
 
         if (this.tokenizer.getCurrentToken() !== Token.EOF) {
-            throw new Error("Unexpected characters at end of expression");
+            throw new Error("Unexpected characters at end of expression. Got: " + Token[this.tokenizer.getCurrentToken()]);
         }
 
         return expr;
+    };
+
+    // Parse an sequence of add/subtract operators
+    private ParseFunction = (): Node => {
+        let arg1: Node | null = null;
+
+        while (true) {
+            let op: ((arg0: number | null, arg1: number | null) => number | null) | null = null;
+
+            if (this.tokenizer.getCurrentToken() === Token.MaxFunction) {
+                op = (a, b) => (a === null || b === null ? null : Math.max(a, b));
+            }
+
+            // Binary operator found?
+            if (op === null) {
+                return arg1 ?? this.ParseAddSubtract();
+            }
+
+            this.tokenizer.NextToken();
+            if (this.tokenizer.getCurrentToken() !== Token.OpenParens) {
+                throw new Error("Function call must be followed by arguments inside parenthesis.");
+            }
+
+            this.tokenizer.NextToken();
+            arg1 = this.ParseFunction();
+
+            this.tokenizer.NextToken();
+            const arg2 = this.ParseFunction();
+
+            if (this.tokenizer.getCurrentToken() !== Token.CloseParens) {
+                throw new Error("Function call must be followed by arguments inside parenthesis.");
+            }
+            this.tokenizer.NextToken();
+
+            arg1 = new NodeBinary(arg1, arg2, op);
+        }
     };
 
     // Parse an sequence of add/subtract operators
@@ -137,6 +173,10 @@ export class Parser {
             this.tokenizer.NextToken();
 
             return node;
+        }
+
+        if (this.tokenizer.getCurrentToken() === Token.MaxFunction) {
+            return this.ParseFunction();
         }
 
         // Don't Understand

@@ -1,6 +1,20 @@
-import { Box, Collapse, IconButton, List, ListItem, ListItemText, SxProps, TableCell, TableRow, Theme } from "@mui/material";
-import { KnownSpell } from "../models/characterSheet/KnownSpell";
-import { useState } from "react";
+import {
+    Box,
+    Checkbox,
+    Collapse,
+    FormControlLabel,
+    IconButton,
+    List,
+    ListItem,
+    ListItemText,
+    MenuItem,
+    SxProps,
+    TableCell,
+    TableRow,
+    Theme,
+    Typography
+} from "@mui/material";
+import { JSX, useState } from "react";
 import { Effect } from "../models/characterSheet/Effect";
 import React from "react";
 import { IModFunctions } from "../models/IModFunctions";
@@ -11,23 +25,39 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { ContextMenu, IPos } from "./ContextMenu";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Sugar from "sugar";
+import { ISpell } from "../models/characterSheet/ISpell";
+import { PreparedSpell } from "../models/characterSheet/PreparedSpell";
+import { PermanentSpell } from "../models/characterSheet/PermanentSpell";
 
-interface ISpellKnownRow {
-    spell: KnownSpell;
+interface ISpellRow {
+    spell: ISpell;
     open: boolean;
     toggleOpen(): void;
-    duplicateSpell(spell: KnownSpell): void;
-    deleteSpell(spell: KnownSpell): void;
-    prepareSpell(spell: KnownSpell): void;
+    prepareSpell?(spell: ISpell): void;
+    duplicateSpell(spell: ISpell): void;
+    deleteSpell(spell: ISpell): void;
     modFunctions: IModFunctions;
 }
 
-export const SpellKnownRow = (props: ISpellKnownRow) => {
+export const SpellRow = (props: ISpellRow) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalEffect, setModalEffect] = useState<Effect | null>(null);
     const [contextMenu, setContextMenu] = React.useState<IPos | null>(null);
 
     const [bitFlip, setBitFlip] = useState(false);
+
+    const handleClick = (e: React.MouseEvent<HTMLTableRowElement | HTMLTableCellElement, MouseEvent>) => {
+        e.stopPropagation();
+
+        if (e.ctrlKey) {
+            setModalOpen(!modalOpen);
+        } else if (e.shiftKey) {
+            props.duplicateSpell(props.spell);
+        } else if (e.altKey) {
+            props.deleteSpell(props.spell);
+        }
+    };
 
     const handleContextMenu = (event: React.MouseEvent) => {
         event.preventDefault();
@@ -54,31 +84,77 @@ export const SpellKnownRow = (props: ISpellKnownRow) => {
         }
     };
 
-    const handleClick = (e: React.MouseEvent<HTMLTableRowElement | HTMLTableCellElement, MouseEvent>) => {
-        e.stopPropagation();
+    let jsxMenuItems: JSX.Element[] = [];
 
-        if (e.ctrlKey) {
-            setModalOpen(!modalOpen);
-        } else if (e.shiftKey) {
-            props.duplicateSpell(props.spell);
-        } else if (e.altKey) {
-            props.deleteSpell(props.spell);
-        }
-    };
+    const preparedSpell = props.spell as PreparedSpell;
+    const permanentSpell = props.spell as PermanentSpell;
 
-    const menuItems: Map<string, (() => void) | null> = new Map([
-        ["Prepare", () => props.prepareSpell(props.spell)],
-        ["", null],
-        ["Open", () => setModalOpen(!modalOpen)],
-        ["Clone", () => props.duplicateSpell(props.spell)],
-        ["Delete", () => props.deleteSpell(props.spell)]
-    ]);
+    if ("cast" in props.spell) {
+        jsxMenuItems = [
+            <MenuItem key="cast">
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            name="cast"
+                            checked={preparedSpell.cast}
+                            onChange={() => {
+                                preparedSpell.cast = !preparedSpell.cast;
+                                handleContextMenuClose();
+                            }}
+                        />
+                    }
+                    label="Cast"
+                />
+            </MenuItem>,
+            <MenuItem key="alwaysCast">
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            name="alwaysCast"
+                            checked={preparedSpell.alwaysCast}
+                            onChange={() => {
+                                preparedSpell.alwaysCast = !preparedSpell.alwaysCast;
+                                preparedSpell.cast = preparedSpell.alwaysCast;
+                                handleContextMenuClose();
+                            }}
+                        />
+                    }
+                    label="Always Cast"
+                />
+            </MenuItem>,
+            <MenuItem key="active">
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            name="active"
+                            checked={preparedSpell.active}
+                            onChange={() => {
+                                preparedSpell.active = !preparedSpell.active;
+                                handleContextMenuClose();
+                            }}
+                        />
+                    }
+                    label="Active"
+                />
+            </MenuItem>
+        ];
+    }
+
+    const menuItems = new Map();
+
+    if (props.prepareSpell !== undefined) {
+        menuItems.set("Prepare", () => props.prepareSpell!(props.spell));
+    }
+
+    menuItems.set("Open", () => setModalOpen(!modalOpen));
+    menuItems.set("Clone", () => props.duplicateSpell(props.spell));
+    menuItems.set("Delete", () => props.deleteSpell(props.spell));
 
     const cellSx: SxProps<Theme> = { padding: 0, border: "unset" };
 
     return (
         <>
-            {contextMenu && <ContextMenu menuItems={menuItems} position={contextMenu} onClose={handleContextMenuClose} />}
+            {contextMenu && <ContextMenu jsxMenuItems={jsxMenuItems} menuItems={menuItems} position={contextMenu} onClose={handleContextMenuClose} />}
             <TableRow onClick={(e) => handleClick(e)} onContextMenu={handleContextMenu} style={{ cursor: "context-menu" }}>
                 <TableCell sx={cellSx} width={50}>
                     {props.spell.effects.length > 0 && (
@@ -94,9 +170,28 @@ export const SpellKnownRow = (props: ISpellKnownRow) => {
                     )}
                 </TableCell>
                 <TableCell sx={cellSx} component="th" scope="row">
-                    {props.spell.name}
+                    <Typography
+                        fontSize="small"
+                        sx={preparedSpell.cast ? { textDecoration: "line-through" } : {}}
+                        color={preparedSpell.alwaysCast ? "textDisabled" : ""}
+                        display="inline"
+                    >
+                        {props.spell.name}
+                    </Typography>
+                    {preparedSpell.active && (
+                        <Typography fontSize="small" display="inline">
+                            {" (A)"}
+                        </Typography>
+                    )}
                 </TableCell>
-                <TableCell sx={cellSx} align="right">
+                {"casterLevel" in props.spell && (
+                    <TableCell sx={cellSx} component="th" scope="row">
+                        <Typography fontSize="small" display="inline">
+                            CL: {permanentSpell.casterLevel}
+                        </Typography>
+                    </TableCell>
+                )}
+                <TableCell sx={cellSx} align="right" component="th" scope="row">
                     <OpenInNewIcon
                         sx={{ verticalAlign: "middle" }}
                         fontSize="small"

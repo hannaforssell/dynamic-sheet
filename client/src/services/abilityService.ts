@@ -90,7 +90,7 @@ export class AbilityService {
         } while (currentBatch.length > 0);
     };
 
-    public getModificationsBatch = (characterSheet: ICharacterSheet) => {
+    private getModificationsBatch = (characterSheet: ICharacterSheet) => {
         const retMap = new Map<string, AbilityData>();
 
         characterSheet.specialAbilities.forEach((modification) => {
@@ -116,7 +116,7 @@ export class AbilityService {
         return retMap;
     };
 
-    public applyModifications = (characterSheet: ICharacterSheet, modificationData: Map<string, AbilityData>) => {
+    private applyModifications = (characterSheet: ICharacterSheet, modificationData: Map<string, AbilityData>) => {
         characterSheet.specialAbilities.forEach((modification) => {
             modification.textModifiers.clear();
 

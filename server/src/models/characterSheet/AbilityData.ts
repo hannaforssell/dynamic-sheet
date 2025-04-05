@@ -1,4 +1,5 @@
 import { AbilityDataMod } from "./AbilityDataMod";
+import { DataGroupType } from "./DataGroupType";
 
 export class AbilityData {
     sortOrder: number;
@@ -6,10 +7,11 @@ export class AbilityData {
     abilityMods: AbilityDataMod[];
     calculatedText: string;
     calculatedSum: number | null;
-    
+    notes: string[];
+
     constructor(
         public name: string,
-        public group: string,
+        public group: DataGroupType,
         sortOrder?: number,
         displayName?: string,
         abilityMods?: AbilityDataMod[]
@@ -19,5 +21,6 @@ export class AbilityData {
         this.calculatedSum = 0;
         this.sortOrder = sortOrder ?? 100;
         this.abilityMods = abilityMods ?? [];
+        this.notes = [];
     }
 }
