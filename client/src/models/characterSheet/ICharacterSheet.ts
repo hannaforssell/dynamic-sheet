@@ -1,6 +1,6 @@
 import { AbilityData } from "./AbilityData";
 import { Effect } from "./Effect";
-import { ItemData } from "./ItemData";
+import { Item } from "./Item";
 import { QualityData } from "./QualityData";
 import { Modification } from "./Modification";
 import { TableData } from "./TableData";
@@ -13,7 +13,7 @@ export interface ICharacterSheet {
     qualityData: Map<string, QualityData>;
     abilityData: Map<string, AbilityData>;
     classSkills: Set<string>;
-    itemData: Map<string, ItemData>;
+    itemData: Item[];
     tableData: Map<string, TableData>;
     specialAbilities: Modification[];
     feats: Modification[];

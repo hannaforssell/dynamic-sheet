@@ -4,7 +4,6 @@ import { DataGroupType } from "../models/characterSheet/DataGroupType";
 import { Effect } from "../models/characterSheet/Effect";
 import { EffectType } from "../models/characterSheet/EffectType";
 import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
-import { ItemData } from "../models/characterSheet/ItemData";
 import { QualityData } from "../models/characterSheet/QualityData";
 import { Modification } from "../models/characterSheet/Modification";
 import { ModificationSource } from "../models/characterSheet/ModificationSource";
@@ -46,7 +45,9 @@ export const defaultSheetPF: ICharacterSheet = {
         ["Gender", new QualityData("Gender", DataGroupType.Misc, "")],
         ["Height", new QualityData("Height", DataGroupType.Misc, "")],
         ["Weight", new QualityData("Weight", DataGroupType.Misc, "")],
-        ["FlyManeuverability", new QualityData("FlyManeuverability", DataGroupType.Mobility, "", 100, "Maneuverability")]
+        ["FlyManeuverability", new QualityData("FlyManeuverability", DataGroupType.Mobility, "", 100, "Maneuverability")],
+
+        ["SkillTricks", new QualityData("SkillTricks", DataGroupType.Skills, "", 100, "Skill Tricks")]
     ]),
     abilityData: new Map([
         ["Str", new AbilityData("Str", DataGroupType.AbilityScores, 1)],
@@ -140,10 +141,7 @@ export const defaultSheetPF: ICharacterSheet = {
         ["UMD", new AbilityData("UMD", DataGroupType.Skills, 100, "Use Magic Device")]
     ]),
     classSkills: new Set(["Appraise"]),
-    itemData: new Map([
-        ["Staff", new ItemData("Staff", new AbilityData("Staff", DataGroupType.Items), "Bag", 5)],
-        ["Shoes", new ItemData("Shoes", new AbilityData("Shoes", DataGroupType.Items), "Bag", 3, [{ name: "Name", desc: "Desc" }])]
-    ]),
+    itemData: [],
     tableData: new Map([
         [
             "Levels",
@@ -743,7 +741,7 @@ export const defaultSheetPF: ICharacterSheet = {
             true,
             -1,
             EffectType.Base,
-            "AddAbilityMod('UMD', '+0@Cha', 'AbMod');\nAddAbilityMod('Acrobatics', '+0@Dex', 'AbMod');\nAddAbilityMod('Appraise', '+0@Int', 'AbMod');\nAddAbilityMod('Bluff', '+0@Cha', 'AbMod');\nAddAbilityMod('Climb', '+0@Str', 'AbMod');\nAddAbilityMod('Craft(Alchemy)', '+0@Int', 'AbMod');\nAddAbilityMod('Diplomacy', '+0@Cha', 'AbMod');\nAddAbilityMod('Disable Device', '+0@Dex', 'AbMod');\nAddAbilityMod('Disguise', '+0@Cha', 'AbMod');\nAddAbilityMod('Escape Artist', '+0@Dex', 'AbMod');\nAddAbilityMod('Fly', '+0@Dex', 'AbMod');\nAddAbilityMod('Handle Animal', '+0@Cha', 'AbMod');\nAddAbilityMod('Heal', '+0@Wis', 'AbMod');\nAddAbilityMod('Intimidate', '+0@Cha', 'AbMod');\nAddAbilityMod('Knowledge(Arcana)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Dungeoneering)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Geography)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(History)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Nature)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Nobility)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(The Planes)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Religion)', '+0@Int', 'AbMod');\nAddAbilityMod('Linguistics', '+0@Int', 'AbMod');\nAddAbilityMod('Perception', '+0@Wis', 'AbMod');\nAddAbilityMod('Perform', '+0@Cha', 'AbMod');\nAddAbilityMod('Profession', '+0@Wis', 'AbMod');\nAddAbilityMod('Ride', '+0@Dex', 'AbMod');\nAddAbilityMod('Sense Motive', '+0@Wis', 'AbMod');\nAddAbilityMod('Slight of Hand', '+0@Dex', 'AbMod');\nAddAbilityMod('Spellcraft', '+0@Int', 'AbMod');\nAddAbilityMod('Stealth', '+0@Dex', 'AbMod');\nAddAbilityMod('Survival', '+0@Wis', 'AbMod');\nAddAbilityMod('Swim', '+0@Str', 'AbMod');\nAddAbilityMod('UMD', '+0@Cha', 'AbMod');\n"
+            "AddAbilityMod('Acrobatics', '+0@Dex', 'AbMod');\nAddAbilityMod('Appraise', '+0@Int', 'AbMod');\nAddAbilityMod('Bluff', '+0@Cha', 'AbMod');\nAddAbilityMod('Climb', '+0@Str', 'AbMod');\nAddAbilityMod('Craft(Alchemy)', '+0@Int', 'AbMod');\nAddAbilityMod('Diplomacy', '+0@Cha', 'AbMod');\nAddAbilityMod('Disable Device', '+0@Dex', 'AbMod');\nAddAbilityMod('Disguise', '+0@Cha', 'AbMod');\nAddAbilityMod('Escape Artist', '+0@Dex', 'AbMod');\nAddAbilityMod('Fly', '+0@Dex', 'AbMod');\nAddAbilityMod('Handle Animal', '+0@Cha', 'AbMod');\nAddAbilityMod('Heal', '+0@Wis', 'AbMod');\nAddAbilityMod('Intimidate', '+0@Cha', 'AbMod');\nAddAbilityMod('Knowledge(Arcana)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Dungeoneering)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Geography)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(History)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Nature)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Nobility)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(The Planes)', '+0@Int', 'AbMod');\nAddAbilityMod('Knowledge(Religion)', '+0@Int', 'AbMod');\nAddAbilityMod('Linguistics', '+0@Int', 'AbMod');\nAddAbilityMod('Perception', '+0@Wis', 'AbMod');\nAddAbilityMod('Perform', '+0@Cha', 'AbMod');\nAddAbilityMod('Profession', '+0@Wis', 'AbMod');\nAddAbilityMod('Ride', '+0@Dex', 'AbMod');\nAddAbilityMod('Sense Motive', '+0@Wis', 'AbMod');\nAddAbilityMod('Slight of Hand', '+0@Dex', 'AbMod');\nAddAbilityMod('Spellcraft', '+0@Int', 'AbMod');\nAddAbilityMod('Stealth', '+0@Dex', 'AbMod');\nAddAbilityMod('Survival', '+0@Wis', 'AbMod');\nAddAbilityMod('Swim', '+0@Str', 'AbMod');\nAddAbilityMod('UMD', '+0@Cha', 'AbMod');\n"
         ),
         new Effect(
             "Skill ranks",
@@ -761,7 +759,7 @@ export const emptySheet: ICharacterSheet = {
     qualityData: new Map(),
     abilityData: new Map(),
     classSkills: new Set(),
-    itemData: new Map(),
+    itemData: [],
     tableData: new Map(),
     specialAbilities: [],
     feats: [],

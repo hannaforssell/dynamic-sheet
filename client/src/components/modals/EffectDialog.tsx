@@ -31,7 +31,7 @@ export const EffectDialog = (props: IEffectDialog) => {
     };
 
     return (
-        <Dialog open={props.open} onClose={props.onClose} fullWidth maxWidth="sm">
+        <Dialog open={props.open} onClose={props.onClose} fullWidth maxWidth="md">
             <DialogTitle>Edit Effect</DialogTitle>
             <DialogContent dividers>
                 {/* Name */}

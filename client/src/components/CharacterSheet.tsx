@@ -3,13 +3,10 @@ import { AbilityData } from "../models/characterSheet/AbilityData";
 import { QualityData } from "../models/characterSheet/QualityData";
 import { ICharacterSheet } from "../models/characterSheet/ICharacterSheet";
 import { HeaderMenu } from "./HeaderMenu";
-import { PropertyGroup } from "./PropertyGroup";
 import { SearchResult } from "./SearchResult";
-import { Item } from "./Item";
-import { ItemData } from "../models/characterSheet/ItemData";
 import { EffectsFooter } from "./EffectsFooter";
 import { TabContext, TabPanel } from "@mui/lab";
-import { Box, Button, Grid2, IconButton, Snackbar, SnackbarCloseReason, Tab, Tabs } from "@mui/material";
+import { Box, Grid2, Tab, Tabs } from "@mui/material";
 import { groupData } from "../helpers/dataGrouper";
 import { Hitpoints } from "./Hitpoints";
 import { Defenses } from "./Defenses";
@@ -28,6 +25,7 @@ import { FeatTab } from "./tabs/FeatTab";
 import { SpellTab } from "./tabs/SpellTab";
 import { EffectTab } from "./tabs/EffectTab";
 import React from "react";
+import { SkillTab } from "./tabs/SkillTab";
 
 const calculatorService = new CalculatorService();
 
@@ -106,16 +104,11 @@ export const CharacterSheet = () => {
         setTabIndex(6);
     };
 
-    const changeProperty = (property: AbilityData | QualityData | ItemData) => {
+    const changeProperty = (property: AbilityData | QualityData) => {
         if (property instanceof AbilityData) {
             sheetData.abilityData.set(property.name, new AbilityData(property.name, property.group, property.sortOrder));
         } else if (property instanceof QualityData) {
             sheetData.qualityData.set(property.name, new QualityData(property.name, property.group, property.originalText));
-        } else if (property instanceof ItemData) {
-            sheetData.itemData.set(
-                property.name,
-                new ItemData(property.name, new AbilityData(property.name, DataGroupType.Items, 0), property.location, property.weight)
-            );
         }
     };
 
@@ -187,17 +180,7 @@ export const CharacterSheet = () => {
                     <Box sx={{ display: "flex" }}></Box>
                 </TabPanel>
                 <TabPanel value={3}>
-                    <PropertyGroup group={DataGroupType.Skills} data={groupData(sheetData, DataGroupType.Skills)} modFunctions={modFunctions} />
-                    <label
-                        style={{
-                            textAlign: "left",
-                            display: "grid",
-                            gridTemplateColumns: "150px 180px"
-                        }}
-                    >
-                        <span>Skillpoints spent</span>
-                        <div>sum</div>
-                    </label>
+                    <SkillTab skillData={groupData(sheetData, DataGroupType.Skills)} modFunctions={modFunctions} />
                 </TabPanel>
                 <TabPanel value={4}>
                     <SpecialAbilitiesTab modifications={sheetData.specialAbilities} modFunctions={modFunctions}></SpecialAbilitiesTab>
@@ -214,10 +197,7 @@ export const CharacterSheet = () => {
                         modFunctions={modFunctions}
                     ></SpellTab>
                 </TabPanel>
-                <TabPanel value={7}>
-                    {sheetData.itemData &&
-                        [...sheetData.itemData].map(([key, value]) => <Item key={key} item={value} editView={editMode} changeItem={changeProperty} />)}
-                </TabPanel>
+                <TabPanel value={7}>{/* Items */}</TabPanel>
                 <TabPanel value={8}>
                     <EffectTab permanentSpells={sheetData.permanentSpells} modFunctions={modFunctions}></EffectTab>
                 </TabPanel>

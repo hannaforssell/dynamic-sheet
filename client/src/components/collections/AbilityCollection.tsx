@@ -13,10 +13,10 @@ interface IAbilityCollection {
 
 export const AbilityCollection = (props: IAbilityCollection) => {
     let sx: SxProps<Theme>;
-    if (!props.sx) {
+    if (!props.sx || !("display" in props.sx)) {
         const maxLen = Math.max(...props.abilities.map((a) => a.displayName.length));
-        const width = `${20 + (maxLen + 1) * 20}px`;
-        sx = { display: "flex", flexDirection: "column", maxWidth: width, width: width };
+        const width = `${36 + (maxLen + 1) * 12}px`;
+        sx = { ...props.sx, display: "flex", flexDirection: "column", maxWidth: width, width: width };
     } else {
         sx = props.sx;
     }

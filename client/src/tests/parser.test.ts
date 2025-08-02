@@ -99,3 +99,29 @@ test("can parse complex functions with leading calculations", () => {
     //assert
     expect(evaluation).toBe(60);
 });
+
+test("can parse functions with leading plus sign", () => {
+    //arrange
+    const input = "+MAX(5, 10)";
+    const parser = new Parser(input);
+
+    //act
+    const node = parser.ParseExpression();
+    const evaluation = node.Eval();
+
+    //assert
+    expect(evaluation).toBe(10);
+});
+
+test("can parse functions with leading minus sign", () => {
+    //arrange
+    const input = "-MAX(5, 10)";
+    const parser = new Parser(input);
+
+    //act
+    const node = parser.ParseExpression();
+    const evaluation = node.Eval();
+
+    //assert
+    expect(evaluation).toBe(-10);
+});
